@@ -1,44 +1,15 @@
-import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { useURL } from "expo-linking";
-import * as WebBrowser from "expo-web-browser";
-import { useAuth } from "@/providers/auth";
-import type { Provider } from "@supabase/supabase-js";
+import { View, Text, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Auth from "@/features/auth";
 
 const SignInScreen = () => {
-	const [isLoading, setIslLoading] = useState(false);
-	const redirectTo = useURL();
-	const { signIn } = useAuth();
-
-	useEffect(() => {
-		WebBrowser.warmUpAsync();
-		return () => {
-			WebBrowser.coolDownAsync();
-		};
-	});
-
-	const handleSignInPress = async (provider: Provider) => {
-		try {
-			setIslLoading(true);
-			signIn(provider, redirectTo);
-		} catch (err) {
-			console.error(err);
-		} finally {
-			setIslLoading(false);
-		}
-	};
-
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.main}>
 				<Text style={styles.title}>Sign In</Text>
-				<Button
-					title="Sign In"
-					disabled={isLoading}
-					onPress={() => handleSignInPress("google")}
-				/>
+				<Auth />
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 
@@ -57,10 +28,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 32,
 		fontWeight: "bold",
-	},
-	subtitle: {
-		fontSize: 12,
-		color: "#38434D",
 	},
 });
 
