@@ -1,9 +1,13 @@
 import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
-import Comment from "../types/Comment";
 import { getRelativeDate } from "@/utils/dates";
+import { Database } from "@/libs/supabase/types/database.types";
 
-const CommentItem = ({ comment }: { comment: Comment }) => {
+export type Comment = Database["public"]["Tables"]["comments"]["Row"] & {
+	author: Database["public"]["Tables"]["profiles"]["Row"];
+};
+
+export const Comment = ({ comment }: { comment: Comment }) => {
 	const { author, created_at, content } = comment;
 
 	return (
@@ -27,10 +31,11 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		padding: 16,
 		borderStyle: "solid",
-		borderColor: "#929292",
+		borderColor: "#D9D9D9",
 		borderBottomWidth: 0.5,
 	},
 	avatar: {
+		alignSelf: "flex-start",
 		width: 40,
 		height: 40,
 		borderRadius: 25,
@@ -55,5 +60,3 @@ const styles = StyleSheet.create({
 		color: "#929292",
 	},
 });
-
-export default CommentItem;

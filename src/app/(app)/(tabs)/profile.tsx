@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { supabase } from "@/libs/supabase";
-import { Database } from "@/libs/supabase/database.types";
+import { Database } from "@/libs/supabase/types/database.types";
 import { Image } from "expo-image";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];

@@ -2,9 +2,14 @@ import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
 import { getRelativeDate } from "@/utils/dates";
 import Actions from "./components/Actions";
-import Post from "./types/Post";
+import { Database } from "@/libs/supabase/types/database.types";
 
-const PostItem = ({ post }: { post: Post }) => {
+export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
+	author: Database["public"]["Tables"]["profiles"]["Row"];
+	user_has_liked_post: boolean;
+};
+
+export const Post = ({ post }: { post: Post }) => {
 	const { id, content, created_at, author, user_has_liked_post } = post;
 
 	return (
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		padding: 16,
 		borderStyle: "solid",
-		borderColor: "#929292",
+		borderColor: "#D9D9D9",
 		borderBottomWidth: 0.5,
 	},
 	header: {
@@ -72,5 +77,3 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 	},
 });
-
-export default PostItem;

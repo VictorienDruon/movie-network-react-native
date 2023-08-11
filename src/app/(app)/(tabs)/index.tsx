@@ -1,48 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet, Text, View, RefreshControl, FlatList } from "react-native";
-import { supabase } from "@/libs/supabase";
-import PostItem from "@/features/post";
-import Post from "@/features/post/types/Post";
+import { useQuery } from "@tanstack/react-query";
+import { getPosts } from "@/libs/supabase/api";
+import { Post } from "@/features/post";
 
 const HomeScreen = () => {
-	const [isLoaded, setIsLoaded] = useState<boolean>(false);
 	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const [posts, setPosts] = useState<Post[]>([]);
-
-	const getPosts = async () => {
-		try {
-			const {
-				data: { session },
-			} = await supabase.auth.getSession();
-			const { data, error } = await supabase
-				.from("posts")
-				.select("*, author: profiles(*), likes(user_id)")
-				.order("created_at", { ascending: false });
-			if (error) throw new Error("Error getting posts: " + error.message);
-			const posts = data.map((post) => ({
-				...post,
-				user_has_liked_post: !!post.likes.find(
-					(like) => like.user_id === session.user.id
-				),
-			}));
-			setPosts(posts);
-		} catch (err) {
-			console.error(err.message);
-		} finally {
-			setIsLoaded(true);
-		}
-	};
+	const {
+		isLoading,
+		isError,
+		data: posts,
+		error,
+		refetch,
+	} = useQuery<Post[], Error>({ queryKey: ["posts"], queryFn: getPosts });
 
 	const handleRefresh = useCallback(() => {
 		setRefreshing(true);
-		getPosts().then(() => setRefreshing(false));
+		refetch().then(() => setRefreshing(false));
 	}, []);
 
-	useEffect(() => {
-		getPosts();
-	}, []);
+	if (isLoading) return <Text>Loading...</Text>;
 
-	if (!isLoaded) return null;
+	if (isError) return <Text>Error: {error.message}</Text>;
 
 	return (
 		<View style={styles.container}>
@@ -52,7 +31,7 @@ const HomeScreen = () => {
 			<FlatList
 				data={posts}
 				keyExtractor={(post) => post.id}
-				renderItem={({ item: post }) => <PostItem post={post} />}
+				renderItem={({ item: post }) => <Post post={post} />}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
 				}

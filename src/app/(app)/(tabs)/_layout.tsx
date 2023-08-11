@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import { Home, User2 } from "lucide-react-native";
 
-const AppLayout = () => (
+const TabsLayout = () => (
 	<Tabs>
 		<Tabs.Screen
 			name="index"
@@ -22,4 +22,4 @@ const AppLayout = () => (
 	</Tabs>
 );
 
-export default AppLayout;
+export default TabsLayout;
