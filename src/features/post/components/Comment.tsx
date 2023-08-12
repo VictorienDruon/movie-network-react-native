@@ -30,9 +30,6 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		padding: 16,
-		borderStyle: "solid",
-		borderColor: "#D9D9D9",
-		borderBottomWidth: 0.5,
 	},
 	avatar: {
 		alignSelf: "flex-start",

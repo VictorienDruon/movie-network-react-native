@@ -10,7 +10,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 	const queryClient = useQueryClient();
 	const commentMutation = useMutation(addComment, {
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["post", postId] });
+			queryClient.invalidateQueries({ queryKey: ["comments", postId] });
 		},
 	});
 	const { control, handleSubmit, reset } = useForm<CommentSchema>({

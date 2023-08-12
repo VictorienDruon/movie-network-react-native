@@ -16,30 +16,3 @@ export async function getPosts() {
 		),
 	}));
 }
-
-export async function getPostWithComments(postId: string) {
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
-	const {
-		data: { likes, comments, ...post },
-		error,
-	} = await supabase
-		.from("posts")
-		.select(
-			"*, author: profiles(*), likes(user_id), comments(*, author: profiles(*))"
-		)
-		.eq("id", postId)
-		.single();
-	if (error) throw error;
-	const user_has_liked_post = !!likes.find(
-		(like) => like.user_id === session.user.id
-	);
-	return {
-		post: {
-			...post,
-			user_has_liked_post,
-		},
-		comments,
-	};
-}
