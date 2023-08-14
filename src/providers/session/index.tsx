@@ -5,13 +5,10 @@ import useProtectedRoute from "./hooks/useProtectedRoute";
 interface SessionContext {
 	isSessionLoaded: boolean;
 }
-interface SessionProviderProps {
-	children: ReactNode;
-}
 
 const SessionContext = createContext<SessionContext>(null);
 
-export const SessionProvider = ({ children }: SessionProviderProps) => {
+export const SessionProvider = ({ children }: { children: ReactNode }) => {
 	const { isSessionLoaded, session } = useSessionLoader();
 	useProtectedRoute(isSessionLoaded, session);
 

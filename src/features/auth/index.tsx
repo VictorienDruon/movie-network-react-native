@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
+import { Box } from "@/components/ui";
 import GoogleButton from "./components/GoogleButton";
 import TwitterButton from "./components/TwitterButton";
 
@@ -13,10 +13,10 @@ const Auth = () => {
 	});
 
 	return (
-		<View>
+		<Box>
 			<GoogleButton />
 			<TwitterButton />
-		</View>
+		</Box>
 	);
 };
 

@@ -1,25 +1,39 @@
 import { Tabs } from "expo-router";
-import { Home, User2 } from "lucide-react-native";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/themes";
+import { Icon } from "@/components/ui";
 
-const TabsLayout = () => (
-	<Tabs>
-		<Tabs.Screen
-			name="index"
-			options={{
-				tabBarShowLabel: false,
+const TabsLayout = () => {
+	const { colors } = useTheme<Theme>();
+
+	return (
+		<Tabs
+			screenOptions={{
 				headerShown: false,
-				tabBarIcon: ({ color }) => <Home size={28} color={color} />,
-			}}
-		/>
-		<Tabs.Screen
-			name="profile"
-			options={{
 				tabBarShowLabel: false,
-				headerShown: false,
-				tabBarIcon: ({ color }) => <User2 size={28} color={color} />,
+				tabBarActiveTintColor: colors.accent9,
+				tabBarInactiveTintColor: colors.gray9,
+				tabBarStyle: { backgroundColor: colors.mainBackground },
 			}}
-		/>
-	</Tabs>
-);
+		>
+			<Tabs.Screen
+				name="index"
+				options={{
+					tabBarIcon: ({ color }) => (
+						<Icon name="Home" size="xl" color={color} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="profile"
+				options={{
+					tabBarIcon: ({ color }) => (
+						<Icon name="User2" size="xl" color={color} />
+					),
+				}}
+			/>
+		</Tabs>
+	);
+};
 
 export default TabsLayout;

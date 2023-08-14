@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "react-native";
 import { supabase } from "@/libs/supabase";
 import { Database } from "@/libs/supabase/types/database.types";
-import { Image } from "expo-image";
+import { Avatar, Box, Layout, Text } from "@/components/ui";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -43,34 +42,18 @@ const ProfileScreen = () => {
 	const { name, avatar_url } = profile;
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<Image style={styles.avatar} source={avatar_url} />
-			<Text style={styles.name}>{name}</Text>
+		<Layout>
+			<Box flexDirection="row">
+				<Avatar src={avatar_url} size="xl" alt={name} />
+				<Text variant="title">{name}</Text>
+			</Box>
 			<Button
 				title="Sign Out"
 				disabled={isLoading}
 				onPress={handleSignOutPress}
 			/>
-		</SafeAreaView>
+		</Layout>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	profile: {
-		flexDirection: "row",
-	},
-	avatar: {
-		width: 50,
-		height: 50,
-		borderRadius: 25,
-	},
-	name: {
-		fontSize: 20,
-		fontWeight: "bold",
-	},
-});
 
 export default ProfileScreen;

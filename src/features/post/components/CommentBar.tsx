@@ -1,10 +1,11 @@
-import { TextInput, View, Text, StyleSheet, Pressable } from "react-native";
+import { TextInput, Pressable } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { addComment } from "@/libs/supabase/api";
+import { Box, Text } from "@/components/ui";
 
 const CommentBar = ({ postId }: { postId: string }) => {
 	const queryClient = useQueryClient();
@@ -31,52 +32,41 @@ const CommentBar = ({ postId }: { postId: string }) => {
 		<Controller
 			control={control}
 			render={({ field: { onChange, onBlur, value } }) => (
-				<View style={styles.container}>
+				<Box
+					flex={1}
+					flexDirection="row"
+					alignItems="flex-end"
+					maxHeight={100}
+					borderRadius={20}
+					backgroundColor="gray4"
+				>
 					<TextInput
 						placeholder="Add a comment..."
 						onBlur={onBlur}
 						onChangeText={onChange}
 						value={value}
-						style={styles.textInput}
+						style={{
+							flex: 1,
+							paddingTop: 10,
+							paddingBottom: 10,
+							paddingLeft: 15,
+						}}
 						multiline
 					/>
 					{value && value.length <= 280 && (
-						<Pressable onPress={handleCommentSubmit} style={styles.button}>
-							<Text style={styles.text}>Publish</Text>
+						<Pressable onPress={handleCommentSubmit}>
+							<Box px="md" py="sm">
+								<Text variant="subtitle" fontWeight="600" color="info12">
+									Publish
+								</Text>
+							</Box>
 						</Pressable>
 					)}
-				</View>
+				</Box>
 			)}
 			name="content"
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: "row",
-		alignItems: "center",
-		maxHeight: 100,
-		borderRadius: 20,
-		backgroundColor: "#ECECEC",
-	},
-	textInput: {
-		flex: 1,
-		paddingTop: 10,
-		paddingBottom: 10,
-		paddingLeft: 15,
-	},
-	button: {
-		alignSelf: "stretch",
-		justifyContent: "flex-end",
-		paddingVertical: 10,
-		paddingHorizontal: 15,
-	},
-	text: {
-		color: "#4193EF",
-		fontWeight: "600",
-	},
-});
 
 export default CommentBar;
