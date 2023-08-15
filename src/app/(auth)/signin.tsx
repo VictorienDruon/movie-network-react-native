@@ -1,12 +1,12 @@
 import Auth from "@/features/auth";
-import { Layout, Text } from "@/components/ui";
+import { Box, Text } from "@/components/ui";
 
 const SignInScreen = () => {
 	return (
-		<Layout>
+		<Box pt={64} px={16}>
 			<Text variant="title">Sign In</Text>
 			<Auth />
-		</Layout>
+		</Box>
 	);
 };
 

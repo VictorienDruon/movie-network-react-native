@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-native";
 import { supabase } from "@/libs/supabase";
 import { Database } from "@/libs/supabase/types/database.types";
-import { Avatar, Box, Layout, Text } from "@/components/ui";
+import { Avatar, Box, Text } from "@/components/ui";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -42,17 +42,19 @@ const ProfileScreen = () => {
 	const { name, avatar_url } = profile;
 
 	return (
-		<Layout>
-			<Box flexDirection="row">
+		<Box pt={64} px={16}>
+			<Box flexDirection="row" alignItems="center" pb={16}>
 				<Avatar src={avatar_url} size="xl" alt={name} />
-				<Text variant="title">{name}</Text>
+				<Text variant="title" ml={16}>
+					{name}
+				</Text>
 			</Box>
 			<Button
 				title="Sign Out"
 				disabled={isLoading}
 				onPress={handleSignOutPress}
 			/>
-		</Layout>
+		</Box>
 	);
 };
 

@@ -6,16 +6,19 @@ import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { addComment } from "@/libs/supabase/api";
 import { Box, Text } from "@/components/ui";
+import { Theme } from "@/providers/theme/styles/restyleThemes";
+import { useTheme } from "@shopify/restyle";
 
 const CommentBar = ({ postId }: { postId: string }) => {
+	const { colors } = useTheme<Theme>();
 	const queryClient = useQueryClient();
+	const { control, handleSubmit, reset } = useForm<CommentSchema>({
+		resolver: zodResolver(CommentSchema),
+	});
 	const commentMutation = useMutation(addComment, {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["comments", postId] });
 		},
-	});
-	const { control, handleSubmit, reset } = useForm<CommentSchema>({
-		resolver: zodResolver(CommentSchema),
 	});
 
 	const handleCommentSubmit = handleSubmit(
@@ -38,10 +41,11 @@ const CommentBar = ({ postId }: { postId: string }) => {
 					alignItems="flex-end"
 					maxHeight={100}
 					borderRadius={20}
-					backgroundColor="gray4"
+					backgroundColor="neutral-3"
 				>
 					<TextInput
 						placeholder="Add a comment..."
+						placeholderTextColor={colors["neutral-9"]}
 						onBlur={onBlur}
 						onChangeText={onChange}
 						value={value}
@@ -55,8 +59,9 @@ const CommentBar = ({ postId }: { postId: string }) => {
 					/>
 					{value && value.length <= 280 && (
 						<Pressable onPress={handleCommentSubmit}>
-							<Box px="md" py="sm">
-								<Text variant="subtitle" fontWeight="600" color="info12">
+							{}
+							<Box px={16} py={8}>
+								<Text variant="body" fontWeight="600" color="blue-11">
 									Publish
 								</Text>
 							</Box>

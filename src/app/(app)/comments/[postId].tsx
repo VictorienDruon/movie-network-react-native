@@ -9,34 +9,30 @@ import CommentBar from "@/features/post/components/CommentBar";
 const PostScreen = () => {
 	const { postId } = useLocalSearchParams() as { postId: string };
 
-	const {
-		isLoading,
-		isError,
-		data: comments,
-		error,
-	} = useQuery<Comment[], Error>({
+	const query = useQuery<Comment[], Error>({
 		queryKey: ["post", postId],
 		queryFn: () => getComments(postId),
 	});
 
-	if (isLoading) return <Text>Loading...</Text>;
+	if (query.isLoading) return <Text variant="header">Loading...</Text>;
 
-	if (isError) return <Text>Error: {error.message}</Text>;
+	if (query.isError)
+		return <Text variant="header">Error: {query.error.message}</Text>;
 
 	return (
-		<Box flex={1} backgroundColor="mainBackground">
+		<Box flex={1}>
 			<FlatList
-				data={comments}
+				data={query.data}
 				keyExtractor={(comment) => comment.id}
 				renderItem={({ item: comment }) => <Comment comment={comment} />}
 			/>
 
 			<Box
 				flexDirection="row"
-				p="md"
-				pb="xl"
+				p={16}
+				pb={48}
 				borderTopWidth={0.5}
-				borderTopColor="gray6"
+				borderTopColor="neutral-6"
 			>
 				<CommentBar postId={postId} />
 			</Box>

@@ -10,9 +10,9 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 	const { author, created_at, content } = comment;
 
 	return (
-		<Box flexDirection="row" p="md">
+		<Box flexDirection="row" p={16}>
 			<Avatar src={author.avatar_url} size="sm" alt={author.name} />
-			<Box flex={1} px="sm">
+			<Box flex={1} px={8}>
 				<Text variant="title">{author.name}</Text>
 				<Text variant="body">{content}</Text>
 			</Box>

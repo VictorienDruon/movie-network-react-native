@@ -12,11 +12,11 @@ export const Post = ({ post }: { post: Post }) => {
 	const { id, content, created_at, author, user_has_liked_post } = post;
 
 	return (
-		<Box p="md" borderBottomWidth={0.5} borderBottomColor="gray6">
+		<Box p={16} borderBottomWidth={0.25} borderBottomColor="neutral-6">
 			<Box flexDirection="row" alignItems="center">
 				<Avatar size="md" src={author.avatar_url} alt={author.name} />
 				<Box flex={1} flexDirection="row" justifyContent="space-between">
-					<Box pl="sm">
+					<Box pl={8}>
 						<Text variant="title">{author.name}</Text>
 						<Text variant="subtitle">Some subtitle</Text>
 					</Box>
@@ -24,7 +24,7 @@ export const Post = ({ post }: { post: Post }) => {
 				</Box>
 			</Box>
 
-			<Box my="sm">
+			<Box my={8}>
 				<Text variant="body">{content}</Text>
 			</Box>
 

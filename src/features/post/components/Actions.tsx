@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { Pressable } from "react-native";
 import { Link } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
 import { toggleLike } from "@/libs/supabase/api";
 import { Box, Icon } from "@/components/ui";
 import CommentBar from "./CommentBar";
-import { Pressable } from "react-native";
 
 interface ActionsProps {
 	postId: string;
@@ -46,11 +46,11 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 						alignItems="center"
 						width={40}
 						height={40}
-						ml="sm"
-						backgroundColor="gray4"
+						ml={8}
+						backgroundColor="neutral-3"
 						borderRadius={100}
 					>
-						<Icon name="MessageSquare" color="#8D8D8E" size="sm" />
+						<Icon name="MessageSquare" size="sm" color="neutral-9" />
 					</Box>
 				</Pressable>
 			</Link>
@@ -62,11 +62,11 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 					alignItems="center"
 					width={40}
 					height={40}
-					ml="sm"
-					backgroundColor="error4"
+					ml={8}
+					backgroundColor="primary-3"
 					borderRadius={100}
 				>
-					<Icon name="Heart" color="#E95568" size="sm" fill={isLiked} />
+					<Icon name="Heart" size="sm" color="primary-9" fill={isLiked} />
 				</Box>
 			</Pressable>
 		</Box>
