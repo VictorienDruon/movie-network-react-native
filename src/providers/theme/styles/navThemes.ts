@@ -1,4 +1,4 @@
-import { neutral, neutralDark, primary, primaryDark } from "./colors";
+import { primary, primaryDark, neutral, neutralDark } from "./colors";
 
 export const theme = {
 	dark: false,

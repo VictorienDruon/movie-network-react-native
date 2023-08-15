@@ -1,13 +1,9 @@
 import { createTheme } from "@shopify/restyle";
 import {
-	whiteAlpha,
-	blackAlpha,
-	neutral,
-	neutralDark,
 	primary,
 	primaryDark,
-	alpha,
-	darkAlpha,
+	neutral,
+	neutralDark,
 	blue,
 	blueDark,
 } from "./colors";
@@ -78,14 +74,8 @@ export const theme = createTheme({
 		},
 	},
 	colors: {
-		white: "white",
-		black: "black",
-		transparent: "transparent",
-		...alpha,
-		...whiteAlpha,
-		...blackAlpha,
-		...neutral,
 		...primary,
+		...neutral,
 		...blue,
 	},
 });
@@ -93,10 +83,8 @@ export const theme = createTheme({
 export const darkTheme: Theme = {
 	...theme,
 	colors: {
-		...theme.colors,
-		...darkAlpha,
-		...neutralDark,
 		...primaryDark,
+		...neutralDark,
 		...blueDark,
 	},
 };
