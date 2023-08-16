@@ -5,8 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { addComment } from "@/libs/supabase/api";
-import { Box, Text } from "@/components/ui";
-import { Theme } from "@/providers/theme/styles/restyleThemes";
+import { Box, HStack, Body } from "@/components/ui";
+import { Theme } from "@/styles/theme";
 import { useTheme } from "@shopify/restyle";
 
 const CommentBar = ({ postId }: { postId: string }) => {
@@ -35,9 +35,9 @@ const CommentBar = ({ postId }: { postId: string }) => {
 		<Controller
 			control={control}
 			render={({ field: { onChange, onBlur, value } }) => (
-				<Box
+				<HStack
+					space={0}
 					flex={1}
-					flexDirection="row"
 					alignItems="flex-end"
 					maxHeight={100}
 					borderRadius={20}
@@ -61,13 +61,13 @@ const CommentBar = ({ postId }: { postId: string }) => {
 						<Pressable onPress={handleCommentSubmit}>
 							{}
 							<Box px={16} py={8}>
-								<Text variant="body" fontWeight="600" color="blue-11">
+								<Body fontWeight="600" color="blue-11">
 									Publish
-								</Text>
+								</Body>
 							</Box>
 						</Pressable>
 					)}
-				</Box>
+				</HStack>
 			)}
 			name="content"
 		/>

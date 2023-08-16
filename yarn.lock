@@ -4804,6 +4804,11 @@ lucide-react-native@^0.263.0:
   resolved "https://registry.npmjs.org/lucide-react-native/-/lucide-react-native-0.263.0.tgz"
   integrity sha512-8CFicz3Kqo8hE8TLocz4GdM5P098yNkgTS/Z+VTZ5l5I8/+xasrDoin83YJ3cPqY/Q2TjWQg9cWVRxhnztAHQw==
 
+lucide-react@^0.268.0:
+  version "0.268.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.268.0.tgz#24ed431839f9b30eaac0dab4cbd37626aeaae1e8"
+  integrity sha512-XP/xY3ASJAViqNqVnDRcEfdxfRB7uNST8sqTLwZhL983ikmHMQ7qQak7ZxrnXOVhB3QDBawdr3ANq0P+iWHP/g==
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/make-dir/-/make-dir-2.1.0.tgz"

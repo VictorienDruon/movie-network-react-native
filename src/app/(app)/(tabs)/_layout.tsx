@@ -11,14 +11,16 @@ const TabsLayout = () => (
 		<Tabs.Screen
 			name="index"
 			options={{
-				tabBarIcon: ({ color }) => <Icon name="Home" size="xl" color={color} />,
+				tabBarIcon: ({ color }) => (
+					<Icon name="Home" size={24} customColor={color} />
+				),
 			}}
 		/>
 		<Tabs.Screen
 			name="profile"
 			options={{
 				tabBarIcon: ({ color }) => (
-					<Icon name="User2" size="xl" color={color} />
+					<Icon name="User2" size={24} customColor={color} />
 				),
 			}}
 		/>

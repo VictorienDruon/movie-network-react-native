@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { RefreshControl, FlatList } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "@/libs/supabase/api";
-import { Box, Text } from "@/components/ui";
+import { Box, Heading } from "@/components/ui";
 import { Post } from "@/features/post";
 
 const HomeScreen = () => {
@@ -17,16 +17,13 @@ const HomeScreen = () => {
 		query.refetch().then(() => setRefreshing(false));
 	}, []);
 
-	if (query.isLoading) return <Text variant="header">Loading...</Text>;
+	if (query.isLoading) return <Heading>Loading...</Heading>;
 
-	if (query.isError)
-		return <Text variant="header">Error: {query.error.message}</Text>;
+	if (query.isError) return <Heading>Error: {query.error.message}</Heading>;
 
 	return (
 		<Box pt={64} pb={24}>
-			<Text variant="header" pl={16}>
-				Home
-			</Text>
+			<Heading pl={16}>Home</Heading>
 			<FlatList
 				data={query.data}
 				keyExtractor={(post) => post.id}

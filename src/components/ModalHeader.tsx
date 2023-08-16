@@ -1,4 +1,4 @@
-import { Box, Text } from "./ui";
+import { Box, Title } from "./ui";
 
 const ModalHeader = ({ name }: { name: string }) => {
 	return (
@@ -10,7 +10,7 @@ const ModalHeader = ({ name }: { name: string }) => {
 				borderRadius={10}
 				backgroundColor="neutral-6"
 			/>
-			<Text variant="title">{name}</Text>
+			<Title>{name}</Title>
 		</Box>
 	);
 };

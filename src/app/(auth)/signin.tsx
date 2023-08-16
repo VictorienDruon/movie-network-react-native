@@ -1,10 +1,10 @@
 import Auth from "@/features/auth";
-import { Box, Text } from "@/components/ui";
+import { Box, Title } from "@/components/ui";
 
 const SignInScreen = () => {
 	return (
 		<Box pt={64} px={16}>
-			<Text variant="title">Sign In</Text>
+			<Title>Sign In</Title>
 			<Auth />
 		</Box>
 	);

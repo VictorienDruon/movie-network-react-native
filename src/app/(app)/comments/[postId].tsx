@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getComments } from "@/libs/supabase/api";
-import { Box, Text } from "@/components/ui";
+import { Box, HStack, Heading } from "@/components/ui";
 import { Comment } from "@/features/post/components/Comment";
 import CommentBar from "@/features/post/components/CommentBar";
 
@@ -14,10 +14,9 @@ const PostScreen = () => {
 		queryFn: () => getComments(postId),
 	});
 
-	if (query.isLoading) return <Text variant="header">Loading...</Text>;
+	if (query.isLoading) return <Heading>Loading...</Heading>;
 
-	if (query.isError)
-		return <Text variant="header">Error: {query.error.message}</Text>;
+	if (query.isError) return <Heading>Error: {query.error.message}</Heading>;
 
 	return (
 		<Box flex={1}>
@@ -27,15 +26,15 @@ const PostScreen = () => {
 				renderItem={({ item: comment }) => <Comment comment={comment} />}
 			/>
 
-			<Box
-				flexDirection="row"
+			<HStack
+				space={0}
 				p={16}
 				pb={48}
 				borderTopWidth={0.5}
 				borderTopColor="neutral-6"
 			>
 				<CommentBar postId={postId} />
-			</Box>
+			</HStack>
 		</Box>
 	);
 };

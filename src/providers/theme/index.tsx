@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import { useColorScheme } from "react-native";
 import { ThemeProvider as NavThemeProvider } from "@react-navigation/native";
 import { ThemeProvider as RestyleThemeProvider } from "@shopify/restyle";
-import * as Nav from "./styles/navThemes";
-import * as Restyle from "./styles/restyleThemes";
+import * as Nav from "@/styles/navigation-theme";
+import * as Restyle from "@/styles/theme";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 	const colorScheme = useColorScheme();

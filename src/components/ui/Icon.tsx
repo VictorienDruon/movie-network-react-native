@@ -1,30 +1,32 @@
-import * as LucideIcons from "lucide-react-native";
-import { useTheme } from "@shopify/restyle";
-import { Theme } from "@/providers/theme/styles/restyleThemes";
+import { Theme, theme } from "@/styles/theme";
+import * as Icons from "lucide-react-native";
+import { icons } from "lucide-react";
 
-interface IconProps {
-	name: string;
-	size: "sm" | "md" | "lg" | "xl";
-	color: string;
+export interface IconProps {
+	name: keyof typeof icons;
+	color?: keyof Theme["colors"];
+	size?: keyof Theme["spacing"];
+	strokeWidth?: number;
+	customColor?: string;
 	fill?: boolean;
 }
 
-const sizes = {
-	sm: 16,
-	md: 20,
-	lg: 24,
-	xl: 28,
-};
-
-export const Icon = ({ name, size, color, fill = false }: IconProps) => {
-	const LucideIcon = LucideIcons[name];
-	const { colors } = useTheme<Theme>();
-	const effectiveColor = colors[color] ?? color;
+export const Icon = ({
+	name,
+	color = "neutral-8",
+	size,
+	strokeWidth,
+	customColor,
+	fill,
+}: IconProps) => {
+	const LucideIcon = Icons[name];
+	const effectiveColor = customColor ?? theme.colors[color];
 
 	return (
 		<LucideIcon
-			size={sizes[size]}
 			color={effectiveColor}
+			size={size}
+			strokeWidth={strokeWidth}
 			fill={fill ? effectiveColor : "none"}
 		/>
 	);

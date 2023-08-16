@@ -1,6 +1,14 @@
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
-import { Box, Text, Avatar } from "@/components/ui";
+import {
+	Box,
+	Subtitle,
+	Avatar,
+	Title,
+	Body,
+	Metadata,
+	HStack,
+} from "@/components/ui";
 import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -13,19 +21,19 @@ export const Post = ({ post }: { post: Post }) => {
 
 	return (
 		<Box p={16} borderBottomWidth={0.25} borderBottomColor="neutral-6">
-			<Box flexDirection="row" alignItems="center">
+			<HStack space={8} alignItems="center">
 				<Avatar size="md" src={author.avatar_url} alt={author.name} />
-				<Box flex={1} flexDirection="row" justifyContent="space-between">
-					<Box pl={8}>
-						<Text variant="title">{author.name}</Text>
-						<Text variant="subtitle">Some subtitle</Text>
+				<HStack space={8} flex={1} justifyContent="space-between">
+					<Box>
+						<Title>{author.name}</Title>
+						<Subtitle>Some subtitle</Subtitle>
 					</Box>
-					<Text variant="metadata">{getRelativeDate(created_at)}</Text>
-				</Box>
-			</Box>
+					<Metadata>{getRelativeDate(created_at)}</Metadata>
+				</HStack>
+			</HStack>
 
 			<Box my={8}>
-				<Text variant="body">{content}</Text>
+				<Body>{content}</Body>
 			</Box>
 
 			<Actions postId={id} userHasLikedPost={user_has_liked_post} />

@@ -6,13 +6,6 @@ interface AvatarProps {
 	alt: string;
 }
 
-const sizes = {
-	sm: 24,
-	md: 40,
-	lg: 56,
-	xl: 72,
-};
-
 export const Avatar = ({ src, size, alt }: AvatarProps) => (
 	<Image
 		source={src}
@@ -20,3 +13,10 @@ export const Avatar = ({ src, size, alt }: AvatarProps) => (
 		alt={alt}
 	/>
 );
+
+const sizes = {
+	sm: 24,
+	md: 40,
+	lg: 56,
+	xl: 72,
+};
