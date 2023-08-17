@@ -4,7 +4,7 @@ import { Link } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
 import { toggleLike } from "@/libs/supabase/api";
-import { Box, HStack, Icon } from "@/components/ui";
+import { HStack, Icon } from "@/components/ui";
 import CommentBar from "./CommentBar";
 
 interface ActionsProps {
@@ -47,7 +47,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 						width={40}
 						height={40}
 						backgroundColor="neutral-3"
-						borderRadius={100}
+						borderRadius="full"
 					>
 						<Icon name="MessageSquare" size={16} color="neutral-9" />
 					</HStack>
@@ -62,7 +62,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 					width={40}
 					height={40}
 					backgroundColor="primary-3"
-					borderRadius={100}
+					borderRadius="full"
 				>
 					<Icon name="Heart" size={16} color="primary-9" fill={isLiked} />
 				</HStack>

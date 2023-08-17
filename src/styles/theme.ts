@@ -33,7 +33,7 @@ export const theme = createTheme({
 		128: 128,
 		256: 256,
 	},
-	borderRadius: {
+	borderRadii: {
 		none: 0,
 		xs: 4,
 		sm: 6,

@@ -8,6 +8,7 @@ import {
 	Body,
 	Metadata,
 	HStack,
+	VStack,
 } from "@/components/ui";
 import Actions from "./components/Actions";
 
@@ -20,23 +21,24 @@ export const Post = ({ post }: { post: Post }) => {
 	const { id, content, created_at, author, user_has_liked_post } = post;
 
 	return (
-		<Box p={16} borderBottomWidth={0.25} borderBottomColor="neutral-6">
+		<VStack
+			space={8}
+			p={16}
+			borderBottomWidth={0.25}
+			borderBottomColor="neutral-6"
+		>
 			<HStack space={8} alignItems="center">
-				<Avatar size="md" src={author.avatar_url} alt={author.name} />
-				<HStack space={8} flex={1} justifyContent="space-between">
-					<Box>
-						<Title>{author.name}</Title>
-						<Subtitle>Some subtitle</Subtitle>
-					</Box>
-					<Metadata>{getRelativeDate(created_at)}</Metadata>
-				</HStack>
+				<Avatar size={40} src={author.avatar_url} alt={author.name} />
+				<Box flex={1}>
+					<Title>{author.name}</Title>
+					<Subtitle>Some subtitle</Subtitle>
+				</Box>
+				<Metadata>{getRelativeDate(created_at)}</Metadata>
 			</HStack>
 
-			<Box my={8}>
-				<Body>{content}</Body>
-			</Box>
+			<Body>{content}</Body>
 
 			<Actions postId={id} userHasLikedPost={user_has_liked_post} />
-		</Box>
+		</VStack>
 	);
 };

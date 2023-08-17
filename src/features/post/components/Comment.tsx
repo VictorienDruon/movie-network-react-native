@@ -11,7 +11,7 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 
 	return (
 		<HStack space={8} p={16}>
-			<Avatar src={author.avatar_url} size="sm" alt={author.name} />
+			<Avatar src={author.avatar_url} size={24} alt={author.name} />
 			<Box flex={1}>
 				<Title>{author.name}</Title>
 				<Body>{content}</Body>
