@@ -36,9 +36,9 @@ export const theme = createTheme({
 	borderRadii: {
 		none: 0,
 		xs: 4,
-		sm: 6,
-		md: 12,
-		lg: 16,
+		sm: 8,
+		md: 16,
+		lg: 24,
 		full: 9999,
 		default: 8,
 	},

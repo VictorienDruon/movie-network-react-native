@@ -14,6 +14,7 @@ import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];
+	likes: { user_id: string }[];
 	user_has_liked_post: boolean;
 };
 

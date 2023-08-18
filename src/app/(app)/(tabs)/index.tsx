@@ -17,9 +17,9 @@ const HomeScreen = () => {
 		query.refetch().then(() => setRefreshing(false));
 	}, []);
 
-	if (query.isLoading) return <Heading>Loading...</Heading>;
+	if (query.isLoading) return null;
 
-	if (query.isError) return <Heading>Error: {query.error.message}</Heading>;
+	if (query.isError) return null;
 
 	return (
 		<Box pt={64} pb={24}>

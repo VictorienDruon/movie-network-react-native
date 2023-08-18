@@ -40,7 +40,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 					flex={1}
 					alignItems="flex-end"
 					maxHeight={100}
-					borderRadius="full"
+					borderRadius="lg"
 					backgroundColor="neutral-3"
 				>
 					<TextInput
@@ -53,13 +53,14 @@ const CommentBar = ({ postId }: { postId: string }) => {
 							flex: 1,
 							paddingTop: 10,
 							paddingBottom: 10,
-							paddingLeft: 15,
+							paddingLeft: 16,
+							color: colors["neutral-12"],
 						}}
 						multiline
 					/>
 					{value && value.length <= 280 && (
 						<Pressable onPress={handleCommentSubmit}>
-							<Box px={16} py={8}>
+							<Box px={12} py={8}>
 								<Body fontWeight="600" color="blue-11">
 									Publish
 								</Body>
