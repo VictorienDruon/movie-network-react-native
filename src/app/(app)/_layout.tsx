@@ -9,6 +9,12 @@ const AppLayout = () => (
 		<Stack>
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 			<Stack.Screen
+				name="post/[postId]"
+				options={{
+					title: "Post",
+				}}
+			/>
+			<Stack.Screen
 				name="comments/[postId]"
 				options={{
 					title: "Comments",

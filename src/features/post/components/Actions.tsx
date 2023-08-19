@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
@@ -39,7 +39,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 				}}
 				asChild
 			>
-				<Pressable>
+				<TouchableOpacity>
 					<HStack
 						space={0}
 						justifyContent="center"
@@ -51,10 +51,13 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 					>
 						<Icon name="MessageSquare" size={16} color="neutral-9" />
 					</HStack>
-				</Pressable>
+				</TouchableOpacity>
 			</Link>
 
-			<Pressable disabled={likeMutation.isLoading} onPress={handleLikePress}>
+			<TouchableOpacity
+				disabled={likeMutation.isLoading}
+				onPress={handleLikePress}
+			>
 				<HStack
 					space={0}
 					justifyContent="center"
@@ -66,7 +69,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 				>
 					<Icon name="Heart" size={16} color="primary-9" fill={isLiked} />
 				</HStack>
-			</Pressable>
+			</TouchableOpacity>
 		</HStack>
 	);
 };

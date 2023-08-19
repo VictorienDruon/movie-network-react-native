@@ -1,4 +1,4 @@
-import { TextInput, Pressable } from "react-native";
+import { TextInput, TouchableOpacity } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -58,14 +58,14 @@ const CommentBar = ({ postId }: { postId: string }) => {
 							color: colors["neutral-12"],
 						}}
 					/>
-					{value && value.length <= 280 && (
-						<Pressable onPress={handleCommentSubmit}>
+					{value?.trim() && value.trim().length <= 280 && (
+						<TouchableOpacity onPress={handleCommentSubmit}>
 							<Box pr={12} py={8}>
 								<Body fontWeight="600" color="blue-11">
 									Publish
 								</Body>
 							</Box>
-						</Pressable>
+						</TouchableOpacity>
 					)}
 				</HStack>
 			)}

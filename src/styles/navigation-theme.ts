@@ -6,8 +6,8 @@ export const theme = {
 		primary: primary["primary-9"], // Tab icons
 		background: neutral["neutral-1"], // Main backgound
 		card: neutral["neutral-1"], // Tab and Header background
-		text: neutral["neutral-12"], // Text color of various elements
-		border: neutral["neutral-6"], // Header and Tab borders
+		text: neutral["neutral-12"], // Header titles
+		border: neutral["neutral-6"], // Tab borders
 		notification: primary["primary-9"], // Tab Navigator badge
 	},
 };

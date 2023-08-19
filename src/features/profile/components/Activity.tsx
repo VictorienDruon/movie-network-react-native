@@ -1,8 +1,14 @@
 import { useCallback, useState } from "react";
-import { Dimensions, FlatList, RefreshControl } from "react-native";
+import {
+	Dimensions,
+	FlatList,
+	RefreshControl,
+	TouchableOpacity,
+} from "react-native";
 import { Box } from "@/components/ui";
 import { Post } from "@/features/post";
 import { Comment } from "@/features/comment";
+import { Link } from "expo-router";
 
 export type Activity = {
 	type: string;
@@ -24,7 +30,19 @@ export const Activity = ({ activity }: { activity: Activity }) => {
 				<FlatList
 					data={activity.items as Comment[]}
 					keyExtractor={(item) => item.id}
-					renderItem={({ item }) => <Comment comment={item} />}
+					renderItem={({ item }) => (
+						<Link
+							href={{
+								pathname: "/(app)/post/[postId]",
+								params: { postId: item.post_id },
+							}}
+							asChild
+						>
+							<TouchableOpacity>
+								<Comment comment={item} />
+							</TouchableOpacity>
+						</Link>
+					)}
 					refreshControl={
 						<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
 					}
