@@ -1,4 +1,4 @@
-import { Box, type BoxProps } from "@/components/ui";
+import { Box, type BoxProps } from "./box";
 
 export const Center = ({ ...props }: BoxProps) => {
 	return (

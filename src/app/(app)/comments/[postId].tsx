@@ -2,12 +2,11 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getComments } from "@/libs/supabase/api";
-import { Box, HStack, Subtitle } from "@/components/ui";
-import { Comment } from "@/features/post/components/Comment";
-import CommentBar from "@/features/post/components/CommentBar";
-import { Center } from "@/components/ui/center";
+import { Box, HStack, Subtitle, Center } from "@/components/ui";
+import CommentBar from "@/components/CommentBar";
+import { Comment } from "@/features/comment";
 
-const PostScreen = () => {
+const CommentsScreen = () => {
 	const { postId } = useLocalSearchParams() as { postId: string };
 
 	const query = useQuery<Comment[], Error>({
@@ -46,4 +45,4 @@ const PostScreen = () => {
 	);
 };
 
-export default PostScreen;
+export default CommentsScreen;

@@ -1,30 +1,14 @@
-import { useCallback, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
-import { QueryObserverResult } from "@tanstack/react-query";
+import { Animated } from "react-native";
 import { Database } from "@/libs/supabase/types/database.types";
 import { VStack, Heading, Avatar, Box } from "@/components/ui";
-import { Post } from "@/features/post";
-import { Comment } from "@/features/post/components/Comment";
+import { Activity } from "./components/Activity";
 
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
-	posts: Post[];
-	comments: Comment[];
-	likes: Post[];
+	activities: Activity[];
 };
 
-interface ProfileProps {
-	profile: Profile;
-	refetch: () => Promise<QueryObserverResult>;
-}
-
-export const Profile = ({ profile, refetch }: ProfileProps) => {
-	const { name, avatar_url, posts, comments, likes } = profile;
-	const [refreshing, setRefreshing] = useState<boolean>(false);
-
-	const handleRefresh = useCallback(() => {
-		setRefreshing(true);
-		refetch().then(() => setRefreshing(false));
-	}, []);
+export const Profile = ({ profile }: { profile: Profile }) => {
+	const { name, avatar_url, activities } = profile;
 
 	return (
 		<Box flex={1} pt={64}>
@@ -32,13 +16,14 @@ export const Profile = ({ profile, refetch }: ProfileProps) => {
 				<Avatar size={64} src={avatar_url} alt={name} />
 				<Heading>{name}</Heading>
 			</VStack>
-			<FlatList
-				data={posts}
-				keyExtractor={(post) => post.id}
-				renderItem={({ item: post }) => <Post post={post} />}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-				}
+			<Animated.FlatList
+				data={activities}
+				keyExtractor={(activity) => activity.type}
+				renderItem={({ item: activity }) => <Activity activity={activity} />}
+				showsHorizontalScrollIndicator={false}
+				bounces={false}
+				pagingEnabled
+				horizontal
 			/>
 		</Box>
 	);

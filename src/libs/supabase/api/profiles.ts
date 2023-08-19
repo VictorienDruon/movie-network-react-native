@@ -1,3 +1,4 @@
+import { formatPosts, sortItems } from "@/utils/arrays";
 import { supabase } from "..";
 
 export async function getProfile(id?: string) {
@@ -7,7 +8,7 @@ export async function getProfile(id?: string) {
 
 	if (!id) id = session.user.id;
 
-	const { data: profile, error } = await supabase
+	const { data, error } = await supabase
 		.from("profiles")
 		.select(
 			"*, posts(*, author: profiles(*), likes(user_id)), comments(*, author: profiles(*)), likes(posts(*, author: profiles(*), likes(user_id)))"
@@ -17,23 +18,18 @@ export async function getProfile(id?: string) {
 
 	if (error) throw error;
 
-	const posts = profile.posts.map((post) => ({
-		...post,
-		user_has_liked_post: !!post.likes.find(
-			(like) => like.user_id === session.user.id
-		),
-	}));
+	const { posts, comments, likes, ...profile } = data;
 
-	const likes = profile.likes.map((like) => ({
-		...like.posts,
-		user_has_liked_post: !!like.posts.likes.find(
-			(like) => like.user_id === session.user.id
-		),
-	}));
+	const rawLikes = likes.map((like) => like.posts);
+
+	const activities = [
+		{ type: "posts", items: formatPosts(posts, session.user.id) },
+		{ type: "comments", items: sortItems(comments) },
+		{ type: "likes", items: formatPosts(rawLikes, session.user.id) },
+	];
 
 	return {
 		...profile,
-		posts,
-		likes,
+		activities,
 	};
 }

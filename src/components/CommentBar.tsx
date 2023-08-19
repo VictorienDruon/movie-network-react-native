@@ -49,18 +49,18 @@ const CommentBar = ({ postId }: { postId: string }) => {
 						onBlur={onBlur}
 						onChangeText={onChange}
 						value={value}
+						multiline
 						style={{
 							flex: 1,
 							paddingTop: 10,
 							paddingBottom: 10,
-							paddingLeft: 16,
+							paddingHorizontal: 16,
 							color: colors["neutral-12"],
 						}}
-						multiline
 					/>
 					{value && value.length <= 280 && (
 						<Pressable onPress={handleCommentSubmit}>
-							<Box px={12} py={8}>
+							<Box pr={12} py={8}>
 								<Body fontWeight="600" color="blue-11">
 									Publish
 								</Body>

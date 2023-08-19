@@ -1,3 +1,4 @@
+import { sortItems } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
@@ -8,12 +9,16 @@ export async function getComments(postId: string) {
 		.from("comments")
 		.select("*, author: profiles(*)")
 		.eq("post_id", postId);
+
 	if (error) throw error;
-	return comments;
+
+	return sortItems(comments);
 }
 
 export async function addComment(newComment: NewComment) {
 	const { data, error } = await supabase.from("comments").insert(newComment);
+
 	if (error) throw error;
+
 	return data;
 }

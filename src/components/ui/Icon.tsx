@@ -1,6 +1,6 @@
-import { Theme, theme } from "@/styles/theme";
 import * as Icons from "lucide-react-native";
 import { icons } from "lucide-react";
+import { Theme, theme } from "@/styles/theme";
 
 export interface IconProps {
 	name: keyof typeof icons;
