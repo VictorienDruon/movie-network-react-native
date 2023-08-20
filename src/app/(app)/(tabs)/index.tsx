@@ -8,7 +8,7 @@ import { Post } from "@/features/post";
 const HomeScreen = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const query = useQuery<Post[], Error>({
-		queryKey: ["posts"],
+		queryKey: ["feed"],
 		queryFn: getPosts,
 	});
 
@@ -23,7 +23,7 @@ const HomeScreen = () => {
 
 	return (
 		<Box pt={64} pb={24}>
-			<Heading pl={16}>Home</Heading>
+			<Heading pl={16}>Feed</Heading>
 			<FlatList
 				data={query.data}
 				keyExtractor={(post) => post.id}

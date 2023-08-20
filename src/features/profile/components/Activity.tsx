@@ -5,6 +5,7 @@ import {
 	RefreshControl,
 	TouchableOpacity,
 } from "react-native";
+import { QueryObserverResult } from "@tanstack/react-query";
 import { Box } from "@/components/ui";
 import { Post } from "@/features/post";
 import { Comment } from "@/features/comment";
@@ -15,13 +16,18 @@ export type Activity = {
 	items: (Post | Comment)[];
 };
 
-export const Activity = ({ activity }: { activity: Activity }) => {
+interface ActivityProps {
+	activity: Activity;
+	refetch: () => Promise<QueryObserverResult>;
+}
+
+export const Activity = ({ activity, refetch }: ActivityProps) => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const { width } = Dimensions.get("screen");
 
 	const handleRefresh = useCallback(() => {
 		setRefreshing(true);
-		setRefreshing(false);
+		refetch().then(() => setRefreshing(false));
 	}, []);
 
 	return (

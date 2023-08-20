@@ -14,18 +14,21 @@ interface ActionsProps {
 
 const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 	const [isLiked, setIsLiked] = useState<boolean>(userHasLikedPost);
-	const likeMutation = useMutation(toggleLike);
+	const mutation = useMutation(toggleLike, {
+		onSuccess: () => {
+			setIsLiked((prev) => !prev);
+		},
+	});
 
 	const handleLikePress = async () => {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser();
-		likeMutation.mutate({
+		mutation.mutate({
 			post_id: postId,
 			user_id: user.id,
 			userHasLikedPost: isLiked,
 		});
-		setIsLiked((prev) => !prev);
 	};
 
 	return (
@@ -54,10 +57,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 				</TouchableOpacity>
 			</Link>
 
-			<TouchableOpacity
-				disabled={likeMutation.isLoading}
-				onPress={handleLikePress}
-			>
+			<TouchableOpacity disabled={mutation.isLoading} onPress={handleLikePress}>
 				<HStack
 					space={0}
 					justifyContent="center"

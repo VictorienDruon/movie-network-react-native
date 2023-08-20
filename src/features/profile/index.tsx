@@ -1,4 +1,5 @@
 import { Animated } from "react-native";
+import { QueryObserverResult } from "@tanstack/react-query";
 import { Database } from "@/libs/supabase/types/database.types";
 import { VStack, Heading, Avatar, Box } from "@/components/ui";
 import { Activity } from "./components/Activity";
@@ -7,8 +8,13 @@ export type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
 	activities: Activity[];
 };
 
-export const Profile = ({ profile }: { profile: Profile }) => {
-	const { name, avatar_url, activities } = profile;
+interface ProfileProps {
+	profile: Profile;
+	refetch: () => Promise<QueryObserverResult>;
+}
+
+export const Profile = ({ profile, refetch }: ProfileProps) => {
+	const { id, name, avatar_url, activities } = profile;
 
 	return (
 		<Box flex={1} pt={64}>
@@ -19,7 +25,9 @@ export const Profile = ({ profile }: { profile: Profile }) => {
 			<Animated.FlatList
 				data={activities}
 				keyExtractor={(activity) => activity.type}
-				renderItem={({ item: activity }) => <Activity activity={activity} />}
+				renderItem={({ item: activity }) => (
+					<Activity activity={activity} refetch={refetch} />
+				)}
 				showsHorizontalScrollIndicator={false}
 				bounces={false}
 				pagingEnabled

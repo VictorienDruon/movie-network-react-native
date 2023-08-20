@@ -12,13 +12,13 @@ import { useTheme } from "@shopify/restyle";
 const CommentBar = ({ postId }: { postId: string }) => {
 	const { colors } = useTheme<Theme>();
 	const queryClient = useQueryClient();
-	const { control, handleSubmit, reset } = useForm<CommentSchema>({
-		resolver: zodResolver(CommentSchema),
-	});
-	const commentMutation = useMutation(addComment, {
+	const mutation = useMutation(addComment, {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["comments", postId] });
 		},
+	});
+	const { control, handleSubmit, reset } = useForm<CommentSchema>({
+		resolver: zodResolver(CommentSchema),
 	});
 
 	const handleCommentSubmit = handleSubmit(
@@ -26,7 +26,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 			const {
 				data: { user },
 			} = await supabase.auth.getUser();
-			commentMutation.mutate({ content, post_id: postId, user_id: user.id });
+			mutation.mutate({ content, post_id: postId, user_id: user.id });
 			reset();
 		}
 	);
@@ -59,7 +59,10 @@ const CommentBar = ({ postId }: { postId: string }) => {
 						}}
 					/>
 					{value?.trim() && value.trim().length <= 280 && (
-						<TouchableOpacity onPress={handleCommentSubmit}>
+						<TouchableOpacity
+							disabled={mutation.isLoading}
+							onPress={handleCommentSubmit}
+						>
 							<Box pr={12} py={8}>
 								<Body fontWeight="600" color="blue-11">
 									Publish
