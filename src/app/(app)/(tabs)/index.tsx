@@ -23,7 +23,7 @@ const HomeScreen = () => {
 
 	return (
 		<Box pt={64} pb={24}>
-			<Heading pl={16}>Feed</Heading>
+			<Heading px={16}>Feed</Heading>
 			<FlatList
 				data={query.data}
 				keyExtractor={(post) => post.id}

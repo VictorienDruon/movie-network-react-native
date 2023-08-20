@@ -23,9 +23,9 @@ export async function getProfile(id?: string) {
 	const rawLikes = likes.map((like) => like.posts);
 
 	const activities = [
-		{ type: "posts", items: formatPosts(posts, session.user.id) },
-		{ type: "comments", items: sortItems(comments) },
-		{ type: "likes", items: formatPosts(rawLikes, session.user.id) },
+		{ label: "posts", items: formatPosts(posts, session.user.id) },
+		{ label: "likes", items: formatPosts(rawLikes, session.user.id) },
+		{ label: "comments", items: sortItems(comments) },
 	];
 
 	return {

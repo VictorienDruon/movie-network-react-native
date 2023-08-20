@@ -12,7 +12,7 @@ import { Comment } from "@/features/comment";
 import { Link } from "expo-router";
 
 export type Activity = {
-	type: string;
+	label: string;
 	items: (Post | Comment)[];
 };
 
@@ -32,7 +32,7 @@ export const Activity = ({ activity, refetch }: ActivityProps) => {
 
 	return (
 		<Box width={width}>
-			{activity.type === "comments" ? (
+			{activity.label === "comments" ? (
 				<FlatList
 					data={activity.items as Comment[]}
 					keyExtractor={(item) => item.id}
