@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { RefreshControl, FlatList } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "@/libs/supabase/api";
-import { Box, Heading } from "@/components/ui";
 import { Post } from "@/features/post";
 
 const HomeScreen = () => {
@@ -22,17 +21,14 @@ const HomeScreen = () => {
 	if (query.isError) return null;
 
 	return (
-		<Box pt={64} pb={24}>
-			<Heading px={16}>Feed</Heading>
-			<FlatList
-				data={query.data}
-				keyExtractor={(post) => post.id}
-				renderItem={({ item: post }) => <Post post={post} />}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-				}
-			/>
-		</Box>
+		<FlatList
+			data={query.data}
+			keyExtractor={(post) => post.id}
+			renderItem={({ item: post }) => <Post post={post} />}
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+			}
+		/>
 	);
 };
 

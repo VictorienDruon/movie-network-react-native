@@ -5,11 +5,7 @@ import { ThemeProvider } from "@/providers/theme";
 const RootLayout = () => (
 	<SessionProvider>
 		<ThemeProvider>
-			<Stack
-				screenOptions={{
-					headerShown: false,
-				}}
-			/>
+			<Stack screenOptions={{ headerShown: false }} />
 		</ThemeProvider>
 	</SessionProvider>
 );

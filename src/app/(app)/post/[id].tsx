@@ -4,11 +4,11 @@ import { getPost } from "@/libs/supabase/api";
 import { Post } from "@/features/post";
 
 const PostScreen = () => {
-	const { postId } = useLocalSearchParams() as { postId: string };
+	const { id } = useLocalSearchParams() as { id: string };
 
 	const query = useQuery<Post, Error>({
-		queryKey: ["posts", postId],
-		queryFn: () => getPost(postId),
+		queryKey: ["post", id],
+		queryFn: () => getPost(id),
 	});
 
 	if (query.isLoading) return null;

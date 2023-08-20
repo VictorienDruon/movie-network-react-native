@@ -21,9 +21,9 @@ export const Profile = ({ profile, refetch }: ProfileProps) => {
 	const scrollX = useRef(new Animated.Value(0)).current;
 
 	return (
-		<Box flex={1} pt={64}>
+		<Box flex={1} pt={16}>
 			<VStack
-				space={8}
+				space={16}
 				px={16}
 				borderBottomWidth={0.25}
 				borderBottomColor="neutral-6"

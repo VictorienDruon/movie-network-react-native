@@ -39,8 +39,8 @@ export const Activity = ({ activity, refetch }: ActivityProps) => {
 					renderItem={({ item }) => (
 						<Link
 							href={{
-								pathname: "/(app)/post/[postId]",
-								params: { postId: item.post_id },
+								pathname: "/(app)/post/[id]",
+								params: { id: item.post_id },
 							}}
 							asChild
 						>

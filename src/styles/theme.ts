@@ -22,6 +22,7 @@ export const theme = createTheme({
 		20: 20,
 		22: 22,
 		24: 24,
+		28: 28,
 		32: 32,
 		40: 40,
 		48: 48,

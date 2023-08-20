@@ -82,10 +82,9 @@ const Tabs = ({ tabs, contentRef, scrollX }: TabsProps) => {
 					height: 3,
 					width: indicatorWidth,
 					transform: [{ translateX }],
-					borderRadius: 999,
 				}}
 			>
-				<Box flex={1} bg="primary-9" />
+				<Box flex={1} bg="primary-9" borderRadius="full" />
 			</Animated.View>
 		</VStack>
 	);
