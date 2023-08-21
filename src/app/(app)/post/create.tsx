@@ -1,13 +1,6 @@
-import {
-	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
-	TextInput,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTheme } from "@shopify/restyle";
-import { Theme } from "@/styles/theme";
 import { PostSchema } from "@/utils/schema";
 import { useSession } from "@/providers/session";
 import {
@@ -16,14 +9,13 @@ import {
 	Button,
 	HStack,
 	Icon,
-	Metadata,
 	Title,
 	VStack,
+	Input,
 } from "@/components/ui";
 
 const CreatePostScreen = () => {
 	const { user } = useSession();
-	const { colors } = useTheme<Theme>();
 
 	const { control, formState, handleSubmit, reset } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
@@ -45,29 +37,28 @@ const CreatePostScreen = () => {
 							<Title>{user.name}</Title>
 						</HStack>
 
-						<Box
-							px={8}
-							py={4}
-							borderWidth={1}
-							borderColor="primary-9"
-							borderRadius="md"
+						<Button
+							variant="outline"
+							size="sm"
+							rightIcon="Globe"
+							disabled={true}
 						>
-							<Metadata color="primary-9">Public</Metadata>
-						</Box>
+							Public
+						</Button>
 					</HStack>
 
 					<Controller
 						name="content"
 						control={control}
 						render={({ field: { onChange, onBlur, value } }) => (
-							<TextInput
+							<Input
 								placeholder="Watched something great lately?!"
-								placeholderTextColor={colors["neutral-11"]}
+								color="neutral-12"
+								fontSize={18}
 								onBlur={onBlur}
 								onChangeText={onChange}
 								value={value}
 								multiline
-								style={{ fontSize: 18, color: colors["neutral-12"] }}
 							/>
 						)}
 					/>
@@ -95,8 +86,6 @@ const CreatePostScreen = () => {
 					</HStack>
 
 					<Button
-						variant="primary"
-						size="sm"
 						rightIcon={formState.isValid ? "ArrowRight" : "Lock"}
 						disabled={!formState.isValid}
 						onPress={handlePostSubmit}

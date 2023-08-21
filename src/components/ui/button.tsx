@@ -1,16 +1,17 @@
 import { TouchableOpacity } from "react-native";
+import { Theme } from "@/styles/theme";
 import { HStack, StackProps } from "./stack";
-import { ButtonText, type TextProps } from "./texts";
+import { ButtonText, TextProps } from "./texts";
 import { Icon, IconProps } from "./icon";
+import { BoxProps } from "./box";
 
-import { type BoxProps } from "./box";
-
-type ButtonVariant = "primary" | "secondary" | "link";
+type ButtonVariant = "primary" | "outline";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
+	color?: keyof Theme["colors"];
 	leftIcon?: IconProps["name"];
 	rightIcon?: IconProps["name"];
 	disabled?: boolean;
@@ -19,8 +20,9 @@ interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 }
 
 export const Button = ({
-	variant = "secondary",
+	variant = "primary",
 	size = "md",
+	color = "primary-9",
 	leftIcon,
 	rightIcon,
 	disabled,
@@ -28,6 +30,63 @@ export const Button = ({
 	children,
 	...props
 }: ButtonProps) => {
+	const boxVariants: { [key in ButtonVariant]: BoxProps } = {
+		primary: {
+			bg: color,
+			borderRadius: "full",
+		},
+		outline: {
+			borderColor: color,
+			borderWidth: 1,
+			borderRadius: "full",
+		},
+	};
+
+	const boxSizes: { [key in ButtonSize]: StackProps } = {
+		lg: {
+			px: 20,
+			py: 10,
+			space: 8,
+		},
+		md: {
+			px: 16,
+			py: 8,
+			space: 6,
+		},
+		sm: {
+			px: 8,
+			py: 4,
+			space: 4,
+		},
+	};
+
+	const textVariants: { [key in ButtonVariant]: TextProps } = {
+		primary: {
+			color: "white",
+		},
+		outline: {
+			color,
+		},
+	};
+
+	const textSizes: { [key in ButtonSize]: TextProps } = {
+		lg: {
+			fontSize: 18,
+		},
+		md: {
+			fontSize: 16,
+		},
+		sm: {
+			fontSize: 12,
+		},
+	};
+
+	const iconSizes: { [key in ButtonSize]: IconProps["size"] } = {
+		lg: 22,
+		md: 20,
+		sm: 16,
+	};
+
 	return (
 		<TouchableOpacity disabled={disabled} onPress={onPress}>
 			<HStack
@@ -65,66 +124,4 @@ export const Button = ({
 			</HStack>
 		</TouchableOpacity>
 	);
-};
-
-const boxVariants: { [key in ButtonVariant]: BoxProps } = {
-	primary: {
-		bg: "primary-10",
-		borderRadius: "full",
-	},
-	secondary: {
-		bg: "neutral-3",
-		borderRadius: "full",
-	},
-	link: {
-		px: 0,
-	},
-};
-
-const boxSizes: { [key in ButtonSize]: StackProps } = {
-	lg: {
-		px: 24,
-		py: 12,
-		space: 8,
-	},
-	md: {
-		px: 20,
-		py: 10,
-		space: 8,
-	},
-	sm: {
-		px: 16,
-		py: 8,
-		space: 4,
-	},
-};
-
-const textVariants: { [key in ButtonVariant]: TextProps } = {
-	primary: {
-		color: "white",
-	},
-	secondary: {
-		color: "neutral-12",
-	},
-	link: {
-		color: "primary-10",
-	},
-};
-
-const textSizes: { [key in ButtonSize]: TextProps } = {
-	lg: {
-		fontSize: 18,
-	},
-	sm: {
-		fontSize: 14,
-	},
-	md: {
-		fontSize: 16,
-	},
-};
-
-const iconSizes: { [key in ButtonSize]: IconProps["size"] } = {
-	lg: 22,
-	md: 20,
-	sm: 16,
 };

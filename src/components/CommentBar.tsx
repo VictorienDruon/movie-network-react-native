@@ -1,17 +1,14 @@
-import { TextInput, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { addComment } from "@/libs/supabase/api";
-import { Box, HStack, Body } from "@/components/ui";
-import { Theme } from "@/styles/theme";
-import { useTheme } from "@shopify/restyle";
+import { Box, HStack, Body, Input } from "@/components/ui";
 
 const CommentBar = ({ postId }: { postId: string }) => {
 	const queryClient = useQueryClient();
-	const { colors } = useTheme<Theme>();
 
 	const mutation = useMutation(addComment, {
 		onSuccess: () => {
@@ -19,7 +16,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 		},
 	});
 
-	const { control, handleSubmit, reset } = useForm<CommentSchema>({
+	const { control, formState, handleSubmit, reset } = useForm<CommentSchema>({
 		resolver: zodResolver(CommentSchema),
 	});
 
@@ -46,9 +43,10 @@ const CommentBar = ({ postId }: { postId: string }) => {
 					borderRadius="lg"
 					backgroundColor="neutral-3"
 				>
-					<TextInput
+					<Input
 						placeholder="Add a comment..."
-						placeholderTextColor={colors["neutral-9"]}
+						color="neutral-12"
+						placeholderTextColor="neutral-9"
 						onBlur={onBlur}
 						onChangeText={onChange}
 						value={value}
@@ -58,10 +56,9 @@ const CommentBar = ({ postId }: { postId: string }) => {
 							paddingTop: 10,
 							paddingBottom: 10,
 							paddingHorizontal: 16,
-							color: colors["neutral-12"],
 						}}
 					/>
-					{value?.trim() && value.trim().length <= 280 && (
+					{formState.isValid && (
 						<TouchableOpacity
 							disabled={mutation.isLoading}
 							onPress={handleCommentSubmit}
