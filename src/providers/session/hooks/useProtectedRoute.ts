@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { router, useSegments } from "expo-router";
 import { Session } from "@supabase/supabase-js";
 
-const useProtectedRoute = (
+export const useProtectedRoute = (
 	isSessionLoaded: boolean,
 	session: Session | null
 ) => {
@@ -17,5 +17,3 @@ const useProtectedRoute = (
 		else if (session && inAuthGroup) router.replace("/");
 	}, [isSessionLoaded, session, segments]);
 };
-
-export default useProtectedRoute;

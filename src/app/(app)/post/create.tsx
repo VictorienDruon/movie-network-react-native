@@ -1,4 +1,3 @@
-import { useLayoutEffect, useState } from "react";
 import {
 	KeyboardAvoidingView,
 	Platform,
@@ -7,11 +6,10 @@ import {
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserMetadata } from "@supabase/supabase-js";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
-import { supabase } from "@/libs/supabase";
 import { PostSchema } from "@/utils/schema";
+import { useSession } from "@/providers/session";
 import {
 	Avatar,
 	Box,
@@ -24,18 +22,12 @@ import {
 } from "@/components/ui";
 
 const CreatePostScreen = () => {
-	const [user, setUser] = useState<UserMetadata>({});
+	const { user } = useSession();
 	const { colors } = useTheme<Theme>();
 
 	const { control, formState, handleSubmit, reset } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
 	});
-
-	useLayoutEffect(() => {
-		supabase.auth
-			.getSession()
-			.then(({ data }) => setUser(data.session.user.user_metadata));
-	}, []);
 
 	const handlePostSubmit = handleSubmit(async ({ content }: PostSchema) => {
 		console.log(content);
