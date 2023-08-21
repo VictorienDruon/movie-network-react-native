@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/libs/supabase/api";
+import { getOne } from "@/libs/supabase/api/profiles";
 import { Profile } from "@/features/profile";
 
 const ProfileScreen = () => {
@@ -8,7 +8,7 @@ const ProfileScreen = () => {
 
 	const query = useQuery<Profile, Error>({
 		queryKey: ["profile", id],
-		queryFn: () => getProfile(id),
+		queryFn: () => getOne(id),
 	});
 
 	if (query.isLoading) return null;

@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/libs/supabase/api";
+import { getOne } from "@/libs/supabase/api/profiles";
 import { Profile } from "@/features/profile";
 
 const ProfileScreen = () => {
 	const query = useQuery<Profile, Error>({
 		queryKey: ["profile"],
-		queryFn: () => getProfile(),
+		queryFn: () => getOne(),
 	});
 
 	if (query.isLoading) return null;

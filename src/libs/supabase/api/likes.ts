@@ -5,7 +5,7 @@ type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
 
-export async function toggleLike(newLike: NewLike) {
+export async function toggle(newLike: NewLike) {
 	const { userHasLikedPost, ...like } = newLike;
 
 	if (userHasLikedPost) {

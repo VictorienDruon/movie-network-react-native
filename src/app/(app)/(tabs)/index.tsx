@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { RefreshControl, FlatList, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "@/libs/supabase/api";
+import { getAll } from "@/libs/supabase/api/posts";
 import { Box, HStack, Icon } from "@/components/ui";
 import { Post } from "@/features/post";
 
@@ -10,7 +10,7 @@ const HomeScreen = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const query = useQuery<Post[], Error>({
 		queryKey: ["feed"],
-		queryFn: getPosts,
+		queryFn: getAll,
 	});
 
 	const handleRefresh = useCallback(() => {

@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
-import { toggleLike } from "@/libs/supabase/api";
+import { toggle } from "@/libs/supabase/api/likes";
 import { HStack, Icon } from "@/components/ui";
 import CommentBar from "@/components/CommentBar";
 
@@ -14,7 +14,7 @@ interface ActionsProps {
 
 const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 	const [isLiked, setIsLiked] = useState<boolean>(userHasLikedPost);
-	const mutation = useMutation(toggleLike, {
+	const mutation = useMutation(toggle, {
 		onSuccess: () => {
 			setIsLiked((prev) => !prev);
 		},

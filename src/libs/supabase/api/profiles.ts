@@ -1,7 +1,7 @@
 import { formatPosts, sortItems } from "@/utils/arrays";
 import { supabase } from "..";
 
-export async function getProfile(id?: string) {
+export async function getOne(id?: string) {
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();

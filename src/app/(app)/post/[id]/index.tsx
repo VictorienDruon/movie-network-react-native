@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPost } from "@/libs/supabase/api";
+import { getOne } from "@/libs/supabase/api/posts";
 import { Post } from "@/features/post";
 
 const PostScreen = () => {
@@ -8,7 +8,7 @@ const PostScreen = () => {
 
 	const query = useQuery<Post, Error>({
 		queryKey: ["post", id],
-		queryFn: () => getPost(id),
+		queryFn: () => getOne(id),
 	});
 
 	if (query.isLoading) return null;

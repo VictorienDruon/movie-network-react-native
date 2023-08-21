@@ -4,7 +4,7 @@ import { Database } from "../types/database.types";
 
 type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
-export async function getComments(postId: string) {
+export async function getAll(postId: string) {
 	const { data: comments, error } = await supabase
 		.from("comments")
 		.select("*, author: profiles(*)")
@@ -15,7 +15,7 @@ export async function getComments(postId: string) {
 	return sortItems(comments);
 }
 
-export async function addComment(newComment: NewComment) {
+export async function create(newComment: NewComment) {
 	const { data, error } = await supabase.from("comments").insert(newComment);
 
 	if (error) throw error;

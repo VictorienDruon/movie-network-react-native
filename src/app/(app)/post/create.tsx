@@ -1,7 +1,11 @@
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostSchema } from "@/utils/schema";
+import { supabase } from "@/libs/supabase";
+import { create } from "@/libs/supabase/api/posts";
 import { useSession } from "@/providers/session";
 import {
 	Avatar,
@@ -15,15 +19,33 @@ import {
 } from "@/components/ui";
 
 const CreatePostScreen = () => {
+	const queryClient = useQueryClient();
+	const router = useRouter();
 	const { user } = useSession();
 
 	const { control, formState, handleSubmit, reset } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
 	});
 
+	const mutation = useMutation(create, {
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["feed"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["profile"],
+				exact: true,
+			});
+		},
+	});
+
 	const handlePostSubmit = handleSubmit(async ({ content }: PostSchema) => {
-		console.log(content);
 		reset();
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+		mutation.mutate({ content, user_id: user.id });
+		router.push("/");
 	});
 
 	return (

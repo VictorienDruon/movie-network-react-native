@@ -1,8 +1,11 @@
 import { formatPost } from "@/utils/objects";
 import { formatPosts } from "@/utils/arrays";
 import { supabase } from "..";
+import { Database } from "../types/database.types";
 
-export async function getPost(id: string) {
+type NewPost = Database["public"]["Tables"]["posts"]["Insert"];
+
+export async function getOne(id: string) {
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
@@ -18,7 +21,7 @@ export async function getPost(id: string) {
 	return formatPost(post, session.user.id);
 }
 
-export async function getPosts() {
+export async function getAll() {
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
@@ -30,4 +33,12 @@ export async function getPosts() {
 	if (error) throw error;
 
 	return formatPosts(posts, session.user.id);
+}
+
+export async function create(newPost: NewPost) {
+	const { data, error } = await supabase.from("posts").insert(newPost);
+
+	if (error) throw error;
+
+	return data;
 }
