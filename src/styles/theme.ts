@@ -75,6 +75,9 @@ export const theme = createTheme({
 		},
 	},
 	colors: {
+		black: "#000000",
+		white: "#FFFFFF",
+		transparent: "transparent",
 		...primary,
 		...neutral,
 		...blue,
@@ -84,6 +87,7 @@ export const theme = createTheme({
 export const darkTheme: Theme = {
 	...theme,
 	colors: {
+		...theme.colors,
 		...primaryDark,
 		...neutralDark,
 		...blueDark,

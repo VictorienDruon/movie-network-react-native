@@ -4,3 +4,4 @@ export * from "./icon";
 export * from "./avatar";
 export * from "./stack";
 export * from "./center";
+export * from "./button";

@@ -10,13 +10,15 @@ import { Theme } from "@/styles/theme";
 import { useTheme } from "@shopify/restyle";
 
 const CommentBar = ({ postId }: { postId: string }) => {
-	const { colors } = useTheme<Theme>();
 	const queryClient = useQueryClient();
+	const { colors } = useTheme<Theme>();
+
 	const mutation = useMutation(addComment, {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["comments", postId] });
 		},
 	});
+
 	const { control, handleSubmit, reset } = useForm<CommentSchema>({
 		resolver: zodResolver(CommentSchema),
 	});
@@ -33,6 +35,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 
 	return (
 		<Controller
+			name="content"
 			control={control}
 			render={({ field: { onChange, onBlur, value } }) => (
 				<HStack
@@ -72,7 +75,6 @@ const CommentBar = ({ postId }: { postId: string }) => {
 					)}
 				</HStack>
 			)}
-			name="content"
 		/>
 	);
 };
