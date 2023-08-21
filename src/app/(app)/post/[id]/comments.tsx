@@ -7,11 +7,11 @@ import CommentBar from "@/components/CommentBar";
 import { Comment } from "@/features/comment";
 
 const CommentsScreen = () => {
-	const { postId } = useLocalSearchParams() as { postId: string };
+	const { id } = useLocalSearchParams() as { id: string };
 
 	const query = useQuery<Comment[], Error>({
-		queryKey: ["comments", postId],
-		queryFn: () => getComments(postId),
+		queryKey: ["comments", id],
+		queryFn: () => getComments(id),
 	});
 
 	if (query.isLoading) return null;
@@ -39,7 +39,7 @@ const CommentsScreen = () => {
 				borderTopWidth={0.5}
 				borderTopColor="neutral-6"
 			>
-				<CommentBar postId={postId} />
+				<CommentBar postId={id} />
 			</HStack>
 		</Box>
 	);

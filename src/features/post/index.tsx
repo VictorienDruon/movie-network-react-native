@@ -2,6 +2,7 @@ import { TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
+import { useSession } from "@/providers/session";
 import {
 	Box,
 	Subtitle,
@@ -21,6 +22,7 @@ export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
 
 export const Post = ({ post }: { post: Post }) => {
 	const { id, content, created_at, author, user_has_liked_post } = post;
+	const { user } = useSession();
 
 	return (
 		<VStack
@@ -31,10 +33,11 @@ export const Post = ({ post }: { post: Post }) => {
 		>
 			<HStack space={8} alignItems="center">
 				<Link
-					href={{
-						pathname: "/(app)/profile/[id]",
-						params: { id: author.id },
-					}}
+					href={
+						user.id === author.id
+							? "/(app)/profile"
+							: { pathname: "/(app)/profile/[id]", params: { id: author.id } }
+					}
 					asChild
 				>
 					<TouchableOpacity>

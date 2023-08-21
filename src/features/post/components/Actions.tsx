@@ -37,8 +37,8 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 
 			<Link
 				href={{
-					pathname: "/(app)/comments/[postId]",
-					params: { postId },
+					pathname: "/(app)/post/[id]/comments",
+					params: { id: postId },
 				}}
 				asChild
 			>
