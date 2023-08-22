@@ -61,7 +61,7 @@ const CreatePostScreen = () => {
 
 						<Button
 							variant="outline"
-							size="sm"
+							size="xs"
 							rightIcon="Globe"
 							disabled={true}
 						>
@@ -89,7 +89,7 @@ const CreatePostScreen = () => {
 
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
-				keyboardVerticalOffset={96}
+				keyboardVerticalOffset={94}
 			>
 				<HStack
 					justifyContent="space-between"

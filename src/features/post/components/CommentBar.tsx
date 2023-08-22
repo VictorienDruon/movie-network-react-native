@@ -1,11 +1,10 @@
-import { TouchableOpacity } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { create } from "@/libs/supabase/api/comments";
-import { Box, HStack, Body, Input } from "@/components/ui";
+import { HStack, Input, Button } from "@/components/ui";
 
 const CommentBar = ({ postId }: { postId: string }) => {
 	const queryClient = useQueryClient();
@@ -31,48 +30,40 @@ const CommentBar = ({ postId }: { postId: string }) => {
 	);
 
 	return (
-		<Controller
-			name="content"
-			control={control}
-			render={({ field: { onChange, onBlur, value } }) => (
-				<HStack
-					space={0}
-					flex={1}
-					alignItems="flex-end"
-					maxHeight={100}
-					borderRadius="lg"
-					backgroundColor="neutral-3"
-				>
+		<HStack
+			flex={1}
+			alignItems="center"
+			maxHeight={40}
+			pl={12}
+			pr={8}
+			space={8}
+			bg="neutral-3"
+			borderRadius="lg"
+		>
+			<Controller
+				name="content"
+				control={control}
+				render={({ field: { onChange, onBlur, value } }) => (
 					<Input
+						flex={1}
 						placeholder="Add a comment..."
 						color="neutral-12"
 						placeholderTextColor="neutral-9"
-						onBlur={onBlur}
 						onChangeText={onChange}
+						onBlur={onBlur}
 						value={value}
-						multiline
-						style={{
-							flex: 1,
-							paddingTop: 10,
-							paddingBottom: 10,
-							paddingHorizontal: 16,
-						}}
 					/>
-					{formState.isValid && (
-						<TouchableOpacity
-							disabled={mutation.isLoading}
-							onPress={handleCommentSubmit}
-						>
-							<Box pr={12} py={8}>
-								<Body fontWeight="600" color="blue-11">
-									Publish
-								</Body>
-							</Box>
-						</TouchableOpacity>
-					)}
-				</HStack>
+				)}
+			/>
+
+			{formState.isValid && (
+				<Button
+					size="sm"
+					rightIcon="Send"
+					onPress={handleCommentSubmit}
+				></Button>
 			)}
-		/>
+		</HStack>
 	);
 };
 

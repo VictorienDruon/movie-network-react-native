@@ -1,10 +1,10 @@
-import { FlatList } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/comments";
-import { Box, HStack, Subtitle, Center } from "@/components/ui";
-import CommentBar from "@/components/CommentBar";
+import { Box, Subtitle, Center } from "@/components/ui";
 import { Comment } from "@/features/comment";
+import CommentBar from "@/features/post/components/CommentBar";
 
 const CommentsScreen = () => {
 	const { id } = useLocalSearchParams() as { id: string };
@@ -19,28 +19,33 @@ const CommentsScreen = () => {
 	if (query.isError) return null;
 
 	return (
-		<Box flex={1}>
-			{query.data.length === 0 ? (
-				<Center>
-					<Subtitle>No comment yet.</Subtitle>
-				</Center>
-			) : (
+		<Box flex={1} pb={48}>
+			{query.data.length ? (
 				<FlatList
 					data={query.data}
 					keyExtractor={(comment) => comment.id}
 					renderItem={({ item: comment }) => <Comment comment={comment} />}
 				/>
+			) : (
+				<Center>
+					<Subtitle>No comment yet.</Subtitle>
+				</Center>
 			)}
 
-			<HStack
-				space={0}
-				p={16}
-				pb={48}
-				borderTopWidth={0.5}
-				borderTopColor="neutral-6"
+			<KeyboardAvoidingView
+				behavior={Platform.OS === "ios" ? "padding" : "height"}
+				keyboardVerticalOffset={116}
 			>
-				<CommentBar postId={id} />
-			</HStack>
+				<Box
+					justifyContent="center"
+					height={56}
+					px={28}
+					borderTopWidth={0.5}
+					borderColor="neutral-6"
+				>
+					<CommentBar postId={id} />
+				</Box>
+			</KeyboardAvoidingView>
 		</Box>
 	);
 };

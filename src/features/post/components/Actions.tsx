@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
 import { toggle } from "@/libs/supabase/api/likes";
 import { HStack, Icon } from "@/components/ui";
-import CommentBar from "@/components/CommentBar";
+import CommentBar from "@/features/post/components/CommentBar";
 
 interface ActionsProps {
 	postId: string;

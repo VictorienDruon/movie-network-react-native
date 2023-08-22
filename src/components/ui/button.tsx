@@ -6,7 +6,7 @@ import { Icon, IconProps } from "./icon";
 import { BoxProps } from "./box";
 
 type ButtonVariant = "primary" | "outline";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 	variant?: ButtonVariant;
@@ -16,7 +16,7 @@ interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 	rightIcon?: IconProps["name"];
 	disabled?: boolean;
 	onPress?: () => void;
-	children: string;
+	children?: string;
 }
 
 export const Button = ({
@@ -54,6 +54,11 @@ export const Button = ({
 			space: 6,
 		},
 		sm: {
+			px: 12,
+			py: 6,
+			space: 4,
+		},
+		xs: {
 			px: 8,
 			py: 4,
 			space: 4,
@@ -77,6 +82,9 @@ export const Button = ({
 			fontSize: 16,
 		},
 		sm: {
+			fontSize: 14,
+		},
+		xs: {
 			fontSize: 12,
 		},
 	};
@@ -84,7 +92,8 @@ export const Button = ({
 	const iconSizes: { [key in ButtonSize]: IconProps["size"] } = {
 		lg: 22,
 		md: 20,
-		sm: 16,
+		sm: 18,
+		xs: 16,
 	};
 
 	return (
@@ -105,13 +114,15 @@ export const Button = ({
 					/>
 				)}
 
-				<ButtonText
-					textAlign="center"
-					{...textSizes[size]}
-					{...textVariants[variant]}
-				>
-					{children}
-				</ButtonText>
+				{children && (
+					<ButtonText
+						textAlign="center"
+						{...textSizes[size]}
+						{...textVariants[variant]}
+					>
+						{children}
+					</ButtonText>
+				)}
 
 				{rightIcon && (
 					<Icon
