@@ -1,18 +1,39 @@
-import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
+import { useEffect, useState } from "react";
+import {
+	ActivityIndicator,
+	FlatList,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/comments";
 import { Box, Subtitle, Center } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
 
-const CommentsScreen = () => {
-	const { id } = useLocalSearchParams() as { id: string };
+interface Page {
+	comments: Comment[];
+	nextCursor: number;
+}
 
-	const query = useQuery<Comment[], Error>({
-		queryKey: ["comments", id],
-		queryFn: () => getAll(id),
+const CommentsScreen = () => {
+	const [comments, setComments] = useState<Comment[]>([]);
+	const { id: postId } = useLocalSearchParams() as { id: string };
+
+	const query = useInfiniteQuery<Page, Error>({
+		queryKey: ["comments", postId],
+		queryFn: ({ pageParam }) => getAll({ postId, pageParam }),
+		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
+
+	useEffect(() => {
+		if (query.data?.pages) {
+			const newPage = query.data.pages[query.data.pages.length - 1];
+			const newComments = newPage.comments;
+			setComments((prevComments) => [...prevComments, ...newComments]);
+		}
+	}, [query.data]);
 
 	if (query.isLoading) return null;
 
@@ -20,11 +41,17 @@ const CommentsScreen = () => {
 
 	return (
 		<Box flex={1} pb={48}>
-			{query.data.length ? (
+			{comments.length ? (
 				<FlatList
-					data={query.data}
+					data={comments}
 					keyExtractor={(comment) => comment.id}
 					renderItem={({ item: comment }) => <Comment comment={comment} />}
+					ListFooterComponent={
+						<Box pb={64}>
+							{query.hasNextPage && <ActivityIndicator size="small" />}
+						</Box>
+					}
+					onEndReached={() => query.fetchNextPage()}
 				/>
 			) : (
 				<Center>
@@ -43,7 +70,7 @@ const CommentsScreen = () => {
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
-					<CommentBar postId={id} />
+					<CommentBar postId={postId} />
 				</Box>
 			</KeyboardAvoidingView>
 		</Box>

@@ -5,6 +5,11 @@ import { Database } from "../types/database.types";
 
 type NewPost = Database["public"]["Tables"]["posts"]["Insert"];
 
+interface GetAllArgs {
+	pageCount?: number;
+	pageParam?: number;
+}
+
 export async function getOne(id: string) {
 	const {
 		data: { session },
@@ -21,18 +26,29 @@ export async function getOne(id: string) {
 	return formatPost(post, session.user.id);
 }
 
-export async function getAll() {
+export async function getAll({ pageCount = 10, pageParam = 0 }: GetAllArgs) {
+	const from = pageParam * pageCount;
+	const to = from + pageCount;
+
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
 
-	const { data: posts, error } = await supabase
+	const { data, error } = await supabase
 		.from("posts")
-		.select("*, author: profiles(*), likes(user_id)");
+		.select("*, author: profiles(*), likes(user_id)")
+		.order("created_at", { ascending: false })
+		.range(from, to);
 
 	if (error) throw error;
 
-	return formatPosts(posts, session.user.id);
+	const posts = data.slice(0, pageCount);
+	const nextPost = data.slice(pageCount);
+
+	return {
+		posts: formatPosts(posts, session.user.id),
+		nextCursor: nextPost.length ? pageParam + 1 : undefined,
+	};
 }
 
 export async function create(newPost: NewPost) {

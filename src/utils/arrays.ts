@@ -17,9 +17,7 @@ export function sortItems<T extends ObjectWithDate>(
 
 export function formatPosts<T extends ObjectWithLikes & ObjectWithDate>(
 	posts: T[],
-	userId: string,
-	ascending = false
+	userId: string
 ) {
-	const formattedPosts = posts.map((post) => formatPost(post, userId));
-	return sortItems(formattedPosts, ascending);
+	return posts.map((post) => formatPost(post, userId));
 }

@@ -1,18 +1,38 @@
-import { sortItems } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
 type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
-export async function getAll(postId: string) {
-	const { data: comments, error } = await supabase
+interface GetAllArgs {
+	postId: string;
+	pageCount?: number;
+	pageParam?: number;
+}
+
+export async function getAll({
+	postId,
+	pageCount = 10,
+	pageParam = 0,
+}: GetAllArgs) {
+	const from = pageParam * pageCount;
+	const to = from + pageCount;
+
+	const { data, error } = await supabase
 		.from("comments")
 		.select("*, author: profiles(*)")
-		.eq("post_id", postId);
+		.eq("post_id", postId)
+		.order("created_at", { ascending: false })
+		.range(from, to);
 
 	if (error) throw error;
 
-	return sortItems(comments);
+	const comments = data.slice(0, pageCount);
+	const nextComment = data.slice(pageCount);
+
+	return {
+		comments,
+		nextCursor: nextComment.length ? pageParam + 1 : undefined,
+	};
 }
 
 export async function create(newComment: NewComment) {

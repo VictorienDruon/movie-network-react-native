@@ -25,12 +25,7 @@ export const Post = ({ post }: { post: Post }) => {
 	const { user } = useSession();
 
 	return (
-		<VStack
-			space={8}
-			p={16}
-			borderBottomWidth={0.25}
-			borderBottomColor="neutral-6"
-		>
+		<VStack space={8} p={16}>
 			<HStack space={8} alignItems="center">
 				<Link
 					href={
