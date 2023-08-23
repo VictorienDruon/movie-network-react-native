@@ -9,7 +9,7 @@ type Measurements = {
 };
 
 interface TabsProps {
-	tabs: { label: string }[];
+	tabs: string[];
 	contentRef: React.RefObject<Animated.FlatList>;
 	scrollX: Animated.Value;
 }
@@ -68,11 +68,11 @@ const Tabs = ({ tabs, contentRef, scrollX }: TabsProps) => {
 			>
 				{tabs.map((tab, index) => (
 					<TouchableOpacity
-						key={tab.label}
+						key={tab}
 						ref={tabRefs[index]}
 						onPress={() => handleTabPress(index)}
 					>
-						<Subtitle>{capitalizeFirstLetter(tab.label)}</Subtitle>
+						<Subtitle>{capitalizeFirstLetter(tab)}</Subtitle>
 					</TouchableOpacity>
 				))}
 			</Box>

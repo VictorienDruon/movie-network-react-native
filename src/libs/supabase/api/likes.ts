@@ -1,9 +1,39 @@
+import { formatPosts } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
 type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
+
+export async function getAllByUser({ userId, pageCount = 10, pageParam = 0 }) {
+	const from = pageParam * pageCount;
+	const to = from + pageCount;
+
+	const {
+		data: { session },
+	} = await supabase.auth.getSession();
+
+	const { data, error } = await supabase
+		.from("likes")
+		.select("posts(*, author: profiles(*), likes(user_id))")
+		.eq("user_id", userId)
+		.order("created_at", { ascending: false })
+		.range(from, to);
+
+	if (error) throw error;
+
+	const likes = data.slice(0, pageCount);
+	const nextLike = data.slice(pageCount);
+
+	return {
+		likes: formatPosts(
+			likes.map((like) => like.posts),
+			session.user.id
+		),
+		nextCursor: nextLike.length ? pageParam + 1 : undefined,
+	};
+}
 
 export async function toggle(newLike: NewLike) {
 	const { userHasLikedPost, ...like } = newLike;

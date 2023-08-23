@@ -1,22 +1,17 @@
 import { useRef } from "react";
 import { Animated } from "react-native";
-import { QueryObserverResult } from "@tanstack/react-query";
 import { Database } from "@/libs/supabase/types/database.types";
 import { VStack, Heading, Avatar, Box } from "@/components/ui";
 import Tabs from "@/components/Tabs";
-import { Activity } from "./components/Activity";
+import Posts from "./components/Posts";
+import Likes from "./components/Likes";
+import Comments from "./components/Comments";
 
-export type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
-	activities: Activity[];
-};
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
-interface ProfileProps {
-	profile: Profile;
-	refetch: () => Promise<QueryObserverResult>;
-}
-
-export const Profile = ({ profile, refetch }: ProfileProps) => {
-	const { name, avatar_url, activities } = profile;
+export const Profile = ({ profile }: { profile: Profile }) => {
+	const { id, name, avatar_url } = profile;
+	const activities = ["posts", "likes", "comments"];
 	const activitiesRef = useRef<Animated.FlatList>(null);
 	const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -38,10 +33,17 @@ export const Profile = ({ profile, refetch }: ProfileProps) => {
 			<Animated.FlatList
 				ref={activitiesRef}
 				data={activities}
-				keyExtractor={(activity) => activity.label}
-				renderItem={({ item: activity }) => (
-					<Activity activity={activity} refetch={refetch} />
-				)}
+				keyExtractor={(activity) => activity}
+				renderItem={({ item: activity }) => {
+					switch (activity) {
+						case "posts":
+							return <Posts userId={id} />;
+						case "likes":
+							return <Likes userId={id} />;
+						case "comments":
+							return <Comments userId={id} />;
+					}
+				}}
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { x: scrollX } } }],
 					{ useNativeDriver: false }

@@ -15,7 +15,7 @@ const ProfileScreen = () => {
 
 	if (query.isError) return null;
 
-	return <Profile profile={query.data} refetch={query.refetch} />;
+	return <Profile profile={query.data} />;
 };
 
 export default ProfileScreen;
