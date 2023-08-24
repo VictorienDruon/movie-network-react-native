@@ -42,6 +42,7 @@ export async function getAll({ pageCount = 10, pageParam = 0 }) {
 
 	return {
 		posts: formatPosts(posts, session.user.id),
+		prevCursor: pageParam > 0 ? pageParam - 1 : undefined,
 		nextCursor: nextPost.length ? pageParam + 1 : undefined,
 	};
 }

@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-	ActivityIndicator,
-	Dimensions,
-	FlatList,
-	RefreshControl,
-} from "react-native";
+import { ActivityIndicator, Animated, RefreshControl } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/likes";
 import { Box, Separator } from "@/components/ui";
@@ -15,10 +12,12 @@ interface Page {
 	nextCursor: number;
 }
 
-const Likes = ({ userId }: { userId: string }) => {
+const UserLikesScreen = () => {
+	const { userId } = useLocalSearchParams();
+	const props = useScrollProps();
+
 	const [likes, setLikes] = useState<Post[]>([]);
 	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const { width } = Dimensions.get("screen");
 
 	const query = useInfiniteQuery<Page>({
 		queryKey: ["likes", userId],
@@ -44,24 +43,23 @@ const Likes = ({ userId }: { userId: string }) => {
 	if (query.isError) return null;
 
 	return (
-		<Box width={width}>
-			<FlatList
-				data={likes}
-				keyExtractor={(like) => like.id}
-				renderItem={({ item: like }) => <Post post={like} />}
-				ItemSeparatorComponent={() => <Separator height={0.5} />}
-				ListFooterComponent={
-					<Box pb={64}>
-						{query.hasNextPage && <ActivityIndicator size="small" />}
-					</Box>
-				}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-				}
-				onEndReached={() => query.fetchNextPage()}
-			/>
-		</Box>
+		<Animated.FlatList
+			data={likes}
+			keyExtractor={(like) => like.id}
+			renderItem={({ item: like }) => <Post post={like} />}
+			ItemSeparatorComponent={() => <Separator height={0.5} />}
+			ListFooterComponent={
+				<Box pb={64}>
+					{query.hasNextPage && <ActivityIndicator size="small" />}
+				</Box>
+			}
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+			}
+			onEndReached={() => query.fetchNextPage()}
+			{...props}
+		/>
 	);
 };
 
-export default Likes;
+export default UserLikesScreen;

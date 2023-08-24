@@ -23,14 +23,11 @@ export async function getAllByUser({ userId, pageCount = 10, pageParam = 0 }) {
 
 	if (error) throw error;
 
-	const likes = data.slice(0, pageCount);
+	const likes = data.slice(0, pageCount).flatMap((like) => like.posts);
 	const nextLike = data.slice(pageCount);
 
 	return {
-		likes: formatPosts(
-			likes.map((like) => like.posts),
-			session.user.id
-		),
+		likes: formatPosts(likes, session.user.id),
 		nextCursor: nextLike.length ? pageParam + 1 : undefined,
 	};
 }

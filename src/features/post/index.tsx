@@ -28,11 +28,10 @@ export const Post = ({ post }: { post: Post }) => {
 		<VStack space={8} p={16}>
 			<HStack space={8} alignItems="center">
 				<Link
-					href={
-						user.id === author.id
-							? "/(app)/profile"
-							: { pathname: "/(app)/profile/[id]", params: { id: author.id } }
-					}
+					href={{
+						pathname: "/(app)/profile/[id]",
+						params: { id: author.id },
+					}}
 					asChild
 				>
 					<TouchableOpacity>

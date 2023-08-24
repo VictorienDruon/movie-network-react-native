@@ -13,6 +13,7 @@ import { Post } from "@/features/post";
 
 interface Page {
 	posts: Post[];
+	prevCursor: number;
 	nextCursor: number;
 }
 
@@ -23,6 +24,7 @@ const HomeScreen = () => {
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["feed"],
 		queryFn: getAll,
+		getPreviousPageParam: (firstPage) => firstPage.prevCursor,
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
@@ -58,6 +60,7 @@ const HomeScreen = () => {
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
 				}
+				onStartReached={() => query.fetchPreviousPage()}
 				onEndReached={() => query.fetchNextPage()}
 			/>
 

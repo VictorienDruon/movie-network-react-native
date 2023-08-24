@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import {
 	ActivityIndicator,
-	Dimensions,
-	FlatList,
+	Animated,
 	RefreshControl,
+	TouchableOpacity,
 } from "react-native";
+import { Link, useLocalSearchParams } from "expo-router";
+import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
 import { Box } from "@/components/ui";
@@ -15,10 +17,12 @@ interface Page {
 	nextCursor: number;
 }
 
-const Comments = ({ userId }: { userId: string }) => {
+const UserCommentsScreen = () => {
+	const { userId } = useLocalSearchParams();
+	const props = useScrollProps();
+
 	const [comments, setComments] = useState<Comment[]>([]);
 	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const { width } = Dimensions.get("screen");
 
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["comments", userId],
@@ -44,23 +48,34 @@ const Comments = ({ userId }: { userId: string }) => {
 	if (query.isError) return null;
 
 	return (
-		<Box width={width}>
-			<FlatList
-				data={comments}
-				keyExtractor={(comment) => comment.id}
-				renderItem={({ item: comment }) => <Comment comment={comment} />}
-				ListFooterComponent={
-					<Box pb={64}>
-						{query.hasNextPage && <ActivityIndicator size="small" />}
-					</Box>
-				}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-				}
-				onEndReached={() => query.fetchNextPage()}
-			/>
-		</Box>
+		<Animated.FlatList
+			data={comments}
+			keyExtractor={(comment) => comment.id}
+			renderItem={({ item: comment }) => (
+				<Link
+					href={{
+						pathname: "/(app)/post/[id]",
+						params: { id: comment.post_id },
+					}}
+					asChild
+				>
+					<TouchableOpacity>
+						<Comment comment={comment} />
+					</TouchableOpacity>
+				</Link>
+			)}
+			ListFooterComponent={
+				<Box pb={64}>
+					{query.hasNextPage && <ActivityIndicator size="small" />}
+				</Box>
+			}
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+			}
+			onEndReached={() => query.fetchNextPage()}
+			{...props}
+		/>
 	);
 };
 
-export default Comments;
+export default UserCommentsScreen;
