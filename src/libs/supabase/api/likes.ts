@@ -2,11 +2,15 @@ import { formatPosts } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
-type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
+export type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
 
-export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
+export async function getAllByUser(
+	userId: string,
+	pageParam: number,
+	pageCount = 10
+) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -36,16 +40,16 @@ export async function toggle(newLike: NewLike) {
 	const { userHasLikedPost, ...like } = newLike;
 
 	if (userHasLikedPost) {
-		const { data, error } = await supabase.from("likes").delete().match(like);
+		const { error } = await supabase.from("likes").delete().match(like);
 
 		if (error) throw error;
 
-		return data;
+		return newLike;
 	} else {
-		const { data, error } = await supabase.from("likes").insert(like);
+		const { error } = await supabase.from("likes").insert(like);
 
 		if (error) throw error;
 
-		return data;
+		return newLike;
 	}
 }

@@ -7,7 +7,7 @@ export type Comment = Database["public"]["Tables"]["comments"]["Row"] & {
 };
 
 export const Comment = ({ comment }: { comment: Comment }) => {
-	const { author, created_at, content } = comment;
+	const { created_at, content, author } = comment;
 
 	return (
 		<HStack space={8} p={16}>

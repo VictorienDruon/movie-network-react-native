@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
-import { toggle } from "@/libs/supabase/api/likes";
+import { NewLike, toggle } from "@/libs/supabase/api/likes";
 import { HStack, Icon } from "@/components/ui";
 import CommentBar from "@/features/post/components/CommentBar";
 
@@ -13,10 +12,21 @@ interface ActionsProps {
 }
 
 const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
-	const [isLiked, setIsLiked] = useState<boolean>(userHasLikedPost);
-	const mutation = useMutation(toggle, {
-		onSuccess: () => {
-			setIsLiked((prev) => !prev);
+	const queryClient = useQueryClient();
+	const mutation = useMutation<NewLike, Error, NewLike>(toggle, {
+		onSuccess: ({ user_id, post_id }) => {
+			queryClient.invalidateQueries({
+				queryKey: ["feed"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["posts", user_id],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["likes", user_id],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["post", post_id],
+			});
 		},
 	});
 
@@ -27,7 +37,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 		mutation.mutate({
 			post_id: postId,
 			user_id: user.id,
-			userHasLikedPost: isLiked,
+			userHasLikedPost,
 		});
 	};
 
@@ -67,7 +77,12 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 					backgroundColor="primary-3"
 					borderRadius="full"
 				>
-					<Icon name="Heart" size={16} color="primary-9" fill={isLiked} />
+					<Icon
+						name="Heart"
+						size={16}
+						color="primary-9"
+						fill={userHasLikedPost}
+					/>
 				</HStack>
 			</TouchableOpacity>
 		</HStack>

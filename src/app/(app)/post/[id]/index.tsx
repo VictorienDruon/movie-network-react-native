@@ -1,6 +1,8 @@
+import { ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
+import { Error } from "@/components/ui";
 import { Post } from "@/features/post";
 
 const PostScreen = () => {
@@ -11,9 +13,10 @@ const PostScreen = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading)
+		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
 
-	if (query.isError) return null;
+	if (query.isError) return <Error retry={query.refetch} />;
 
 	return <Post post={query.data} />;
 };

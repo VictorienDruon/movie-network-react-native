@@ -3,7 +3,7 @@ import { formatPosts } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
-type NewPost = Database["public"]["Tables"]["posts"]["Insert"];
+export type NewPost = Database["public"]["Tables"]["posts"]["Insert"];
 
 export async function getOne(id: string) {
 	const {
@@ -21,7 +21,7 @@ export async function getOne(id: string) {
 	return formatPost(post, session.user.id);
 }
 
-export async function getAll({ pageParam, pageCount = 10 }) {
+export async function getAll(pageParam: number, pageCount = 10) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -46,7 +46,11 @@ export async function getAll({ pageParam, pageCount = 10 }) {
 	};
 }
 
-export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
+export async function getAllByUser(
+	userId: string,
+	pageParam: number,
+	pageCount = 10
+) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -73,9 +77,9 @@ export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
 }
 
 export async function create(newPost: NewPost) {
-	const { data, error } = await supabase.from("posts").insert(newPost);
+	const { error } = await supabase.from("posts").insert(newPost);
 
 	if (error) throw error;
 
-	return data;
+	return newPost;
 }

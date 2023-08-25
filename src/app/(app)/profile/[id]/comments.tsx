@@ -3,7 +3,7 @@ import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
-import { Box, Refresh } from "@/components/ui";
+import { Box, Empty, Refresh } from "@/components/ui";
 import { Comment } from "@/features/comment";
 
 interface Page {
@@ -11,13 +11,13 @@ interface Page {
 	nextCursor: number;
 }
 
-const UserCommentsScreen = () => {
-	const { userId } = useLocalSearchParams();
+const ProfileCommentsScreen = () => {
+	const { userId } = useLocalSearchParams() as { userId: string };
 	const props = useScrollProps();
 
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["comments", userId],
-		queryFn: ({ pageParam = 0 }) => getAllByUser({ userId, pageParam }),
+		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
@@ -42,6 +42,9 @@ const UserCommentsScreen = () => {
 					</TouchableOpacity>
 				</Link>
 			)}
+			ListEmptyComponent={
+				<Empty>This user has not posted any comments yet.</Empty>
+			}
 			ListFooterComponent={
 				<Box pb={64}>
 					{query.hasNextPage && <ActivityIndicator size="small" />}
@@ -49,9 +52,10 @@ const UserCommentsScreen = () => {
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
+			showsVerticalScrollIndicator={false}
 			{...props}
 		/>
 	);
 };
 
-export default UserCommentsScreen;
+export default ProfileCommentsScreen;

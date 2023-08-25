@@ -1,9 +1,13 @@
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
-type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
+export type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
-export async function getAll({ postId, pageParam, pageCount = 10 }) {
+export async function getAll(
+	postId: string,
+	pageParam: number,
+	pageCount = 10
+) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -25,7 +29,11 @@ export async function getAll({ postId, pageParam, pageCount = 10 }) {
 	};
 }
 
-export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
+export async function getAllByUser(
+	userId: string,
+	pageParam: number,
+	pageCount = 10
+) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -48,9 +56,9 @@ export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
 }
 
 export async function create(newComment: NewComment) {
-	const { data, error } = await supabase.from("comments").insert(newComment);
+	const { error } = await supabase.from("comments").insert(newComment);
 
 	if (error) throw error;
 
-	return data;
+	return newComment;
 }

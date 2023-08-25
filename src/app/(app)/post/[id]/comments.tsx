@@ -7,7 +7,7 @@ import {
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/comments";
-import { Box, Subtitle, Center } from "@/components/ui";
+import { Box, Empty, Error } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
 
@@ -21,13 +21,14 @@ const CommentsScreen = () => {
 
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["comments", postId],
-		queryFn: ({ pageParam = 0 }) => getAll({ postId, pageParam }),
+		queryFn: ({ pageParam = 0 }) => getAll(postId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading)
+		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
 
-	if (query.isError) return null;
+	if (query.isError) return <Error retry={query.refetch} />;
 
 	return (
 		<Box flex={1} pb={48}>
@@ -35,17 +36,14 @@ const CommentsScreen = () => {
 				data={query.data.pages.flatMap((page) => page.comments)}
 				keyExtractor={(comment) => comment.id}
 				renderItem={({ item: comment }) => <Comment comment={comment} />}
-				ListEmptyComponent={
-					<Center>
-						<Subtitle>No comment yet.</Subtitle>
-					</Center>
-				}
+				ListEmptyComponent={<Empty>There are no comments yet.</Empty>}
 				ListFooterComponent={
 					<Box pb={64}>
 						{query.hasNextPage && <ActivityIndicator size="small" />}
 					</Box>
 				}
 				onEndReached={() => query.fetchNextPage()}
+				showsVerticalScrollIndicator={false}
 			/>
 
 			<KeyboardAvoidingView

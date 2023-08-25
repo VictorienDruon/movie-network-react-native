@@ -2,7 +2,7 @@ import { FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
-import { Box, HStack, Icon, Refresh, Separator } from "@/components/ui";
+import { Box, HStack, Icon, Refresh, Separator, Error } from "@/components/ui";
 import { Post } from "@/features/post";
 
 interface Page {
@@ -13,27 +13,28 @@ interface Page {
 const HomeScreen = () => {
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["feed"],
-		queryFn: ({ pageParam = 0 }) => getAll({ pageParam }),
+		queryFn: ({ pageParam = 0 }) => getAll(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading)
+		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
 
-	if (query.isError) return null;
-
+	if (query.isError) return <Error retry={query.refetch} />;
 	return (
 		<Box flex={1} position="relative">
 			<FlatList
 				data={query.data.pages.flatMap((page) => page.posts)}
 				keyExtractor={(post) => post.id}
 				renderItem={({ item: post }) => <Post post={post} />}
-				ItemSeparatorComponent={() => <Separator height={0.5} />}
+				ItemSeparatorComponent={() => <Separator />}
 				ListFooterComponent={
 					<Box pb={64}>
 						{query.hasNextPage && <ActivityIndicator size="small" />}
 					</Box>
 				}
 				refreshControl={<Refresh refetch={query.refetch} />}
+				showsVerticalScrollIndicator={false}
 				onEndReached={() => query.fetchNextPage()}
 			/>
 

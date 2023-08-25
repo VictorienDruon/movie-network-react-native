@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
-import { create } from "@/libs/supabase/api/posts";
+import { NewPost, create } from "@/libs/supabase/api/posts";
 import { useSession } from "@/providers/session";
 import {
 	Avatar,
@@ -27,14 +27,15 @@ const CreatePostScreen = () => {
 		resolver: zodResolver(PostSchema),
 	});
 
-	const mutation = useMutation(create, {
-		onSuccess: () => {
+	const mutation = useMutation<NewPost, Error, NewPost>(create, {
+		onSuccess: ({ user_id }) => {
 			queryClient.invalidateQueries({
 				queryKey: ["feed"],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["posts", user.id],
+				queryKey: ["posts", user_id],
 			});
+			router.push("/");
 		},
 	});
 
@@ -44,7 +45,6 @@ const CreatePostScreen = () => {
 			data: { user },
 		} = await supabase.auth.getUser();
 		mutation.mutate({ content, user_id: user.id });
-		router.push("/");
 	});
 
 	return (

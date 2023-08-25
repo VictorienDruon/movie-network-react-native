@@ -1,10 +1,10 @@
-import { View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getOne } from "@/libs/supabase/api/profiles";
-import { Avatar, HStack, Heading, VStack } from "@/components/ui";
+import { Avatar, HStack, Heading, VStack, Error } from "@/components/ui";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -16,9 +16,10 @@ const TopTabsLayout = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading)
+		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
 
-	if (query.isError) return null;
+	if (query.isError) return <Error retry={query.refetch} />;
 
 	return (
 		<TopTabs>
