@@ -33,7 +33,7 @@ const CreatePostScreen = () => {
 				queryKey: ["feed"],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["profile", user.id],
+				queryKey: ["posts", user.id],
 			});
 		},
 	});

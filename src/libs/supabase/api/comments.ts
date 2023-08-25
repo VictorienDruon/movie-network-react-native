@@ -3,7 +3,7 @@ import { Database } from "../types/database.types";
 
 type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
-export async function getAll({ postId, pageCount = 10, pageParam = 0 }) {
+export async function getAll({ postId, pageParam, pageCount = 10 }) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -25,7 +25,7 @@ export async function getAll({ postId, pageCount = 10, pageParam = 0 }) {
 	};
 }
 
-export async function getAllByUser({ userId, pageCount = 10, pageParam = 0 }) {
+export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 

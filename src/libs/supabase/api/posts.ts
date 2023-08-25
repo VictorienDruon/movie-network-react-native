@@ -21,7 +21,7 @@ export async function getOne(id: string) {
 	return formatPost(post, session.user.id);
 }
 
-export async function getAll({ pageCount = 10, pageParam = 0 }) {
+export async function getAll({ pageParam, pageCount = 10 }) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 
@@ -42,12 +42,11 @@ export async function getAll({ pageCount = 10, pageParam = 0 }) {
 
 	return {
 		posts: formatPosts(posts, session.user.id),
-		prevCursor: pageParam > 0 ? pageParam - 1 : undefined,
 		nextCursor: nextPost.length ? pageParam + 1 : undefined,
 	};
 }
 
-export async function getAllByUser({ userId, pageCount = 10, pageParam = 0 }) {
+export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 

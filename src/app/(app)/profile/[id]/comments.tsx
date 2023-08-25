@@ -1,15 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-	ActivityIndicator,
-	Animated,
-	RefreshControl,
-	TouchableOpacity,
-} from "react-native";
+import { ActivityIndicator, Animated, TouchableOpacity } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
-import { Box } from "@/components/ui";
+import { Box, Refresh } from "@/components/ui";
 import { Comment } from "@/features/comment";
 
 interface Page {
@@ -21,27 +15,11 @@ const UserCommentsScreen = () => {
 	const { userId } = useLocalSearchParams();
 	const props = useScrollProps();
 
-	const [comments, setComments] = useState<Comment[]>([]);
-	const [refreshing, setRefreshing] = useState<boolean>(false);
-
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["comments", userId],
-		queryFn: ({ pageParam }) => getAllByUser({ userId, pageParam }),
+		queryFn: ({ pageParam = 0 }) => getAllByUser({ userId, pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
-
-	const handleRefresh = useCallback(() => {
-		setRefreshing(true);
-		query.refetch().then(() => setRefreshing(false));
-	}, []);
-
-	useEffect(() => {
-		if (query.data?.pages) {
-			const newPage = query.data.pages[query.data.pages.length - 1];
-			const newPosts = newPage.comments;
-			setComments((prevPosts) => [...prevPosts, ...newPosts]);
-		}
-	}, [query.data]);
 
 	if (query.isLoading) return null;
 
@@ -49,7 +27,7 @@ const UserCommentsScreen = () => {
 
 	return (
 		<Animated.FlatList
-			data={comments}
+			data={query.data.pages.flatMap((page) => page.comments)}
 			keyExtractor={(comment) => comment.id}
 			renderItem={({ item: comment }) => (
 				<Link
@@ -69,9 +47,7 @@ const UserCommentsScreen = () => {
 					{query.hasNextPage && <ActivityIndicator size="small" />}
 				</Box>
 			}
-			refreshControl={
-				<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-			}
+			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			{...props}
 		/>

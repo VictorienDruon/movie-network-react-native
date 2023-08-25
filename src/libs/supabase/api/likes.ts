@@ -6,7 +6,7 @@ type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
 
-export async function getAllByUser({ userId, pageCount = 10, pageParam = 0 }) {
+export async function getAllByUser({ userId, pageParam, pageCount = 10 }) {
 	const from = pageParam * pageCount;
 	const to = from + pageCount;
 

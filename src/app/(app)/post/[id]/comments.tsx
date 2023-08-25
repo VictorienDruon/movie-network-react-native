@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
 	FlatList,
@@ -18,22 +17,13 @@ interface Page {
 }
 
 const CommentsScreen = () => {
-	const [comments, setComments] = useState<Comment[]>([]);
 	const { id: postId } = useLocalSearchParams() as { id: string };
 
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["comments", postId],
-		queryFn: ({ pageParam }) => getAll({ postId, pageParam }),
+		queryFn: ({ pageParam = 0 }) => getAll({ postId, pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
-
-	useEffect(() => {
-		if (query.data?.pages) {
-			const newPage = query.data.pages[query.data.pages.length - 1];
-			const newComments = newPage.comments;
-			setComments((prevComments) => [...prevComments, ...newComments]);
-		}
-	}, [query.data]);
 
 	if (query.isLoading) return null;
 
@@ -41,23 +31,22 @@ const CommentsScreen = () => {
 
 	return (
 		<Box flex={1} pb={48}>
-			{comments.length ? (
-				<FlatList
-					data={comments}
-					keyExtractor={(comment) => comment.id}
-					renderItem={({ item: comment }) => <Comment comment={comment} />}
-					ListFooterComponent={
-						<Box pb={64}>
-							{query.hasNextPage && <ActivityIndicator size="small" />}
-						</Box>
-					}
-					onEndReached={() => query.fetchNextPage()}
-				/>
-			) : (
-				<Center>
-					<Subtitle>No comment yet.</Subtitle>
-				</Center>
-			)}
+			<FlatList
+				data={query.data.pages.flatMap((page) => page.comments)}
+				keyExtractor={(comment) => comment.id}
+				renderItem={({ item: comment }) => <Comment comment={comment} />}
+				ListEmptyComponent={
+					<Center>
+						<Subtitle>No comment yet.</Subtitle>
+					</Center>
+				}
+				ListFooterComponent={
+					<Box pb={64}>
+						{query.hasNextPage && <ActivityIndicator size="small" />}
+					</Box>
+				}
+				onEndReached={() => query.fetchNextPage()}
+			/>
 
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : "height"}

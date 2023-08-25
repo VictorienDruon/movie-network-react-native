@@ -21,7 +21,7 @@ const TopTabsLayout = () => {
 	if (query.isError) return null;
 
 	return (
-		<TopTabs screenOptions={{}}>
+		<TopTabs>
 			<TopTabs.Header>
 				<HStack px={16} py={8} space={8}>
 					<VStack space={8}>

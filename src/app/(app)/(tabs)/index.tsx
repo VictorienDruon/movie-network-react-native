@@ -1,45 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-	RefreshControl,
-	FlatList,
-	TouchableOpacity,
-	ActivityIndicator,
-} from "react-native";
+import { FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
-import { Box, HStack, Icon, Separator } from "@/components/ui";
+import { Box, HStack, Icon, Refresh, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 
 interface Page {
 	posts: Post[];
-	prevCursor: number;
 	nextCursor: number;
 }
 
 const HomeScreen = () => {
-	const [posts, setPosts] = useState<Post[]>([]);
-	const [refreshing, setRefreshing] = useState<boolean>(false);
-
 	const query = useInfiniteQuery<Page, Error>({
 		queryKey: ["feed"],
-		queryFn: getAll,
-		getPreviousPageParam: (firstPage) => firstPage.prevCursor,
+		queryFn: ({ pageParam = 0 }) => getAll({ pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
-
-	const handleRefresh = useCallback(() => {
-		setRefreshing(true);
-		query.refetch().then(() => setRefreshing(false));
-	}, []);
-
-	useEffect(() => {
-		if (query.data?.pages) {
-			const newPage = query.data.pages[query.data.pages.length - 1];
-			const newPosts = newPage.posts;
-			setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-		}
-	}, [query.data]);
 
 	if (query.isLoading) return null;
 
@@ -48,7 +24,7 @@ const HomeScreen = () => {
 	return (
 		<Box flex={1} position="relative">
 			<FlatList
-				data={posts}
+				data={query.data.pages.flatMap((page) => page.posts)}
 				keyExtractor={(post) => post.id}
 				renderItem={({ item: post }) => <Post post={post} />}
 				ItemSeparatorComponent={() => <Separator height={0.5} />}
@@ -57,10 +33,7 @@ const HomeScreen = () => {
 						{query.hasNextPage && <ActivityIndicator size="small" />}
 					</Box>
 				}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-				}
-				onStartReached={() => query.fetchPreviousPage()}
+				refreshControl={<Refresh refetch={query.refetch} />}
 				onEndReached={() => query.fetchNextPage()}
 			/>
 
