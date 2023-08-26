@@ -1,10 +1,11 @@
-import { ActivityIndicator, Animated } from "react-native";
+import { Animated } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/likes";
 import { Box, Empty, Refresh, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
+import PostSkeletons from "@/features/post/components/PostSkeletons";
 
 interface Page {
 	likes: Post[];
@@ -33,9 +34,7 @@ const ProfileLikesScreen = () => {
 			ItemSeparatorComponent={() => <Separator />}
 			ListEmptyComponent={<Empty>This user has not liked any posts yet.</Empty>}
 			ListFooterComponent={
-				<Box pb={64}>
-					{query.hasNextPage && <ActivityIndicator size="small" />}
-				</Box>
+				<Box pb={64}>{query.hasNextPage && <PostSkeletons count={1} />}</Box>
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}

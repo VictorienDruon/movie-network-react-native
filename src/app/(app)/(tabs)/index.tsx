@@ -1,9 +1,10 @@
-import { FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
 import { Box, HStack, Icon, Refresh, Separator, Error } from "@/components/ui";
 import { Post } from "@/features/post";
+import PostSkeletons from "@/features/post/components/PostSkeletons";
 
 interface Page {
 	posts: Post[];
@@ -17,8 +18,7 @@ const HomeScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading)
-		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
+	if (query.isLoading) return <PostSkeletons count={4} />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 	return (
@@ -29,9 +29,7 @@ const HomeScreen = () => {
 				renderItem={({ item: post }) => <Post post={post} />}
 				ItemSeparatorComponent={() => <Separator />}
 				ListFooterComponent={
-					<Box pb={64}>
-						{query.hasNextPage && <ActivityIndicator size="small" />}
-					</Box>
+					<Box pb={64}>{query.hasNextPage && <PostSkeletons count={1} />}</Box>
 				}
 				refreshControl={<Refresh refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}

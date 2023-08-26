@@ -1,15 +1,11 @@
-import {
-	ActivityIndicator,
-	FlatList,
-	KeyboardAvoidingView,
-	Platform,
-} from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/comments";
 import { Box, Empty, Error } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
+import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
 
 interface Page {
 	comments: Comment[];
@@ -25,8 +21,7 @@ const CommentsScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading)
-		return <ActivityIndicator size="small" style={{ paddingTop: 16 }} />;
+	if (query.isLoading) return <CommentSkeletons count={10} />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 
@@ -39,7 +34,7 @@ const CommentsScreen = () => {
 				ListEmptyComponent={<Empty>There are no comments yet.</Empty>}
 				ListFooterComponent={
 					<Box pb={64}>
-						{query.hasNextPage && <ActivityIndicator size="small" />}
+						{query.hasNextPage && <CommentSkeletons count={1} />}
 					</Box>
 				}
 				onEndReached={() => query.fetchNextPage()}

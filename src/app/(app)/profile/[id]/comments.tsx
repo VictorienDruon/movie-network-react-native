@@ -1,10 +1,11 @@
-import { ActivityIndicator, Animated, TouchableOpacity } from "react-native";
+import { Animated, TouchableOpacity } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
 import { Box, Empty, Refresh } from "@/components/ui";
 import { Comment } from "@/features/comment";
+import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
 
 interface Page {
 	comments: Comment[];
@@ -46,9 +47,7 @@ const ProfileCommentsScreen = () => {
 				<Empty>This user has not posted any comments yet.</Empty>
 			}
 			ListFooterComponent={
-				<Box pb={64}>
-					{query.hasNextPage && <ActivityIndicator size="small" />}
-				</Box>
+				<Box pb={64}>{query.hasNextPage && <CommentSkeletons count={1} />}</Box>
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}

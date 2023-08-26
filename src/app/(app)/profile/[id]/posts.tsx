@@ -1,10 +1,11 @@
-import { ActivityIndicator, Animated } from "react-native";
+import { Animated } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/posts";
 import { Box, Separator, Refresh, Empty } from "@/components/ui";
 import { Post } from "@/features/post";
+import PostSkeletons from "@/features/post/components/PostSkeletons";
 
 interface Page {
 	posts: Post[];
@@ -35,9 +36,7 @@ const ProfilePostsScreen = () => {
 				<Empty>This user has not posted any posts yet.</Empty>
 			}
 			ListFooterComponent={
-				<Box pb={64}>
-					{query.hasNextPage && <ActivityIndicator size="small" />}
-				</Box>
+				<Box pb={64}>{query.hasNextPage && <PostSkeletons count={1} />}</Box>
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}

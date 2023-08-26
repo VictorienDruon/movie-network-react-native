@@ -9,3 +9,4 @@ export * from "./input";
 export * from "./separator";
 export * from "./refresh";
 export * from "./error";
+export * from "./skeleton";
