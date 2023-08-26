@@ -21,7 +21,7 @@ const CommentsScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <CommentSkeletons count={10} />;
+	if (query.isLoading) return <CommentSkeletons count={2} />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 

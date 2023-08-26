@@ -40,7 +40,7 @@ export const theme = createTheme({
 		none: 0,
 		xs: 4,
 		sm: 8,
-		md: 16,
+		md: 12,
 		lg: 24,
 		full: 9999,
 		default: 8,

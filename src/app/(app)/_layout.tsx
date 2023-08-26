@@ -7,7 +7,9 @@ const AppLayout = () => (
 	<QueryClientProvider client={queryClient}>
 		<Stack>
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-			<Stack.Screen name="profile/[id]" options={{ title: "Profile" }} />
+
+			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "Profile" }} />
+
 			<Stack.Screen name="post/create" options={{ title: "Create Post" }} />
 			<Stack.Screen name="post/[id]/index" options={{ title: "Post" }} />
 			<Stack.Screen

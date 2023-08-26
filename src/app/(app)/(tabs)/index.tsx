@@ -18,7 +18,7 @@ const HomeScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <PostSkeletons count={4} />;
+	if (query.isLoading) return <PostSkeletons count={5} />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 	return (

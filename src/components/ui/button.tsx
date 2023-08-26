@@ -1,17 +1,15 @@
 import { TouchableOpacity } from "react-native";
-import { Theme } from "@/styles/theme";
 import { HStack, StackProps } from "./stack";
 import { ButtonText, TextProps } from "./texts";
 import { Icon, IconProps } from "./icon";
 import { BoxProps } from "./box";
 
-type ButtonVariant = "primary" | "outline";
-type ButtonSize = "xs" | "sm" | "md" | "lg";
+type ButtonVariant = "primary" | "outline" | "ghost";
+type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
-	color?: keyof Theme["colors"];
 	leftIcon?: IconProps["name"];
 	rightIcon?: IconProps["name"];
 	disabled?: boolean;
@@ -22,117 +20,112 @@ interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 export const Button = ({
 	variant = "primary",
 	size = "md",
-	color = "primary-9",
 	leftIcon,
 	rightIcon,
 	disabled,
 	onPress,
 	children,
 	...props
-}: ButtonProps) => {
-	const boxVariants: { [key in ButtonVariant]: BoxProps } = {
-		primary: {
-			bg: color,
-			borderRadius: "full",
-		},
-		outline: {
-			borderColor: color,
-			borderWidth: 1,
-			borderRadius: "full",
-		},
-	};
+}: ButtonProps) => (
+	<TouchableOpacity disabled={disabled} onPress={onPress}>
+		<HStack
+			alignItems="center"
+			justifyContent="center"
+			{...boxSizes[size]}
+			{...boxVariants[variant]}
+			{...props}
+		>
+			{leftIcon && (
+				<Icon
+					name={leftIcon}
+					size={iconSizes[size]}
+					color={textVariants[variant].color}
+					strokeWidth={2}
+				/>
+			)}
 
-	const boxSizes: { [key in ButtonSize]: StackProps } = {
-		lg: {
-			px: 20,
-			py: 10,
-			space: 8,
-		},
-		md: {
-			px: 16,
-			py: 8,
-			space: 6,
-		},
-		sm: {
-			px: 12,
-			py: 6,
-			space: 4,
-		},
-		xs: {
-			px: 8,
-			py: 4,
-			space: 4,
-		},
-	};
+			{children && (
+				<ButtonText
+					textAlign="center"
+					{...textSizes[size]}
+					{...textVariants[variant]}
+				>
+					{children}
+				</ButtonText>
+			)}
 
-	const textVariants: { [key in ButtonVariant]: TextProps } = {
-		primary: {
-			color: "white",
-		},
-		outline: {
-			color,
-		},
-	};
+			{rightIcon && (
+				<Icon
+					name={rightIcon}
+					size={iconSizes[size]}
+					color={textVariants[variant].color}
+					strokeWidth={2}
+				/>
+			)}
+		</HStack>
+	</TouchableOpacity>
+);
 
-	const textSizes: { [key in ButtonSize]: TextProps } = {
-		lg: {
-			fontSize: 18,
-		},
-		md: {
-			fontSize: 16,
-		},
-		sm: {
-			fontSize: 14,
-		},
-		xs: {
-			fontSize: 12,
-		},
-	};
+const boxVariants: { [key in ButtonVariant]: BoxProps } = {
+	primary: {
+		bg: "primary-9",
+		borderRadius: "full",
+	},
+	outline: {
+		borderColor: "primary-9",
+		borderWidth: 1,
+		borderRadius: "full",
+	},
+	ghost: {
+		bg: "neutral-3",
+		borderRadius: "full",
+	},
+};
 
-	const iconSizes: { [key in ButtonSize]: IconProps["size"] } = {
-		lg: 22,
-		md: 20,
-		sm: 18,
-		xs: 16,
-	};
+const boxSizes: { [key in ButtonSize]: StackProps } = {
+	lg: {
+		px: 20,
+		py: 8,
+		space: 6,
+	},
+	md: {
+		px: 12,
+		py: 6,
+		space: 4,
+	},
+	sm: {
+		px: 8,
+		py: 4,
+		space: 4,
+	},
+};
 
-	return (
-		<TouchableOpacity disabled={disabled} onPress={onPress}>
-			<HStack
-				alignItems="center"
-				justifyContent="center"
-				{...boxSizes[size]}
-				{...boxVariants[variant]}
-				{...props}
-			>
-				{leftIcon && (
-					<Icon
-						name={leftIcon}
-						size={iconSizes[size]}
-						color={textVariants[variant].color}
-						strokeWidth={2}
-					/>
-				)}
+const textVariants: { [key in ButtonVariant]: TextProps } = {
+	primary: {
+		color: "white",
+	},
+	outline: {
+		color: "primary-9",
+	},
+	ghost: {
+		color: "neutral-11",
+	},
+};
 
-				{children && (
-					<ButtonText
-						textAlign="center"
-						{...textSizes[size]}
-						{...textVariants[variant]}
-					>
-						{children}
-					</ButtonText>
-				)}
+const textSizes: { [key in ButtonSize]: TextProps } = {
+	lg: {
+		fontSize: 16,
+	},
+	md: {
+		fontSize: 16,
+	},
+	sm: {
+		fontSize: 14,
+	},
+};
 
-				{rightIcon && (
-					<Icon
-						name={rightIcon}
-						size={iconSizes[size]}
-						color={textVariants[variant].color}
-						strokeWidth={2}
-					/>
-				)}
-			</HStack>
-		</TouchableOpacity>
-	);
+const iconSizes: { [key in ButtonSize]: IconProps["size"] } = {
+	lg: 20,
+	md: 18,
+	sm: 16,
 };

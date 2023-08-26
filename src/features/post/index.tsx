@@ -27,7 +27,7 @@ export const Post = ({ post }: { post: Post }) => {
 			<HStack space={8} alignItems="center">
 				<Link
 					href={{
-						pathname: "/(app)/profile/[id]",
+						pathname: "/(app)/profile/[id]/(tabs)",
 						params: { id: author.id },
 					}}
 					asChild

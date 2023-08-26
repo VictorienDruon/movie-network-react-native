@@ -58,11 +58,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 			/>
 
 			{formState.isValid && (
-				<Button
-					size="sm"
-					rightIcon="Send"
-					onPress={handleCommentSubmit}
-				></Button>
+				<Button rightIcon="Send" onPress={handleCommentSubmit}></Button>
 			)}
 		</HStack>
 	);

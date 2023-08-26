@@ -60,7 +60,7 @@ const CreatePostScreen = () => {
 
 						<Button
 							variant="outline"
-							size="xs"
+							size="sm"
 							rightIcon="Globe"
 							disabled={true}
 						>

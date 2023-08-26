@@ -46,6 +46,34 @@ export interface Database {
           }
         ]
       }
+      follows: {
+        Row: {
+          followed_id: string
+          follower_id: string
+        }
+        Insert: {
+          followed_id: string
+          follower_id: string
+        }
+        Update: {
+          followed_id?: string
+          follower_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follows_followed_id_fkey"
+            columns: ["followed_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follows_follower_id_fkey"
+            columns: ["follower_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       likes: {
         Row: {
           created_at: string

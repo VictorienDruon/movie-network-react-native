@@ -37,7 +37,7 @@ export const Skeleton = (props: BoxProps) => {
 	});
 
 	return (
-		<Box overflow="hidden" borderRadius="xs" {...props}>
+		<Box overflow="hidden" borderRadius="md" {...props}>
 			<Animated.View style={{ flex: 1, backgroundColor }} />
 		</Box>
 	);
