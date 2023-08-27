@@ -4,7 +4,7 @@ import { ButtonText, TextProps } from "./texts";
 import { Icon, IconProps } from "./icon";
 import { BoxProps } from "./box";
 
-type ButtonVariant = "primary" | "outline" | "ghost";
+type ButtonVariant = "primary" | "outline" | "secondary" | "secondaryOutline";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
@@ -76,26 +76,31 @@ const boxVariants: { [key in ButtonVariant]: BoxProps } = {
 		borderWidth: 1,
 		borderRadius: "full",
 	},
-	ghost: {
+	secondary: {
 		bg: "neutral-3",
+		borderRadius: "full",
+	},
+	secondaryOutline: {
+		borderColor: "neutral-6",
+		borderWidth: 1,
 		borderRadius: "full",
 	},
 };
 
 const boxSizes: { [key in ButtonSize]: StackProps } = {
 	lg: {
+		height: 32,
 		px: 20,
-		py: 8,
 		space: 6,
 	},
 	md: {
+		height: 30,
 		px: 12,
-		py: 6,
 		space: 4,
 	},
 	sm: {
+		height: 28,
 		px: 8,
-		py: 4,
 		space: 4,
 	},
 };
@@ -107,7 +112,10 @@ const textVariants: { [key in ButtonVariant]: TextProps } = {
 	outline: {
 		color: "primary-9",
 	},
-	ghost: {
+	secondary: {
+		color: "neutral-11",
+	},
+	secondaryOutline: {
 		color: "neutral-11",
 	},
 };

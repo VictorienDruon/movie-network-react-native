@@ -1,5 +1,4 @@
 import { formatPost } from "@/utils/objects";
-import { formatPosts } from "@/utils/arrays";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
@@ -41,7 +40,7 @@ export async function getAll(pageParam: number, pageCount = 10) {
 	const nextPost = data.slice(pageCount);
 
 	return {
-		posts: formatPosts(posts, session.user.id),
+		posts: posts.map((post) => formatPost(post, session.user.id)),
 		nextCursor: nextPost.length ? pageParam + 1 : undefined,
 	};
 }
@@ -71,7 +70,7 @@ export async function getAllByUser(
 	const nextPost = data.slice(pageCount);
 
 	return {
-		posts: formatPosts(posts, session.user.id),
+		posts: posts.map((post) => formatPost(post, session.user.id)),
 		nextCursor: nextPost.length ? pageParam + 1 : undefined,
 	};
 }

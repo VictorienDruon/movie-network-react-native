@@ -18,7 +18,7 @@ const HomeScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <PostSkeletons count={5} />;
+	if (query.isLoading) return <PostSkeletons count={4} />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 	return (
@@ -29,7 +29,7 @@ const HomeScreen = () => {
 				renderItem={({ item: post }) => <Post post={post} />}
 				ItemSeparatorComponent={() => <Separator />}
 				ListFooterComponent={
-					<Box pb={64}>{query.hasNextPage && <PostSkeletons count={1} />}</Box>
+					<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
 				}
 				refreshControl={<Refresh refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}

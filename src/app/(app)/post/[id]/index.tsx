@@ -13,7 +13,7 @@ const PostScreen = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isLoading) return <PostSkeletons count={1} />;
+	if (query.isLoading) return <PostSkeletons />;
 
 	if (query.isError) return <Error retry={query.refetch} />;
 

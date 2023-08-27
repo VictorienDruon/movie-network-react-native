@@ -1,6 +1,6 @@
 import { VStack, HStack, Skeleton } from "@/components/ui";
 
-const PostSkeletons = ({ count }: { count: number }) => (
+const PostSkeletons = ({ count = 1 }) => (
 	<>
 		{Array.from({ length: count }).map((_, index) => (
 			<VStack key={index} space={8} p={16}>
@@ -12,7 +12,7 @@ const PostSkeletons = ({ count }: { count: number }) => (
 					</VStack>
 					<Skeleton width={40} height={16} />
 				</HStack>
-				<Skeleton width="100%" height={32} />
+				<Skeleton width="100%" height={64} />
 				<HStack space={8}>
 					<Skeleton flex={1} maxHeight={40} borderRadius="full" />
 					<Skeleton width={40} height={40} borderRadius="full" />

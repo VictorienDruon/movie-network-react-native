@@ -13,6 +13,7 @@ interface ActionsProps {
 
 const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 	const queryClient = useQueryClient();
+
 	const mutation = useMutation<NewLike, Error, NewLike>(toggle, {
 		onSuccess: ({ user_id, post_id }) => {
 			queryClient.invalidateQueries({

@@ -1,4 +1,4 @@
-import { formatPosts } from "@/utils/arrays";
+import { formatPost } from "@/utils/objects";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
@@ -6,7 +6,7 @@ export type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
 
-export async function getAllByUser(
+export async function getAll(
 	userId: string,
 	pageParam: number,
 	pageCount = 10
@@ -31,7 +31,7 @@ export async function getAllByUser(
 	const nextLike = data.slice(pageCount);
 
 	return {
-		likes: formatPosts(likes, session.user.id),
+		likes: likes.map((likes) => formatPost(likes, session.user.id)),
 		nextCursor: nextLike.length ? pageParam + 1 : undefined,
 	};
 }

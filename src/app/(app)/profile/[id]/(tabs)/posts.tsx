@@ -12,7 +12,7 @@ interface Page {
 	nextCursor: number;
 }
 
-const ProfilePostsScreen = () => {
+const PostsTab = () => {
 	const { userId } = useLocalSearchParams() as { userId: string };
 	const props = useScrollProps();
 
@@ -36,7 +36,7 @@ const ProfilePostsScreen = () => {
 				<Empty>This user has not posted any posts yet.</Empty>
 			}
 			ListFooterComponent={
-				<Box pb={64}>{query.hasNextPage && <PostSkeletons count={1} />}</Box>
+				<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
@@ -46,4 +46,4 @@ const ProfilePostsScreen = () => {
 	);
 };
 
-export default ProfilePostsScreen;
+export default PostsTab;

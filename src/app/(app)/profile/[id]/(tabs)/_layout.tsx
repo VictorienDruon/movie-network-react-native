@@ -6,7 +6,7 @@ import { Error } from "@/components/ui";
 import { Profile } from "@/features/profile";
 import ProfileSkeleton from "@/features/profile/components/ProfileSkeleton";
 
-const TopTabsLayout = () => {
+const ProfileLayout = () => {
 	const { id } = useLocalSearchParams() as { id: string };
 
 	const query = useQuery<Profile, Error>({
@@ -32,4 +32,4 @@ const TopTabsLayout = () => {
 	);
 };
 
-export default TopTabsLayout;
+export default ProfileLayout;

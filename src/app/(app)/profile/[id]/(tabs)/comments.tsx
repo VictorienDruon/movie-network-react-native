@@ -1,5 +1,5 @@
-import { Animated, TouchableOpacity } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Animated } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
@@ -12,7 +12,7 @@ interface Page {
 	nextCursor: number;
 }
 
-const ProfileCommentsScreen = () => {
+const CommentsTab = () => {
 	const { userId } = useLocalSearchParams() as { userId: string };
 	const props = useScrollProps();
 
@@ -30,24 +30,12 @@ const ProfileCommentsScreen = () => {
 		<Animated.FlatList
 			data={query.data.pages.flatMap((page) => page.comments)}
 			keyExtractor={(comment) => comment.id}
-			renderItem={({ item: comment }) => (
-				<Link
-					href={{
-						pathname: "/(app)/post/[id]",
-						params: { id: comment.post_id },
-					}}
-					asChild
-				>
-					<TouchableOpacity>
-						<Comment comment={comment} />
-					</TouchableOpacity>
-				</Link>
-			)}
+			renderItem={({ item: comment }) => <Comment comment={comment} />}
 			ListEmptyComponent={
 				<Empty>This user has not posted any comments yet.</Empty>
 			}
 			ListFooterComponent={
-				<Box pb={64}>{query.hasNextPage && <CommentSkeletons count={1} />}</Box>
+				<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>
 			}
 			refreshControl={<Refresh refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
@@ -57,4 +45,4 @@ const ProfileCommentsScreen = () => {
 	);
 };
 
-export default ProfileCommentsScreen;
+export default CommentsTab;

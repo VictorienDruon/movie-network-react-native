@@ -3,7 +3,7 @@ import { Database } from "../types/database.types";
 
 export type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
-export async function getAll(
+export async function getAllByPost(
 	postId: string,
 	pageParam: number,
 	pageCount = 10
