@@ -7,7 +7,6 @@ const AppLayout = () => (
 	<QueryClientProvider client={queryClient}>
 		<Stack>
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
 			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "Profile" }} />
 			<Stack.Screen
 				name="profile/[id]/following"
@@ -17,8 +16,6 @@ const AppLayout = () => (
 				name="profile/[id]/followers"
 				options={{ title: "Followers", presentation: "modal" }}
 			/>
-
-			<Stack.Screen name="post/create" options={{ title: "Create Post" }} />
 			<Stack.Screen name="post/[id]/index" options={{ title: "Post" }} />
 			<Stack.Screen
 				name="post/[id]/comments"
@@ -26,6 +23,14 @@ const AppLayout = () => (
 					title: "Comments",
 					presentation: "modal",
 				}}
+			/>
+			<Stack.Screen
+				name="post/create/index"
+				options={{ title: "Create Post" }}
+			/>
+			<Stack.Screen
+				name="post/create/select"
+				options={{ title: "Select Movies or TV shows", presentation: "modal" }}
 			/>
 		</Stack>
 	</QueryClientProvider>

@@ -1,5 +1,10 @@
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { useRouter } from "expo-router";
+import {
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+	TouchableOpacity,
+} from "react-native";
+import { Link, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,7 +23,7 @@ import {
 	Input,
 } from "@/components/ui";
 
-const CreatePostScreen = () => {
+const CreateScreen = () => {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 	const { user } = useSession();
@@ -94,17 +99,26 @@ const CreatePostScreen = () => {
 					justifyContent="space-between"
 					alignItems="center"
 					height={48}
-					px={28}
+					px={32}
 					space={0}
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
-					<HStack space={28}>
-						<Icon name="Clapperboard" color="primary-9" size={24} />
-						<Icon name="Tv" color="primary-9" size={24} />
-						<Icon name="VenetianMask" color="primary-9" size={24} />
-						<Icon name="Megaphone" color="primary-9" size={24} />
-					</HStack>
+					<Link href="/(app)/post/create/select" asChild>
+						<TouchableOpacity>
+							<HStack
+								space={0}
+								justifyContent="center"
+								alignItems="center"
+								width={30}
+								height={30}
+								bg="primary-9"
+								borderRadius="full"
+							>
+								<Icon name="Plus" size={24} color="primary-3" />
+							</HStack>
+						</TouchableOpacity>
+					</Link>
 
 					<Button
 						rightIcon={formState.isValid ? "ArrowRight" : "Lock"}
@@ -119,4 +133,4 @@ const CreatePostScreen = () => {
 	);
 };
 
-export default CreatePostScreen;
+export default CreateScreen;

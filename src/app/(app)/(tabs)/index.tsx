@@ -2,7 +2,14 @@ import { FlatList, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
-import { Box, HStack, Icon, Refresh, Separator, Error } from "@/components/ui";
+import {
+	Box,
+	HStack,
+	Icon,
+	Refresh,
+	Separator,
+	ErrorState,
+} from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
@@ -20,7 +27,7 @@ const HomeScreen = () => {
 
 	if (query.isLoading) return <PostSkeletons count={4} />;
 
-	if (query.isError) return <Error retry={query.refetch} />;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 	return (
 		<Box flex={1} position="relative">
 			<FlatList

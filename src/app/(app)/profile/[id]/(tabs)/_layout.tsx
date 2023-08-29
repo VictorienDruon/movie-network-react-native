@@ -2,7 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/profiles";
-import { Error } from "@/components/ui";
+import { ErrorState } from "@/components/ui";
 import { Profile } from "@/features/profile";
 import ProfileSkeleton from "@/features/profile/components/ProfileSkeleton";
 
@@ -14,7 +14,7 @@ const ProfileLayout = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isError) return <Error retry={query.refetch} />;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
 		<TopTabs>

@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
-import { Box, Empty, Refresh } from "@/components/ui";
+import { Box, EmptyState, Refresh } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
 
@@ -32,7 +32,7 @@ const CommentsTab = () => {
 			keyExtractor={(comment) => comment.id}
 			renderItem={({ item: comment }) => <Comment comment={comment} />}
 			ListEmptyComponent={
-				<Empty>This user has not posted any comments yet.</Empty>
+				<EmptyState>This user has not posted any comments yet.</EmptyState>
 			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>

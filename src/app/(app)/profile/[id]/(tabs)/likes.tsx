@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/likes";
-import { Box, Empty, Refresh, Separator } from "@/components/ui";
+import { Box, EmptyState, Refresh, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
@@ -32,7 +32,9 @@ const LikesTab = () => {
 			keyExtractor={(like) => like.id}
 			renderItem={({ item: like }) => <Post post={like} />}
 			ItemSeparatorComponent={() => <Separator />}
-			ListEmptyComponent={<Empty>This user has not liked any posts yet.</Empty>}
+			ListEmptyComponent={
+				<EmptyState>This user has not liked any posts yet.</EmptyState>
+			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
 			}

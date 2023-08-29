@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
-import { Error } from "@/components/ui";
+import { ErrorState } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
@@ -15,7 +15,7 @@ const PostScreen = () => {
 
 	if (query.isLoading) return <PostSkeletons />;
 
-	if (query.isError) return <Error retry={query.refetch} />;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return <Post post={query.data} />;
 };

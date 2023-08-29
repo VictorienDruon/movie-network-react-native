@@ -2,7 +2,7 @@ import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByPost } from "@/libs/supabase/api/comments";
-import { Box, Empty, Error } from "@/components/ui";
+import { Box, EmptyState, ErrorState } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
 import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
@@ -23,7 +23,7 @@ const CommentsScreen = () => {
 
 	if (query.isLoading) return <CommentSkeletons count={2} />;
 
-	if (query.isError) return <Error retry={query.refetch} />;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
 		<Box flex={1} pb={48}>
@@ -31,7 +31,7 @@ const CommentsScreen = () => {
 				data={query.data.pages.flatMap((page) => page.comments)}
 				keyExtractor={(comment) => comment.id}
 				renderItem={({ item: comment }) => <Comment comment={comment} />}
-				ListEmptyComponent={<Empty>There are no comments yet.</Empty>}
+				ListEmptyComponent={<EmptyState>There are no comments yet.</EmptyState>}
 				ListFooterComponent={
 					<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>
 				}

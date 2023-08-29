@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { TextInput, TextInputProps } from "react-native";
 import {
 	typography,
@@ -31,17 +32,20 @@ type InputProps = RestyleProps &
 		placeholderTextColor?: keyof Theme["colors"];
 	};
 
-export const Input = ({
-	placeholderTextColor = "neutral-11",
-	...rest
-}: InputProps) => {
-	const { colors } = useTheme<Theme>();
-	const props = useRestyle(restyleFunctions, rest);
+export const Input = forwardRef(
+	(
+		{ placeholderTextColor = "neutral-11", ...rest }: InputProps,
+		ref: React.MutableRefObject<TextInput>
+	) => {
+		const { colors } = useTheme<Theme>();
+		const props = useRestyle(restyleFunctions, rest);
 
-	return (
-		<TextInput
-			placeholderTextColor={colors[placeholderTextColor]}
-			{...props}
-		></TextInput>
-	);
-};
+		return (
+			<TextInput
+				ref={ref}
+				placeholderTextColor={colors[placeholderTextColor]}
+				{...props}
+			></TextInput>
+		);
+	}
+);

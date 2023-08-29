@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { getFollowing } from "@/libs/supabase/api/follows";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Box, Empty, Error, Separator } from "@/components/ui";
+import { Box, EmptyState, ErrorState, Separator } from "@/components/ui";
 import { User } from "@/features/user";
 import UserSkeletons from "@/features/user/components/UserSkeletons";
 
@@ -22,7 +22,7 @@ const FollowingScreen = () => {
 
 	if (query.isLoading) return <UserSkeletons count={2} />;
 
-	if (query.isError) return <Error retry={query.refetch} />;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
 		<FlatList
@@ -30,7 +30,9 @@ const FollowingScreen = () => {
 			keyExtractor={(user) => user.id}
 			renderItem={({ item: user }) => <User user={user} />}
 			ItemSeparatorComponent={() => <Separator />}
-			ListEmptyComponent={<Empty>This user does not follow anyone yet.</Empty>}
+			ListEmptyComponent={
+				<EmptyState>This user does not follow anyone yet.</EmptyState>
+			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <UserSkeletons />}</Box>
 			}

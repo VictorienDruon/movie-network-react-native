@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/posts";
-import { Box, Separator, Refresh, Empty } from "@/components/ui";
+import { Box, Separator, Refresh, EmptyState } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
@@ -33,7 +33,7 @@ const PostsTab = () => {
 			renderItem={({ item: post }) => <Post post={post} />}
 			ItemSeparatorComponent={() => <Separator />}
 			ListEmptyComponent={
-				<Empty>This user has not posted any posts yet.</Empty>
+				<EmptyState>This user has not posted any posts yet.</EmptyState>
 			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
