@@ -27,12 +27,12 @@ export async function getAll(
 
 	if (error) throw error;
 
-	const likes = data.slice(0, pageCount).flatMap((like) => like.posts);
-	const nextLike = data.slice(pageCount);
+	const posts = data.slice(0, pageCount).flatMap((like) => like.posts);
+	const nextPost = data.slice(pageCount);
 
 	return {
-		likes: likes.map((likes) => formatPost(likes, session.user.id)),
-		nextCursor: nextLike.length ? pageParam + 1 : undefined,
+		posts: posts.map((post) => formatPost(post, session.user.id)),
+		nextCursor: nextPost.length ? pageParam + 1 : undefined,
 	};
 }
 

@@ -2,24 +2,18 @@ import { FlatList, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
-import {
-	Box,
-	HStack,
-	Icon,
-	Refresh,
-	Separator,
-	ErrorState,
-} from "@/components/ui";
+import { ErrorState, RefreshControl } from "@/components/common";
+import { Box, HStack, Icon, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
-interface Page {
+interface PostsPage {
 	posts: Post[];
 	nextCursor: number;
 }
 
 const HomeScreen = () => {
-	const query = useInfiniteQuery<Page, Error>({
+	const query = useInfiniteQuery<PostsPage, Error>({
 		queryKey: ["feed"],
 		queryFn: ({ pageParam = 0 }) => getAll(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -38,7 +32,7 @@ const HomeScreen = () => {
 				ListFooterComponent={
 					<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
 				}
-				refreshControl={<Refresh refetch={query.refetch} />}
+				refreshControl={<RefreshControl refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}
 				onEndReached={() => query.fetchNextPage()}
 			/>

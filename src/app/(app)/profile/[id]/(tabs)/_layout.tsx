@@ -2,7 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/profiles";
-import { ErrorState } from "@/components/ui";
+import { ErrorState } from "@/components/common";
 import { Profile } from "@/features/profile";
 import ProfileSkeleton from "@/features/profile/components/ProfileSkeleton";
 

@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl as RnRefreshControlRN } from "react-native";
 import { QueryObserverResult } from "@tanstack/react-query";
 
-export const Refresh = ({
+export const RefreshControl = ({
 	refetch,
 }: {
 	refetch: () => Promise<QueryObserverResult>;
@@ -15,11 +15,8 @@ export const Refresh = ({
 	}, []);
 
 	return (
-		<RefreshControl
-			refreshing={refreshing}
-			onRefresh={handleRefresh}
-		></RefreshControl>
+		<RnRefreshControlRN refreshing={refreshing} onRefresh={handleRefresh} />
 	);
 };
 
-export default Refresh;
+export default RefreshControl;

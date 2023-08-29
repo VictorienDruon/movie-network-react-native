@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
-import { ErrorState } from "@/components/ui";
+import { ErrorState } from "@/components/common";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 

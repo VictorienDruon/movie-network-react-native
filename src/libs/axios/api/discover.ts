@@ -1,16 +1,15 @@
 import { api } from "..";
 import { ApiResponse, Movie, Shows } from "../types";
 
-export async function searchMovies(query: string, page: number) {
+export async function discoverMovies(page: number) {
 	const params = new URLSearchParams({
-		query,
 		include_adult: "false",
 		language: "en-US",
 		page: page.toString(),
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Movie>>("/search/movie", {
+		const { data } = await api.get<ApiResponse<Movie>>(`/discover/movie`, {
 			params,
 		});
 
@@ -23,16 +22,15 @@ export async function searchMovies(query: string, page: number) {
 	}
 }
 
-export async function searchShows(query: string, page: number) {
+export async function discoverShows(page: number) {
 	const params = new URLSearchParams({
-		query,
 		include_adult: "false",
 		language: "en-US",
 		page: page.toString(),
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Shows>>("/search/tv", {
+		const { data } = await api.get<ApiResponse<Shows>>(`/discover/tv`, {
 			params,
 		});
 

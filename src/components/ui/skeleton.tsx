@@ -31,14 +31,14 @@ export const Skeleton = (props: BoxProps) => {
 		};
 	}, [pulse]);
 
-	const backgroundColor = pulse.interpolate({
+	const color = pulse.interpolate({
 		inputRange: [0, 1],
 		outputRange: [colors["neutral-3"], colors["neutral-2"]],
 	});
 
 	return (
-		<Box overflow="hidden" borderRadius="md" {...props}>
-			<Animated.View style={{ flex: 1, backgroundColor }} />
+		<Box overflow="hidden" borderRadius="md" borderColor="neutral-3" {...props}>
+			<Animated.View style={{ flex: 1, backgroundColor: color }} />
 		</Box>
 	);
 };

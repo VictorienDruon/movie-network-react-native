@@ -3,11 +3,12 @@ import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/posts";
-import { Box, Separator, Refresh, EmptyState } from "@/components/ui";
+import { EmptyState, RefreshControl } from "@/components/common";
+import { Box, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
-interface Page {
+interface PostsPage {
 	posts: Post[];
 	nextCursor: number;
 }
@@ -16,7 +17,7 @@ const PostsTab = () => {
 	const { userId } = useLocalSearchParams() as { userId: string };
 	const props = useScrollProps();
 
-	const query = useInfiniteQuery<Page, Error>({
+	const query = useInfiniteQuery<PostsPage, Error>({
 		queryKey: ["posts", userId],
 		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -38,7 +39,7 @@ const PostsTab = () => {
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
 			}
-			refreshControl={<Refresh refetch={query.refetch} />}
+			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
 			{...props}

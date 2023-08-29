@@ -1,7 +1,7 @@
 import { QueryObserverResult } from "@tanstack/react-query";
-import { VStack } from "./stack";
-import { Heading, Title } from "./texts";
-import { Button } from "./button";
+import { VStack } from "../ui/stack";
+import { Heading, Title } from "../ui/texts";
+import { Button } from "../ui/button";
 
 interface ErrorStateProps {
 	retry: () => Promise<QueryObserverResult>;

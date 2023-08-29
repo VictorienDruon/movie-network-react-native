@@ -2,19 +2,20 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { getFollowers } from "@/libs/supabase/api/follows";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Box, EmptyState, ErrorState, Separator } from "@/components/ui";
+import { ErrorState, EmptyState } from "@/components/common";
+import { Box, Separator } from "@/components/ui";
 import { User } from "@/features/user";
 import UserSkeletons from "@/features/user/components/UserSkeletons";
 
-interface Page {
+interface UsersPage {
 	users: User[];
 	nextCursor: number;
 }
 
-const FollowersScreen = () => {
+const FollowersModal = () => {
 	const { id } = useLocalSearchParams() as { id: string };
 
-	const query = useInfiniteQuery<Page, Error>({
+	const query = useInfiniteQuery<UsersPage, Error>({
 		queryKey: ["followers", id],
 		queryFn: ({ pageParam = 0 }) => getFollowers(id, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -42,4 +43,4 @@ const FollowersScreen = () => {
 	);
 };
 
-export default FollowersScreen;
+export default FollowersModal;

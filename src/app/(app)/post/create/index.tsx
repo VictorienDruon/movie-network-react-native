@@ -104,21 +104,19 @@ const CreateScreen = () => {
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
-					<Link href="/(app)/post/create/select" asChild>
-						<TouchableOpacity>
-							<HStack
-								space={0}
-								justifyContent="center"
-								alignItems="center"
-								width={30}
-								height={30}
-								bg="primary-9"
-								borderRadius="full"
-							>
-								<Icon name="Plus" size={24} color="primary-3" />
-							</HStack>
-						</TouchableOpacity>
-					</Link>
+					<HStack space={32}>
+						<Link href="/(app)/post/create/movies" asChild>
+							<TouchableOpacity>
+								<Icon name="Clapperboard" color="primary-9" size={24} />
+							</TouchableOpacity>
+						</Link>
+
+						<Link href="/(app)/post/create/shows" asChild>
+							<TouchableOpacity>
+								<Icon name="Tv" color="primary-9" size={24} />
+							</TouchableOpacity>
+						</Link>
+					</HStack>
 
 					<Button
 						rightIcon={formState.isValid ? "ArrowRight" : "Lock"}

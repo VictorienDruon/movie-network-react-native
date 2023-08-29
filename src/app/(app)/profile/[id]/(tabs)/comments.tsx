@@ -3,11 +3,12 @@ import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
-import { Box, EmptyState, Refresh } from "@/components/ui";
+import { EmptyState, RefreshControl } from "@/components/common";
+import { Box } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
 
-interface Page {
+interface CommentsPage {
 	comments: Comment[];
 	nextCursor: number;
 }
@@ -16,7 +17,7 @@ const CommentsTab = () => {
 	const { userId } = useLocalSearchParams() as { userId: string };
 	const props = useScrollProps();
 
-	const query = useInfiniteQuery<Page, Error>({
+	const query = useInfiniteQuery<CommentsPage, Error>({
 		queryKey: ["comments", userId],
 		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -37,7 +38,7 @@ const CommentsTab = () => {
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>
 			}
-			refreshControl={<Refresh refetch={query.refetch} />}
+			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
 			{...props}
