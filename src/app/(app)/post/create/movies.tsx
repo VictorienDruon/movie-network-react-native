@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, TouchableOpacity } from "react-native";
+import { Link, Stack, router } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverMovies } from "@/libs/axios/api/discover";
 import { searchMovies } from "@/libs/axios/api/search";
 import { Movie } from "@/libs/axios/types";
+import { usePostCreation } from "@/providers/post-creation";
 import { ErrorState, EmptyState } from "@/components/common";
-import { Box } from "@/components/ui";
-import Card from "@/features/search";
-import CardSkeletons from "@/features/search/components/CardSkeleton";
-import SearchBar from "@/features/search/components/SearchBar";
+import { Box, Title } from "@/components/ui";
+import SearchBar from "@/components/search-bar";
+import Card from "@/features/card";
+import CardSkeletons from "@/features/card/components/CardSkeleton";
 
 interface MoviesPage {
 	movies: Movie[];
@@ -16,6 +18,7 @@ interface MoviesPage {
 }
 
 const MoviesModal = () => {
+	const { isSelected, toggle, push } = usePostCreation();
 	const [value, setValue] = useState<string>("");
 	const { width } = Dimensions.get("screen");
 	const margin = (width - 332) / 6;
@@ -42,34 +45,66 @@ const MoviesModal = () => {
 	const fetchNextPage = value ? query.fetchNextPage : initQuery.fetchNextPage;
 
 	return (
-		<Box flex={1} px={16}>
-			<SearchBar label="Movie" setValue={setValue} />
+		<>
+			<Stack.Screen
+				options={{
+					headerLeft: () => (
+						<Link href=".." asChild>
+							<TouchableOpacity>
+								<Title color="primary-9" fontWeight="normal">
+									Cancel
+								</Title>
+							</TouchableOpacity>
+						</Link>
+					),
+					headerRight: () => (
+						<Link href=".." asChild>
+							<TouchableOpacity onPress={push}>
+								<Title color="primary-9">Done</Title>
+							</TouchableOpacity>
+						</Link>
+					),
+				}}
+			/>
 
-			{isLoading ? (
-				<CardSkeletons count={9} margin={margin} />
-			) : (
-				<FlatList
-					data={data.pages.flatMap((page) => page.movies)}
-					numColumns={3}
-					keyExtractor={(movie) => movie.id.toString()}
-					renderItem={({ item: movie }) => (
-						<Card
-							title={movie.title}
-							posterPath={movie.poster_path}
-							margin={margin}
-						/>
-					)}
-					ListEmptyComponent={<EmptyState>No results</EmptyState>}
-					ListFooterComponent={
-						<Box pb={64}>
-							{hasNextPage && <CardSkeletons count={3} margin={margin} />}
-						</Box>
-					}
-					onEndReached={() => fetchNextPage()}
-					showsVerticalScrollIndicator={false}
-				/>
-			)}
-		</Box>
+			<Box flex={1} px={16}>
+				<SearchBar label="Movie" setValue={setValue} />
+
+				{isLoading ? (
+					<CardSkeletons count={9} margin={margin} />
+				) : (
+					<FlatList
+						data={data.pages.flatMap((page) => page.movies)}
+						numColumns={3}
+						keyExtractor={(movie) => movie.id.toString()}
+						renderItem={({ item: movie }) => (
+							<Card
+								title={movie.title}
+								posterPath={movie.poster_path}
+								isSelected={isSelected(movie.id)}
+								margin={margin}
+								onPress={() =>
+									toggle({
+										type: "movie",
+										id: movie.id,
+										title: movie.title,
+										poster_path: movie.poster_path,
+									})
+								}
+							/>
+						)}
+						ListEmptyComponent={<EmptyState>No results</EmptyState>}
+						ListFooterComponent={
+							<Box pb={64}>
+								{hasNextPage && <CardSkeletons count={3} margin={margin} />}
+							</Box>
+						}
+						onEndReached={() => fetchNextPage()}
+						showsVerticalScrollIndicator={false}
+					/>
+				)}
+			</Box>
+		</>
 	);
 };
 

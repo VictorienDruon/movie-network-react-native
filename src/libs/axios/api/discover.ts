@@ -1,5 +1,5 @@
 import { api } from "..";
-import { ApiResponse, Movie, Shows } from "../types";
+import { ApiResponse, Movie, Show } from "../types";
 
 export async function discoverMovies(page: number) {
 	const params = new URLSearchParams({
@@ -30,7 +30,7 @@ export async function discoverShows(page: number) {
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Shows>>(`/discover/tv`, {
+		const { data } = await api.get<ApiResponse<Show>>(`/discover/tv`, {
 			params,
 		});
 

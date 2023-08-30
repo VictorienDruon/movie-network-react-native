@@ -24,18 +24,7 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
-			<Stack.Screen
-				name="post/create/index"
-				options={{ title: "Create Post" }}
-			/>
-			<Stack.Screen
-				name="post/create/movies"
-				options={{ title: "Select a Movie", presentation: "modal" }}
-			/>
-			<Stack.Screen
-				name="post/create/shows"
-				options={{ title: "Select a TV show", presentation: "modal" }}
-			/>
+			<Stack.Screen name="post/create" options={{ title: "Create Post" }} />
 		</Stack>
 	</QueryClientProvider>
 );

@@ -1,21 +1,24 @@
 import { useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, TouchableOpacity } from "react-native";
+import { Link, Stack, router } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverShows } from "@/libs/axios/api/discover";
 import { searchShows } from "@/libs/axios/api/search";
-import { Shows } from "@/libs/axios/types";
+import { Show } from "@/libs/axios/types";
+import { usePostCreation } from "@/providers/post-creation";
 import { ErrorState, EmptyState } from "@/components/common";
-import { Box } from "@/components/ui";
-import Card from "@/features/search";
-import CardSkeletons from "@/features/search/components/CardSkeleton";
-import SearchBar from "@/features/search/components/SearchBar";
+import { Box, Title } from "@/components/ui";
+import SearchBar from "@/components/search-bar";
+import Card from "@/features/card";
+import CardSkeletons from "@/features/card/components/CardSkeleton";
 
 interface ShowsPage {
-	shows: Shows[];
+	shows: Show[];
 	nextCursor: number;
 }
 
 const ShowsModal = () => {
+	const { isSelected, toggle, push } = usePostCreation();
 	const [value, setValue] = useState<string>("");
 	const { width } = Dimensions.get("screen");
 	const margin = (width - 332) / 6;
@@ -42,34 +45,66 @@ const ShowsModal = () => {
 	const fetchNextPage = value ? query.fetchNextPage : initQuery.fetchNextPage;
 
 	return (
-		<Box flex={1} px={16}>
-			<SearchBar label="TV shows" setValue={setValue} />
+		<>
+			<Stack.Screen
+				options={{
+					headerLeft: () => (
+						<Link href=".." asChild>
+							<TouchableOpacity>
+								<Title color="primary-9" fontWeight="normal">
+									Cancel
+								</Title>
+							</TouchableOpacity>
+						</Link>
+					),
+					headerRight: () => (
+						<Link href=".." asChild>
+							<TouchableOpacity onPress={push}>
+								<Title color="primary-9">Done</Title>
+							</TouchableOpacity>
+						</Link>
+					),
+				}}
+			/>
 
-			{isLoading ? (
-				<CardSkeletons count={9} margin={margin} />
-			) : (
-				<FlatList
-					data={data.pages.flatMap((page) => page.shows)}
-					numColumns={3}
-					keyExtractor={(show) => show.id.toString()}
-					renderItem={({ item: show }) => (
-						<Card
-							title={show.name}
-							posterPath={show.poster_path}
-							margin={margin}
-						/>
-					)}
-					ListEmptyComponent={<EmptyState>No results</EmptyState>}
-					ListFooterComponent={
-						<Box pb={64}>
-							{hasNextPage && <CardSkeletons count={3} margin={margin} />}
-						</Box>
-					}
-					onEndReached={() => fetchNextPage()}
-					showsVerticalScrollIndicator={false}
-				/>
-			)}
-		</Box>
+			<Box flex={1} px={16}>
+				<SearchBar label="TV shows" setValue={setValue} />
+
+				{isLoading ? (
+					<CardSkeletons count={9} margin={margin} />
+				) : (
+					<FlatList
+						data={data.pages.flatMap((page) => page.shows)}
+						numColumns={3}
+						keyExtractor={(show) => show.id.toString()}
+						renderItem={({ item: show }) => (
+							<Card
+								title={show.name}
+								posterPath={show.poster_path}
+								isSelected={isSelected(show.id)}
+								margin={margin}
+								onPress={() =>
+									toggle({
+										type: "tv",
+										id: show.id,
+										title: show.name,
+										poster_path: show.poster_path,
+									})
+								}
+							/>
+						)}
+						ListEmptyComponent={<EmptyState>No results</EmptyState>}
+						ListFooterComponent={
+							<Box pb={64}>
+								{hasNextPage && <CardSkeletons count={3} margin={margin} />}
+							</Box>
+						}
+						onEndReached={() => fetchNextPage()}
+						showsVerticalScrollIndicator={false}
+					/>
+				)}
+			</Box>
+		</>
 	);
 };
 

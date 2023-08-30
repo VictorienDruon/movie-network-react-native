@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/common";
-import { Box, HStack, Icon, Separator } from "@/components/ui";
+import { Box, Icon, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
@@ -22,6 +22,7 @@ const HomeScreen = () => {
 	if (query.isLoading) return <PostSkeletons count={4} />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
+
 	return (
 		<Box flex={1} position="relative">
 			<FlatList
@@ -37,12 +38,11 @@ const HomeScreen = () => {
 				onEndReached={() => query.fetchNextPage()}
 			/>
 
-			<Link href="post/create" asChild>
+			<Link href="/(app)/post/create" asChild>
 				<TouchableOpacity
 					style={{ position: "absolute", bottom: 12, right: 12 }}
 				>
-					<HStack
-						space={0}
+					<Box
 						justifyContent="center"
 						alignItems="center"
 						width={56}
@@ -56,7 +56,7 @@ const HomeScreen = () => {
 						elevation={5}
 					>
 						<Icon name="Plus" size={24} color="primary-3" />
-					</HStack>
+					</Box>
 				</TouchableOpacity>
 			</Link>
 		</Box>

@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
 import { NewLike, toggle } from "@/libs/supabase/api/likes";
-import { HStack, Icon } from "@/components/ui";
+import { Box, HStack, Icon } from "@/components/ui";
 import CommentBar from "@/features/post/components/CommentBar";
 
 interface ActionsProps {
@@ -54,8 +54,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 				asChild
 			>
 				<TouchableOpacity>
-					<HStack
-						space={0}
+					<Box
 						justifyContent="center"
 						alignItems="center"
 						width={40}
@@ -64,13 +63,12 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 						borderRadius="full"
 					>
 						<Icon name="MessageSquare" size={16} color="neutral-9" />
-					</HStack>
+					</Box>
 				</TouchableOpacity>
 			</Link>
 
 			<TouchableOpacity disabled={mutation.isLoading} onPress={handleLikePress}>
-				<HStack
-					space={0}
+				<Box
 					justifyContent="center"
 					alignItems="center"
 					width={40}
@@ -84,7 +82,7 @@ const Actions = ({ postId, userHasLikedPost }: ActionsProps) => {
 						color="primary-9"
 						fill={userHasLikedPost}
 					/>
-				</HStack>
+				</Box>
 			</TouchableOpacity>
 		</HStack>
 	);

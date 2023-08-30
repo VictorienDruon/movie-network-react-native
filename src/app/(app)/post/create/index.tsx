@@ -4,7 +4,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { Link, router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import { PostSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { NewPost, create } from "@/libs/supabase/api/posts";
 import { useSession } from "@/providers/session";
+import { usePostCreation } from "@/providers/post-creation";
 import {
 	Avatar,
 	Box,
@@ -25,10 +26,10 @@ import {
 
 const CreateScreen = () => {
 	const queryClient = useQueryClient();
-	const router = useRouter();
 	const { user } = useSession();
+	const { attachments } = usePostCreation();
 
-	const { control, formState, handleSubmit, reset } = useForm<PostSchema>({
+	const { control, formState, handleSubmit } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
 	});
 
@@ -40,12 +41,11 @@ const CreateScreen = () => {
 			queryClient.invalidateQueries({
 				queryKey: ["posts", user_id],
 			});
-			router.push("/");
+			router.push("..");
 		},
 	});
 
 	const handlePostSubmit = handleSubmit(async ({ content }: PostSchema) => {
-		reset();
 		const {
 			data: { user },
 		} = await supabase.auth.getUser();
@@ -100,7 +100,7 @@ const CreateScreen = () => {
 					alignItems="center"
 					height={48}
 					px={32}
-					space={0}
+					space={32}
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>

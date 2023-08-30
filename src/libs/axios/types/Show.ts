@@ -1,4 +1,4 @@
-export interface Shows {
+export interface Show {
 	adult: boolean;
 	backdrop_path: string | null;
 	first_air_date: string;

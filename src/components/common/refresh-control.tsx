@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { RefreshControl as RnRefreshControlRN } from "react-native";
+import { RefreshControl as RefreshControlRN } from "react-native";
 import { QueryObserverResult } from "@tanstack/react-query";
 
 export const RefreshControl = ({
@@ -14,9 +14,7 @@ export const RefreshControl = ({
 		refetch().then(() => setRefreshing(false));
 	}, []);
 
-	return (
-		<RnRefreshControlRN refreshing={refreshing} onRefresh={handleRefresh} />
-	);
+	return <RefreshControlRN refreshing={refreshing} onRefresh={handleRefresh} />;
 };
 
 export default RefreshControl;
