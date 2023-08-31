@@ -39,7 +39,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 			pr={8}
 			space={8}
 			bg="neutral-3"
-			borderRadius="lg"
+			borderRadius="xl"
 		>
 			<Controller
 				name="content"

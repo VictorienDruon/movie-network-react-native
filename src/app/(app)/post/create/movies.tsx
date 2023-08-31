@@ -1,14 +1,19 @@
-import { useState } from "react";
-import { Dimensions, FlatList, TouchableOpacity } from "react-native";
-import { Link, Stack, router } from "expo-router";
+import { useRef, useState } from "react";
+import {
+	Dimensions,
+	FlatList,
+	TextInput,
+	TouchableOpacity,
+} from "react-native";
+import { Link, Stack } from "expo-router";
+import debounce from "lodash.debounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverMovies } from "@/libs/axios/api/discover";
 import { searchMovies } from "@/libs/axios/api/search";
 import { Movie } from "@/libs/axios/types";
-import { usePostCreation } from "@/providers/post-creation";
+import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
-import { Box, Title } from "@/components/ui";
-import SearchBar from "@/components/search-bar";
+import { Box, Button, HStack, Input, Title } from "@/components/ui";
 import Card from "@/features/card";
 import CardSkeletons from "@/features/card/components/CardSkeleton";
 
@@ -18,8 +23,9 @@ interface MoviesPage {
 }
 
 const MoviesModal = () => {
-	const { isSelected, toggle, push } = usePostCreation();
+	const { isSelected, toggle, push } = usePosters();
 	const [value, setValue] = useState<string>("");
+	const inputRef = useRef<TextInput>(null);
 	const { width } = Dimensions.get("screen");
 	const margin = (width - 332) / 6;
 
@@ -35,6 +41,15 @@ const MoviesModal = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
+
+	const handleValueChange = debounce((newValue: string) => {
+		setValue(newValue.trim());
+	}, 500);
+
+	const handleClearPress = () => {
+		inputRef.current.clear();
+		setValue("");
+	};
 
 	if (initQuery.isError) return <ErrorState retry={initQuery.refetch} />;
 	if (query.isError) return <ErrorState retry={query.refetch} />;
@@ -68,7 +83,35 @@ const MoviesModal = () => {
 			/>
 
 			<Box flex={1} px={16}>
-				<SearchBar label="Movie" setValue={setValue} />
+				<Box justifyContent="center" height={56} borderColor="neutral-6">
+					<HStack
+						flex={1}
+						alignItems="center"
+						maxHeight={40}
+						pl={12}
+						pr={8}
+						space={8}
+						bg="neutral-3"
+						borderRadius="xl"
+					>
+						<Input
+							ref={inputRef}
+							flex={1}
+							placeholder={`Search for a Movie`}
+							color="neutral-12"
+							placeholderTextColor="neutral-9"
+							autoCapitalize="none"
+							autoCorrect={false}
+							onChangeText={handleValueChange}
+						/>
+
+						<Button
+							rightIcon="X"
+							variant="secondary"
+							onPress={handleClearPress}
+						/>
+					</HStack>
+				</Box>
 
 				{isLoading ? (
 					<CardSkeletons count={9} margin={margin} />
@@ -88,7 +131,7 @@ const MoviesModal = () => {
 										type: "movie",
 										id: movie.id,
 										title: movie.title,
-										poster_path: movie.poster_path,
+										posterPath: movie.poster_path,
 									})
 								}
 							/>

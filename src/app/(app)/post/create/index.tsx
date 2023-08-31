@@ -12,7 +12,7 @@ import { PostSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
 import { NewPost, create } from "@/libs/supabase/api/posts";
 import { useSession } from "@/providers/session";
-import { usePostCreation } from "@/providers/post-creation";
+import { usePosters } from "@/providers/posters";
 import {
 	Avatar,
 	Box,
@@ -23,11 +23,12 @@ import {
 	VStack,
 	Input,
 } from "@/components/ui";
+import { Poster } from "@/features/poster";
 
 const CreateScreen = () => {
 	const queryClient = useQueryClient();
 	const { user } = useSession();
-	const { attachments } = usePostCreation();
+	const { posters } = usePosters();
 
 	const { control, formState, handleSubmit } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
@@ -88,6 +89,57 @@ const CreateScreen = () => {
 							/>
 						)}
 					/>
+
+					<Box maxHeight={300} alignItems="center">
+						{posters.length === 1 ? (
+							<Poster poster={posters[0]} size="lg" />
+						) : posters.length === 2 ? (
+							<>
+								<Poster
+									poster={posters[0]}
+									size="md"
+									right="22%"
+									height="75%"
+									rotate="-3deg"
+								/>
+								<Poster
+									poster={posters[1]}
+									size="md"
+									top="-50%"
+									left="22%"
+									height="75%"
+									rotate="3deg"
+								/>
+							</>
+						) : (
+							posters.length === 3 && (
+								<>
+									<Poster
+										poster={posters[0]}
+										size="sm"
+										right="25%"
+										height="60%"
+										rotate="-5deg"
+									/>
+									<Poster
+										poster={posters[1]}
+										size="sm"
+										top="-50%"
+										left="25%"
+										height="60%"
+										rotate="5deg"
+									/>
+									<Poster
+										poster={posters[2]}
+										size="sm"
+										top="-80%"
+										right="5%"
+										height="60%"
+									/>
+								</>
+							)
+						)}
+					</Box>
 				</VStack>
 			</ScrollView>
 

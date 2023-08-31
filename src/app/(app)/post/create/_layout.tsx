@@ -1,8 +1,8 @@
 import { Stack } from "expo-router";
-import { PostCreationProvider } from "@/providers/post-creation";
+import { PostersProvider } from "@/providers/posters";
 
 const CreateLayout = () => (
-	<PostCreationProvider>
+	<PostersProvider>
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
 			<Stack.Screen
@@ -14,7 +14,7 @@ const CreateLayout = () => (
 				options={{ title: "Select a TV show", presentation: "modal" }}
 			/>
 		</Stack>
-	</PostCreationProvider>
+	</PostersProvider>
 );
 
 export default CreateLayout;

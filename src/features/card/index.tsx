@@ -6,9 +6,9 @@ import { Box, Icon, Metadata, Skeleton, VStack } from "@/components/ui";
 interface CardProps {
 	title: string;
 	posterPath: string;
-	isSelected?: boolean;
-	margin?: number;
-	onPress?: () => void;
+	isSelected: boolean;
+	margin: number;
+	onPress: () => void;
 }
 
 const Card = ({
@@ -32,7 +32,7 @@ const Card = ({
 				>
 					<Image
 						style={{ width: 100, height: 150 }}
-						source={`http://image.tmdb.org/t/p/w154${posterPath}`}
+						source={`https://image.tmdb.org/t/p/w154${posterPath}`}
 						onLoadEnd={() => setIsLoading(false)}
 					/>
 					{isSelected && (
