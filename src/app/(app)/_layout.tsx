@@ -24,7 +24,7 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
-			<Stack.Screen name="post/create" options={{ title: "Create Post" }} />
+			<Stack.Screen name="post/create" options={{ title: "Create a Post" }} />
 		</Stack>
 	</QueryClientProvider>
 );

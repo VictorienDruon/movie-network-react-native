@@ -1,8 +1,10 @@
-import { formatPost } from "@/utils/objects";
+import { RawPost, formatPost } from "@/utils/objects";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
-export type NewPost = Database["public"]["Tables"]["posts"]["Insert"];
+export type NewPost = Database["public"]["Tables"]["posts"]["Insert"] & {
+	posters: Database["public"]["Tables"]["posters"]["Insert"][];
+};
 
 export async function getOne(id: string) {
 	const {
@@ -11,8 +13,11 @@ export async function getOne(id: string) {
 
 	const { data: post, error } = await supabase
 		.from("posts")
-		.select("*, author: profiles(*), likes(user_id)")
+		.select(
+			"*, author: profiles(*), likes(user_id), posts_posters(posters: poster_id(*))"
+		)
 		.eq("id", id)
+		.returns<RawPost>()
 		.single();
 
 	if (error) throw error;
@@ -30,9 +35,12 @@ export async function getAll(pageParam: number, pageCount = 10) {
 
 	const { data, error } = await supabase
 		.from("posts")
-		.select("*, author: profiles(*), likes(user_id)")
+		.select(
+			"*, author: profiles(*), likes(user_id), posts_posters(posters: poster_id(*))"
+		)
 		.order("created_at", { ascending: false })
-		.range(from, to);
+		.range(from, to)
+		.returns<RawPost[]>();
 
 	if (error) throw error;
 
@@ -59,10 +67,13 @@ export async function getAllByUser(
 
 	const { data, error } = await supabase
 		.from("posts")
-		.select("*, author: profiles(*), likes(user_id)")
+		.select(
+			"*, author: profiles(*), likes(user_id), posts_posters(posters: poster_id(*))"
+		)
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })
-		.range(from, to);
+		.range(from, to)
+		.returns<RawPost[]>();
 
 	if (error) throw error;
 
@@ -76,9 +87,31 @@ export async function getAllByUser(
 }
 
 export async function create(newPost: NewPost) {
-	const { error } = await supabase.from("posts").insert(newPost);
+	const { data: post, error: postError } = await supabase
+		.from("posts")
+		.insert({ content: newPost.content, user_id: newPost.user_id })
+		.select()
+		.single();
 
-	if (error) throw error;
+	if (postError) throw postError;
+
+	const { data: posters, error: postersError } = await supabase
+		.from("posters")
+		.upsert(newPost.posters)
+		.select();
+
+	if (postersError) throw postersError;
+
+	const postsPosters = posters.map((poster) => ({
+		post_id: post.id,
+		poster_id: poster.id,
+	}));
+
+	const { error: postsPostersError } = await supabase
+		.from("posts_posters")
+		.insert(postsPosters);
+
+	if (postsPostersError) throw postsPostersError;
 
 	return newPost;
 }

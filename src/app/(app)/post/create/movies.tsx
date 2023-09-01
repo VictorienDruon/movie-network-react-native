@@ -131,7 +131,7 @@ const MoviesModal = () => {
 										type: "movie",
 										id: movie.id,
 										title: movie.title,
-										posterPath: movie.poster_path,
+										poster_path: movie.poster_path,
 									})
 								}
 							/>

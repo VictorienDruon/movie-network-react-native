@@ -131,7 +131,7 @@ const ShowsModal = () => {
 										type: "tv",
 										id: show.id,
 										title: show.name,
-										posterPath: show.poster_path,
+										poster_path: show.poster_path,
 									})
 								}
 							/>

@@ -111,6 +111,30 @@ export interface Database {
           }
         ]
       }
+      posters: {
+        Row: {
+          created_at: string
+          id: number
+          poster_path: string
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id: number
+          poster_path: string
+          title: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          poster_path?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           content: string
@@ -135,6 +159,34 @@ export interface Database {
             foreignKeyName: "posts_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      posts_posters: {
+        Row: {
+          post_id: string
+          poster_id: number
+        }
+        Insert: {
+          post_id: string
+          poster_id: number
+        }
+        Update: {
+          post_id?: string
+          poster_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_posters_post_id_fkey"
+            columns: ["post_id"]
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_posters_poster_id_fkey"
+            columns: ["poster_id"]
+            referencedRelation: "posters"
             referencedColumns: ["id"]
           }
         ]

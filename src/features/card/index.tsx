@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Image } from "expo-image";
-import { Box, Icon, Metadata, Skeleton, VStack } from "@/components/ui";
+import { Box, Icon, Metadata, Skeleton, VStack, Image } from "@/components/ui";
 
 interface CardProps {
 	title: string;
@@ -31,8 +30,10 @@ const Card = ({
 					borderColor="neutral-3"
 				>
 					<Image
-						style={{ width: 100, height: 150 }}
 						source={`https://image.tmdb.org/t/p/w154${posterPath}`}
+						alt={title}
+						width={100}
+						height={150}
 						onLoadEnd={() => setIsLoading(false)}
 					/>
 					{isSelected && (

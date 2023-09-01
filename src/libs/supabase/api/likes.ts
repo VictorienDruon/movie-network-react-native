@@ -1,4 +1,4 @@
-import { formatPost } from "@/utils/objects";
+import { RawPost, formatPost } from "@/utils/objects";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 
@@ -20,10 +20,13 @@ export async function getAll(
 
 	const { data, error } = await supabase
 		.from("likes")
-		.select("posts(*, author: profiles(*), likes(user_id))")
+		.select(
+			"posts(*, author: profiles(*), likes(user_id), posts_posters(posters: poster_id(*)))"
+		)
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })
-		.range(from, to);
+		.range(from, to)
+		.returns<{ posts: RawPost }[]>();
 
 	if (error) throw error;
 

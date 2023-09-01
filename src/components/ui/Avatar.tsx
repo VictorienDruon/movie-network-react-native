@@ -1,6 +1,6 @@
-import { Image } from "expo-image";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
+import { Image } from "./image";
 
 interface AvatarProps {
 	size: keyof Theme["spacing"];
@@ -8,19 +8,14 @@ interface AvatarProps {
 	alt: string;
 }
 
-export const Avatar = ({ src, size, alt }: AvatarProps) => {
-	const { colors } = useTheme<Theme>();
-	return (
-		<Image
-			source={src}
-			style={{
-				width: size,
-				height: size,
-				borderRadius: 100,
-				borderWidth: 1,
-				borderColor: colors["neutral-6"],
-			}}
-			alt={alt}
-		/>
-	);
-};
+export const Avatar = ({ src, size, alt }: AvatarProps) => (
+	<Image
+		source={src}
+		width={size}
+		height={size}
+		borderRadius="full"
+		borderWidth={1}
+		borderColor="neutral-6"
+		alt={alt}
+	/>
+);
