@@ -41,13 +41,15 @@ export const PostersProvider = ({
 				newSet.delete(attachment.id);
 				return newSet;
 			});
-		} else {
+		} else if (draftPosters.length < 30) {
 			setDraftPosters((prev) => [...prev, attachment]);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
 				newSet.add(attachment.id);
 				return newSet;
 			});
+		} else {
+			alert("You can only attach 30 posters per post.");
 		}
 	};
 

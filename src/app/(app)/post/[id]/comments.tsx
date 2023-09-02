@@ -14,7 +14,7 @@ interface CommentsPage {
 }
 
 const CommentsModal = () => {
-	const { id: postId } = useLocalSearchParams() as { id: string };
+	const { id: postId } = useLocalSearchParams<{ id: string }>();
 
 	const query = useInfiniteQuery<CommentsPage, Error>({
 		queryKey: ["comments", postId],

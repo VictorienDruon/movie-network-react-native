@@ -6,7 +6,7 @@ import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
 
 const PostScreen = () => {
-	const { id } = useLocalSearchParams() as { id: string };
+	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const query = useQuery<Post, Error>({
 		queryKey: ["post", id],

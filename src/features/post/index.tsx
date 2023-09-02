@@ -12,6 +12,7 @@ import {
 	HStack,
 	VStack,
 } from "@/components/ui";
+import { User } from "@/features/user";
 import PostersLayout from "@/features/posters";
 import Actions from "./components/Actions";
 
@@ -27,23 +28,8 @@ export const Post = ({ post }: { post: Post }) => {
 
 	return (
 		<VStack space={20} p={16}>
-			<HStack space={8} alignItems="center">
-				<Link
-					href={{
-						pathname: "/(app)/profile/[id]/(tabs)",
-						params: { id: author.id },
-					}}
-					asChild
-				>
-					<TouchableOpacity>
-						<Avatar size={40} src={author.avatar_url} alt={author.name} />
-					</TouchableOpacity>
-				</Link>
-
-				<Box flex={1}>
-					<Title>{author.name}</Title>
-					<Subtitle>Some subtitle</Subtitle>
-				</Box>
+			<HStack justifyContent="space-between" space={8}>
+				<User user={author} />
 
 				<Metadata>{getRelativeDate(created_at)}</Metadata>
 			</HStack>

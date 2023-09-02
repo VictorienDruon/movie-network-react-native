@@ -1,11 +1,15 @@
-import { HStack, Skeleton } from "@/components/ui";
+import { BoxProps, HStack, Skeleton } from "@/components/ui";
 
-const UserSkeletons = ({ count = 1 }) => (
+interface UserSkeletonsProps extends BoxProps {
+	count?: number;
+}
+
+const UserSkeletons = ({ count = 1, ...props }: UserSkeletonsProps) => (
 	<>
 		{Array.from({ length: count }).map((_, index) => (
-			<HStack key={index} p={16} space={8} alignItems="center">
+			<HStack key={index} space={8} alignItems="center" {...props}>
 				<Skeleton width={40} height={40} borderRadius="full" />
-				<Skeleton width={200} height={20} />
+				<Skeleton width={120} height={20} />
 			</HStack>
 		))}
 	</>

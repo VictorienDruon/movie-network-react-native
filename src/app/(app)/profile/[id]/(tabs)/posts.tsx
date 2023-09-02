@@ -1,12 +1,13 @@
 import { Animated } from "react-native";
-import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/posts";
+import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/common";
 import { Box, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeletons from "@/features/post/components/PostSkeletons";
+import { useParams } from "./_layout";
 
 interface PostsPage {
 	posts: Post[];
@@ -14,13 +15,15 @@ interface PostsPage {
 }
 
 const PostsTab = () => {
-	const { userId } = useLocalSearchParams() as { userId: string };
+	const { userId } = useParams();
+	const isFocused = useFocus();
 	const props = useScrollProps();
 
 	const query = useInfiniteQuery<PostsPage, Error>({
 		queryKey: ["posts", userId],
 		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: isFocused,
 	});
 
 	if (query.isLoading) return null;

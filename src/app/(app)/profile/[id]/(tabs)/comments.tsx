@@ -1,12 +1,13 @@
 import { Animated } from "react-native";
-import { useLocalSearchParams } from "expo-router";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/comments";
+import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/common";
 import { Box } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
+import { useParams } from "./_layout";
 
 interface CommentsPage {
 	comments: Comment[];
@@ -14,13 +15,15 @@ interface CommentsPage {
 }
 
 const CommentsTab = () => {
-	const { userId } = useLocalSearchParams() as { userId: string };
+	const { userId } = useParams();
+	const isFocused = useFocus();
 	const props = useScrollProps();
 
 	const query = useInfiniteQuery<CommentsPage, Error>({
 		queryKey: ["comments", userId],
 		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: isFocused,
 	});
 
 	if (query.isLoading) return null;

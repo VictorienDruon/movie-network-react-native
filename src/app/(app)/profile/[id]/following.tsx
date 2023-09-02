@@ -13,7 +13,7 @@ interface UsersPage {
 }
 
 const FollowingModal = () => {
-	const { id } = useLocalSearchParams() as { id: string };
+	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const query = useInfiniteQuery<UsersPage, Error>({
 		queryKey: ["following", id],
@@ -21,7 +21,7 @@ const FollowingModal = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <UserSkeletons count={2} />;
+	if (query.isLoading) return <UserSkeletons count={2} p={16} />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
@@ -29,13 +29,13 @@ const FollowingModal = () => {
 		<FlatList
 			data={query.data.pages.flatMap((page) => page.users)}
 			keyExtractor={(user) => user.id}
-			renderItem={({ item: user }) => <User user={user} />}
+			renderItem={({ item: user }) => <User user={user} p={16} />}
 			ItemSeparatorComponent={() => <Separator />}
 			ListEmptyComponent={
 				<EmptyState>This user does not follow anyone yet.</EmptyState>
 			}
 			ListFooterComponent={
-				<Box pb={64}>{query.hasNextPage && <UserSkeletons />}</Box>
+				<Box pb={64}>{query.hasNextPage && <UserSkeletons p={16} />}</Box>
 			}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
