@@ -29,13 +29,25 @@ const Card = ({
 					borderWidth={1}
 					borderColor="neutral-3"
 				>
-					<Image
-						source={`https://image.tmdb.org/t/p/w154${posterPath}`}
-						alt={title}
-						width={100}
-						height={150}
-						onLoadEnd={() => setIsLoading(false)}
-					/>
+					{posterPath ? (
+						<Image
+							source={`https://image.tmdb.org/t/p/w154${posterPath}`}
+							alt={title}
+							width={100}
+							height={150}
+							onLoadEnd={() => setIsLoading(false)}
+						/>
+					) : (
+						<Box
+							justifyContent="center"
+							alignItems="center"
+							width={100}
+							height={150}
+							bg="neutral-5"
+						>
+							<Icon name="HelpCircle" size={28} color="neutral-9" />
+						</Box>
+					)}
 					{isSelected && (
 						<>
 							<Box
@@ -67,7 +79,7 @@ const Card = ({
 							</Box>
 						</>
 					)}
-					{isLoading && (
+					{posterPath && isLoading && (
 						<Skeleton
 							position="absolute"
 							width={100}
