@@ -69,21 +69,21 @@ export const Button = ({
 const boxVariants: { [key in ButtonVariant]: BoxProps } = {
 	primary: {
 		bg: "primary-9",
-		borderRadius: "full",
+		borderRadius: "lg",
 	},
 	outline: {
 		borderColor: "primary-9",
 		borderWidth: 1,
-		borderRadius: "full",
+		borderRadius: "lg",
 	},
 	secondary: {
 		bg: "neutral-3",
-		borderRadius: "full",
+		borderRadius: "lg",
 	},
 	secondaryOutline: {
 		borderColor: "neutral-6",
 		borderWidth: 1,
-		borderRadius: "full",
+		borderRadius: "lg",
 	},
 };
 

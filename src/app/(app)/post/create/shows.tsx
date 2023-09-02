@@ -88,8 +88,8 @@ const ShowsModal = () => {
 						flex={1}
 						alignItems="center"
 						maxHeight={40}
-						pl={12}
-						pr={8}
+						p={8}
+						pl={16}
 						space={8}
 						bg="neutral-3"
 						borderRadius="xl"
