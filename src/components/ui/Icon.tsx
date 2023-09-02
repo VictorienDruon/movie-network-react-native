@@ -1,6 +1,7 @@
 import * as Icons from "lucide-react-native";
 import { icons } from "lucide-react";
-import { Theme, theme } from "@/styles/theme";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 
 export interface IconProps {
 	name: keyof typeof icons;
@@ -19,8 +20,9 @@ export const Icon = ({
 	customColor,
 	fill,
 }: IconProps) => {
+	const { colors } = useTheme<Theme>();
 	const LucideIcon = Icons[name];
-	const effectiveColor = customColor ?? theme.colors[color];
+	const effectiveColor = customColor ?? colors[color];
 
 	return (
 		<LucideIcon

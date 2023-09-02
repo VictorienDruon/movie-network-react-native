@@ -31,7 +31,7 @@ const Card = ({
 				>
 					{posterPath ? (
 						<Image
-							source={`https://image.tmdb.org/t/p/w154${posterPath}`}
+							source={`https://image.tmdb.org/t/p/w185${posterPath}`}
 							alt={title}
 							width={100}
 							height={150}

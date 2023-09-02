@@ -12,7 +12,7 @@ interface PostsPage {
 	nextCursor: number;
 }
 
-const HomeScreen = () => {
+const FeedScreen = () => {
 	const query = useInfiniteQuery<PostsPage, Error>({
 		queryKey: ["feed"],
 		queryFn: ({ pageParam = 0 }) => getAll(pageParam),
@@ -55,7 +55,7 @@ const HomeScreen = () => {
 						shadowRadius={3}
 						elevation={5}
 					>
-						<Icon name="Plus" size={24} color="primary-3" />
+						<Icon name="Plus" size={24} color="white" />
 					</Box>
 				</TouchableOpacity>
 			</Link>
@@ -63,4 +63,4 @@ const HomeScreen = () => {
 	);
 };
 
-export default HomeScreen;
+export default FeedScreen;

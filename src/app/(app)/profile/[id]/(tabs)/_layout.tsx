@@ -9,7 +9,7 @@ import ProfileSkeleton from "@/features/profile/components/ProfileSkeleton";
 
 const ParamsContext = createContext<{ [key: string]: any }>(null);
 
-const ProfileLayout = () => {
+const ProfileTabsLayout = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const query = useQuery<Profile, Error>({
@@ -39,4 +39,4 @@ const ProfileLayout = () => {
 
 export const useParams = () => useContext(ParamsContext);
 
-export default ProfileLayout;
+export default ProfileTabsLayout;

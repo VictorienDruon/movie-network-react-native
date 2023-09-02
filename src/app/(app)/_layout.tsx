@@ -6,7 +6,8 @@ const queryClient = new QueryClient();
 const AppLayout = () => (
 	<QueryClientProvider client={queryClient}>
 		<Stack>
-			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+			<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+
 			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "Profile" }} />
 			<Stack.Screen
 				name="profile/[id]/following"
@@ -16,6 +17,8 @@ const AppLayout = () => (
 				name="profile/[id]/followers"
 				options={{ title: "Followers", presentation: "modal" }}
 			/>
+
+			<Stack.Screen name="post/create" options={{ title: "Create a Post" }} />
 			<Stack.Screen name="post/[id]/index" options={{ title: "Post" }} />
 			<Stack.Screen
 				name="post/[id]/comments"
@@ -24,7 +27,6 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
-			<Stack.Screen name="post/create" options={{ title: "Create a Post" }} />
 		</Stack>
 	</QueryClientProvider>
 );
