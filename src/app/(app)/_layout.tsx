@@ -27,6 +27,10 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
+
+			<Stack.Screen name="movie/[id]" options={{ title: "Movie" }} />
+
+			<Stack.Screen name="show/[id]" options={{ title: "Show" }} />
 		</Stack>
 	</QueryClientProvider>
 );

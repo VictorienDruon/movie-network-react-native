@@ -1,4 +1,5 @@
 import { Database } from "@/libs/supabase/types/database.types";
+import { Post } from "@/features/post";
 
 export type RawPost = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];
@@ -14,5 +15,5 @@ export function formatPost(post: RawPost, userId: string) {
 		posters:
 			posts_posters.length > 0 ? posts_posters.flatMap((p) => p.posters) : [],
 		user_has_liked_post: likes.some((like) => like.user_id === userId),
-	};
+	} as Post;
 }

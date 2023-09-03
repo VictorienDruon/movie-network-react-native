@@ -1,5 +1,7 @@
 import { api } from "..";
-import { ApiResponse, Movie, Show } from "../types";
+import { Pagination } from "../types/Pagination";
+import { Movie } from "../types/Movie";
+import { Show } from "../types/Show";
 
 export async function discoverMovies(page: number) {
 	const params = new URLSearchParams({
@@ -9,7 +11,7 @@ export async function discoverMovies(page: number) {
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Movie>>(`/discover/movie`, {
+		const { data } = await api.get<Pagination<Movie>>("/discover/movie", {
 			params,
 		});
 
@@ -30,7 +32,7 @@ export async function discoverShows(page: number) {
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Show>>(`/discover/tv`, {
+		const { data } = await api.get<Pagination<Show>>("/discover/tv", {
 			params,
 		});
 

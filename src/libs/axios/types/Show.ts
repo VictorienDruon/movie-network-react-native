@@ -1,3 +1,7 @@
+import { Episode } from "./Episode";
+import { Genre } from "./Genre";
+import { Person } from "./Person";
+
 export interface Show {
 	adult: boolean;
 	backdrop_path: string | null;
@@ -13,4 +17,15 @@ export interface Show {
 	poster_path: string | null;
 	vote_average: number;
 	vote_count: number;
+}
+
+export interface Details extends Show {
+	created_by: Person[];
+	episode_run_time: number[];
+	genres: Genre[];
+	homepage: string;
+	in_production: boolean;
+	languages: string[];
+	last_air_date: string;
+	last_episode_to_air: Episode;
 }

@@ -10,7 +10,7 @@ import debounce from "lodash.debounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverMovies } from "@/libs/axios/api/discover";
 import { searchMovies } from "@/libs/axios/api/search";
-import { Movie } from "@/libs/axios/types";
+import { Movie } from "@/libs/axios/types/Movie";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";

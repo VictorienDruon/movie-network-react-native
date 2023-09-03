@@ -12,13 +12,14 @@ import {
 	HStack,
 	VStack,
 } from "@/components/ui";
+import { type Poster } from "@/features/posters/components/Poster";
 import { User } from "@/features/user";
 import PostersLayout from "@/features/posters";
 import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];
-	posters: Database["public"]["Tables"]["posters"]["Row"][];
+	posters: Poster[];
 	user_has_liked_post: boolean;
 };
 

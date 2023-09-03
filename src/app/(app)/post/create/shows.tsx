@@ -10,7 +10,7 @@ import debounce from "lodash.debounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverShows } from "@/libs/axios/api/discover";
 import { searchShows } from "@/libs/axios/api/search";
-import { Show } from "@/libs/axios/types";
+import { Show } from "@/libs/axios/types/Show";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";
@@ -128,7 +128,7 @@ const ShowsModal = () => {
 								margin={margin}
 								onPress={() =>
 									toggle({
-										type: "tv",
+										type: "show",
 										id: show.id,
 										title: show.name,
 										poster_path: show.poster_path,

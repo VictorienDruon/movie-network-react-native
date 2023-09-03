@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
 import { Box } from "@/components/ui";
-import { Poster } from "./component/poster";
+import { Poster } from "./components/Poster";
 
 const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 	if (posters.length > 30) return null;

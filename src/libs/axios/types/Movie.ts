@@ -1,3 +1,8 @@
+import { Collection } from "./Collection";
+import { Genre } from "./Genre";
+import { Language } from "./Language";
+import { Company, Country } from "./Production";
+
 export interface Movie {
 	adult: boolean;
 	backdrop_path: string | null;
@@ -13,4 +18,19 @@ export interface Movie {
 	video: boolean;
 	vote_average: number;
 	vote_count: number;
+}
+
+export interface Details extends Movie {
+	belongs_to_collection: Collection[];
+	budget: number;
+	genres: Genre[];
+	homepage: string;
+	imdb_id: string;
+	production_companies: Company[];
+	production_countries: Country[];
+	revenue: number;
+	runtime: number;
+	spoken_languages: Language[];
+	status: string;
+	tagline: string;
 }

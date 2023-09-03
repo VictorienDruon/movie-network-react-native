@@ -1,10 +1,11 @@
+import { AnimatableStringValue, TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
 import { Box, BoxProps, TextProps, Title, Image, Blur } from "@/components/ui";
-import { AnimatableStringValue } from "react-native";
 
 type PosterSize = "sm" | "md" | "lg";
 
 export type Poster = {
-	type: string;
+	type: "movie" | "show";
 	id: number;
 	title: string;
 	poster_path: string;
@@ -24,7 +25,7 @@ export const Poster = ({
 	shadow = true,
 	...props
 }: PosterProps) => {
-	const { id, title, poster_path } = poster;
+	const { type, id, title, poster_path } = poster;
 
 	return (
 		<Box
@@ -35,25 +36,35 @@ export const Poster = ({
 			{...(shadow && { ...boxShadow })}
 			{...props}
 		>
-			<Image
-				source={`https://image.tmdb.org/t/p/${imageSizes[size]}${poster_path}`}
-				alt={title}
-				alignItems="center"
-				borderRadius="md"
-				aspectRatio={5 / 7}
-				{...boxSizes[size]}
+			<Link
+				href={{
+					pathname: `/(app)/${type}/[id]`,
+					params: { id },
+				}}
+				asChild
 			>
-				<Blur intensity={15} tint="dark" borderRadius="full">
-					<Title
-						color="white"
-						numberOfLines={1}
-						ellipsizeMode="tail"
-						{...textSizes[size]}
+				<TouchableOpacity>
+					<Image
+						source={`https://image.tmdb.org/t/p/${imageSizes[size]}${poster_path}`}
+						alt={title}
+						alignItems="center"
+						borderRadius="md"
+						aspectRatio={5 / 7}
+						{...boxSizes[size]}
 					>
-						{title}
-					</Title>
-				</Blur>
-			</Image>
+						<Blur intensity={15} tint="dark" borderRadius="full">
+							<Title
+								color="white"
+								numberOfLines={1}
+								ellipsizeMode="tail"
+								{...textSizes[size]}
+							>
+								{title}
+							</Title>
+						</Blur>
+					</Image>
+				</TouchableOpacity>
+			</Link>
 		</Box>
 	);
 };

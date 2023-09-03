@@ -1,5 +1,7 @@
 import { api } from "..";
-import { ApiResponse, Movie, Show } from "../types";
+import { Pagination } from "../types/Pagination";
+import { Movie } from "../types/Movie";
+import { Show } from "../types/Show";
 
 export async function searchMovies(query: string, page: number) {
 	const params = new URLSearchParams({
@@ -10,7 +12,7 @@ export async function searchMovies(query: string, page: number) {
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Movie>>("/search/movie", {
+		const { data } = await api.get<Pagination<Movie>>("/search/movie", {
 			params,
 		});
 
@@ -32,7 +34,7 @@ export async function searchShows(query: string, page: number) {
 	});
 
 	try {
-		const { data } = await api.get<ApiResponse<Show>>("/search/tv", {
+		const { data } = await api.get<Pagination<Show>>("/search/tv", {
 			params,
 		});
 
