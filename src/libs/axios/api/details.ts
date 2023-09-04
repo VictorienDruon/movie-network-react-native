@@ -5,6 +5,7 @@ import { Details as ShowDetails } from "../types/Show";
 export async function getMovie(id: string) {
 	const params = new URLSearchParams({
 		language: "en-US",
+		append_to_response: "credits,videos,watch/providers",
 	});
 
 	try {

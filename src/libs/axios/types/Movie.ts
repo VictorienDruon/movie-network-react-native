@@ -1,7 +1,10 @@
 import { Collection } from "./Collection";
+import { Credits } from "./Credits";
 import { Genre } from "./Genre";
 import { Language } from "./Language";
 import { Company, Country } from "./Production";
+import { Videos } from "./Video";
+import { WatchProviders } from "./WatchProviders";
 
 export interface Movie {
 	adult: boolean;
@@ -33,4 +36,7 @@ export interface Details extends Movie {
 	spoken_languages: Language[];
 	status: string;
 	tagline: string;
+	credits: Credits;
+	videos: Videos;
+	"watch/providers": WatchProviders;
 }
