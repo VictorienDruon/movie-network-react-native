@@ -19,7 +19,7 @@ export interface Show {
 	vote_count: number;
 }
 
-export interface Details extends Show {
+export interface ShowDetails extends Show {
 	created_by: Person[];
 	episode_run_time: number[];
 	genres: Genre[];

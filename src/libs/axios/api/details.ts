@@ -1,6 +1,7 @@
+import { getLocales } from "expo-localization";
 import { api } from "..";
-import { Details as MovieDetails } from "../types/Movie";
-import { Details as ShowDetails } from "../types/Show";
+import { MovieDetails } from "../types/Movie";
+import { ShowDetails } from "../types/Show";
 
 export async function getMovie(id: string) {
 	const params = new URLSearchParams({
@@ -9,9 +10,17 @@ export async function getMovie(id: string) {
 	});
 
 	try {
-		const { data: details } = await api.get<MovieDetails>(`/movie/${id}`, {
+		const { data } = await api.get(`/movie/${id}`, {
 			params,
 		});
+
+		const details: MovieDetails = {
+			...data,
+			providers: data["watch/providers"].results.US.flatrate,
+			cast: data.credits.cast,
+			crew: data.credits.crew,
+			videos: data.videos.results,
+		};
 
 		return details;
 	} catch (error) {

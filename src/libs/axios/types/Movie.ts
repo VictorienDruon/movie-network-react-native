@@ -1,10 +1,10 @@
 import { Collection } from "./Collection";
-import { Credits } from "./Credits";
+import { Cast, Crew } from "./Credits";
 import { Genre } from "./Genre";
 import { Language } from "./Language";
 import { Company, Country } from "./Production";
-import { Videos } from "./Video";
-import { WatchProviders } from "./WatchProviders";
+import { Video } from "./Video";
+import { Provider } from "./Provider";
 
 export interface Movie {
 	adult: boolean;
@@ -23,7 +23,7 @@ export interface Movie {
 	vote_count: number;
 }
 
-export interface Details extends Movie {
+export interface MovieDetails extends Movie {
 	belongs_to_collection: Collection[];
 	budget: number;
 	genres: Genre[];
@@ -36,7 +36,8 @@ export interface Details extends Movie {
 	spoken_languages: Language[];
 	status: string;
 	tagline: string;
-	credits: Credits;
-	videos: Videos;
-	"watch/providers": WatchProviders;
+	providers: Provider[];
+	cast: Cast[];
+	crew: Crew[];
+	videos: Video[];
 }

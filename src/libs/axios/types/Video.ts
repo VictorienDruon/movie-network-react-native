@@ -10,7 +10,3 @@ export interface Video {
 	size: number;
 	type: string;
 }
-
-export interface Videos {
-	results: Video[];
-}

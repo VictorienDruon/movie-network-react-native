@@ -26,8 +26,3 @@ export interface Crew {
 	popularity: number;
 	profile_path: string;
 }
-
-export interface Credits {
-	cast: Cast[];
-	crew: Crew[];
-}
