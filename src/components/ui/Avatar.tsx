@@ -1,4 +1,3 @@
-import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { Image } from "./image";
 
@@ -10,7 +9,7 @@ interface AvatarProps {
 
 export const Avatar = ({ src, size, alt }: AvatarProps) => (
 	<Image
-		source={src}
+		src={src}
 		width={size}
 		height={size}
 		borderRadius="full"

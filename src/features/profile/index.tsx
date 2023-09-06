@@ -6,7 +6,7 @@ import { Database } from "@/libs/supabase/types/database.types";
 import { NewFollow, toggle } from "@/libs/supabase/api/follows";
 import { useSession } from "@/providers/session";
 import { HStack, VStack, Avatar, Heading, Button, Body } from "@/components/ui";
-import { pluralize } from "@/utils/text";
+import { pluralize } from "@/utils/texts";
 
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
 	following: number;

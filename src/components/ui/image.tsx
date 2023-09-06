@@ -22,14 +22,14 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
 ]);
 
 type ImageProps = RestyleProps & {
-	source: string;
+	src: string;
 	alt: string;
 	onLoadEnd?: () => void;
 	children?: React.ReactNode;
 };
 
 export const Image = ({
-	source,
+	src,
 	alt,
 	onLoadEnd,
 	children,
@@ -38,7 +38,7 @@ export const Image = ({
 	const props = useRestyle(restyleFunctions, rest);
 
 	return (
-		<ExpoImage source={source} alt={alt} onLoadEnd={onLoadEnd} {...props}>
+		<ExpoImage source={src} alt={alt} onLoadEnd={onLoadEnd} {...props}>
 			{children}
 		</ExpoImage>
 	);

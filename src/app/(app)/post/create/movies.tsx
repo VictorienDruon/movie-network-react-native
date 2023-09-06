@@ -14,8 +14,8 @@ import { Movie } from "@/libs/axios/types/Movie";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";
-import Card from "@/features/card";
-import CardSkeletons from "@/features/card/components/CardSkeleton";
+import SearchPoster from "@/features/search-poster";
+import SearckPosterSkeletons from "@/features/search-poster/components/CardSkeletons";
 
 interface MoviesPage {
 	movies: Movie[];
@@ -114,14 +114,14 @@ const MoviesModal = () => {
 				</Box>
 
 				{isLoading ? (
-					<CardSkeletons count={9} margin={margin} />
+					<SearckPosterSkeletons count={9} margin={margin} />
 				) : (
 					<FlatList
 						data={data.pages.flatMap((page) => page.movies)}
 						numColumns={3}
 						keyExtractor={(movie) => movie.id.toString()}
 						renderItem={({ item: movie }) => (
-							<Card
+							<SearchPoster
 								title={movie.title}
 								posterPath={movie.poster_path}
 								isSelected={isSelected(movie.id)}
@@ -139,7 +139,9 @@ const MoviesModal = () => {
 						ListEmptyComponent={<EmptyState>No results</EmptyState>}
 						ListFooterComponent={
 							<Box pb={64}>
-								{hasNextPage && <CardSkeletons count={3} margin={margin} />}
+								{hasNextPage && (
+									<SearckPosterSkeletons count={3} margin={margin} />
+								)}
 							</Box>
 						}
 						onEndReached={() => fetchNextPage()}

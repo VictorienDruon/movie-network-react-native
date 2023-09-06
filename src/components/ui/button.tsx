@@ -12,6 +12,7 @@ interface ButtonProps extends Omit<BoxProps, "children" | "onPress"> {
 	size?: ButtonSize;
 	leftIcon?: IconProps["name"];
 	rightIcon?: IconProps["name"];
+	fillIcon?: boolean;
 	disabled?: boolean;
 	onPress?: () => void;
 	children?: string;
@@ -22,6 +23,7 @@ export const Button = ({
 	size = "md",
 	leftIcon,
 	rightIcon,
+	fillIcon = false,
 	disabled,
 	onPress,
 	children,
@@ -41,6 +43,7 @@ export const Button = ({
 					size={iconSizes[size]}
 					color={textVariants[variant].color}
 					strokeWidth={2}
+					fill={fillIcon}
 				/>
 			)}
 
@@ -60,6 +63,7 @@ export const Button = ({
 					size={iconSizes[size]}
 					color={textVariants[variant].color}
 					strokeWidth={2}
+					fill={fillIcon}
 				/>
 			)}
 		</HStack>

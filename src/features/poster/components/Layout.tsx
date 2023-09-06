@@ -1,8 +1,8 @@
 import { FlatList } from "react-native";
 import { Box } from "@/components/ui";
-import { Poster } from "./components/Poster";
+import { Poster } from "..";
 
-const PostersLayout = ({ posters }: { posters: Poster[] }) => {
+const Layout = ({ posters }: { posters: Poster[] }) => {
 	if (posters.length > 30) return null;
 
 	switch (posters.length) {
@@ -55,4 +55,4 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 	}
 };
 
-export default PostersLayout;
+export default Layout;

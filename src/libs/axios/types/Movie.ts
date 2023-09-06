@@ -24,7 +24,7 @@ export interface Movie {
 }
 
 export interface MovieDetails extends Movie {
-	belongs_to_collection: Collection[];
+	belongs_to_collection: Collection;
 	budget: number;
 	genres: Genre[];
 	homepage: string;

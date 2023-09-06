@@ -14,8 +14,8 @@ import { Show } from "@/libs/axios/types/Show";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";
-import Card from "@/features/card";
-import CardSkeletons from "@/features/card/components/CardSkeleton";
+import SearchPoster from "@/features/search-poster";
+import SearckPosterSkeletons from "@/features/search-poster/components/CardSkeletons";
 
 interface ShowsPage {
 	shows: Show[];
@@ -114,14 +114,14 @@ const ShowsModal = () => {
 				</Box>
 
 				{isLoading ? (
-					<CardSkeletons count={9} margin={margin} />
+					<SearckPosterSkeletons count={9} margin={margin} />
 				) : (
 					<FlatList
 						data={data.pages.flatMap((page) => page.shows)}
 						numColumns={3}
 						keyExtractor={(show) => show.id.toString()}
 						renderItem={({ item: show }) => (
-							<Card
+							<SearchPoster
 								title={show.name}
 								posterPath={show.poster_path}
 								isSelected={isSelected(show.id)}
@@ -139,7 +139,9 @@ const ShowsModal = () => {
 						ListEmptyComponent={<EmptyState>No results</EmptyState>}
 						ListFooterComponent={
 							<Box pb={64}>
-								{hasNextPage && <CardSkeletons count={3} margin={margin} />}
+								{hasNextPage && (
+									<SearckPosterSkeletons count={3} margin={margin} />
+								)}
 							</Box>
 						}
 						onEndReached={() => fetchNextPage()}

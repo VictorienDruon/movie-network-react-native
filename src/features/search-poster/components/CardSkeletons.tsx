@@ -1,12 +1,15 @@
 import { FlatList } from "react-native";
 import { Box, Skeleton, VStack } from "@/components/ui";
 
-interface CardSkeletonsProps {
+interface SearchPosterSkeletonsProps {
 	count: number;
 	margin: number;
 }
 
-const CardSkeletons = ({ count, margin }: CardSkeletonsProps) => (
+const SearckPosterSkeletons = ({
+	count,
+	margin,
+}: SearchPosterSkeletonsProps) => (
 	<FlatList
 		data={Array.from({ length: count }, (_, index) => index)}
 		numColumns={3}
@@ -28,4 +31,4 @@ const CardSkeletons = ({ count, margin }: CardSkeletonsProps) => (
 	/>
 );
 
-export default CardSkeletons;
+export default SearckPosterSkeletons;

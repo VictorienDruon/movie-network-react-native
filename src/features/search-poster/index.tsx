@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Box, Icon, Metadata, Skeleton, VStack, Image } from "@/components/ui";
 
-interface CardProps {
+interface SearchPosterProps {
 	title: string;
 	posterPath: string;
 	isSelected: boolean;
@@ -10,13 +10,13 @@ interface CardProps {
 	onPress: () => void;
 }
 
-const Card = ({
+const SearchPoster = ({
 	title,
 	posterPath,
 	isSelected,
 	margin,
 	onPress,
-}: CardProps) => {
+}: SearchPosterProps) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	return (
@@ -31,7 +31,7 @@ const Card = ({
 				>
 					{posterPath ? (
 						<Image
-							source={`https://image.tmdb.org/t/p/w185${posterPath}`}
+							src={`https://image.tmdb.org/t/p/w185${posterPath}`}
 							alt={title}
 							width={100}
 							height={150}
@@ -97,4 +97,4 @@ const Card = ({
 	);
 };
 
-export default Card;
+export default SearchPoster;

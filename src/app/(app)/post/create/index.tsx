@@ -23,7 +23,7 @@ import {
 	VStack,
 	Input,
 } from "@/components/ui";
-import PostersLayout from "@/features/posters";
+import Layout from "@/features/poster/components/Layout";
 
 const CreateScreen = () => {
 	const queryClient = useQueryClient();
@@ -91,7 +91,7 @@ const CreateScreen = () => {
 					/>
 
 					<Box alignItems="center" maxHeight={300}>
-						<PostersLayout posters={posters} />
+						<Layout posters={posters} />
 					</Box>
 				</VStack>
 			</ScrollView>

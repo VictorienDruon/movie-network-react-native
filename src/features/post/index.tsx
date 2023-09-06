@@ -1,20 +1,9 @@
-import { TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
-import {
-	Box,
-	Subtitle,
-	Avatar,
-	Title,
-	Body,
-	Metadata,
-	HStack,
-	VStack,
-} from "@/components/ui";
-import { type Poster } from "@/features/posters/components/Poster";
+import { Box, Body, Metadata, HStack, VStack } from "@/components/ui";
+import { Poster } from "@/features/poster";
 import { User } from "@/features/user";
-import PostersLayout from "@/features/posters";
+import Layout from "@/features/poster/components/Layout";
 import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -39,7 +28,7 @@ export const Post = ({ post }: { post: Post }) => {
 
 			{posters.length > 0 && (
 				<Box alignItems="center" maxHeight={300}>
-					<PostersLayout posters={posters} />
+					<Layout posters={posters} />
 				</Box>
 			)}
 

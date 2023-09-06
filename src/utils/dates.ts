@@ -30,7 +30,7 @@ function getDate(date: Date) {
 	return dateFormat(date, "mmm d");
 }
 
-function getDateWithYear(date: Date) {
+export function getDateWithYear(date: Date) {
 	return dateFormat(date, "mmm d yyyy");
 }
 

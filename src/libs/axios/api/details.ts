@@ -24,7 +24,9 @@ export async function getMovie(id: string) {
 			...rest,
 			video: videos.results.find((video: Video) => video.type === "Trailer"),
 			cast: credits.cast.length > 20 ? credits.cast.slice(0, 20) : credits.cast,
-			crew: credits.crew.length > 5 ? credits.crew.slice(0, 5) : credits.crew,
+			crew: credits.crew.filter((member: any) =>
+				["Director", "Writer", "Original Music Composer"].includes(member.job)
+			),
 			providers:
 				regionCode in providers.results
 					? providers.results[regionCode]
@@ -58,7 +60,10 @@ export async function getShow(id: string) {
 			...rest,
 			video: videos.results.find((video: Video) => video.type === "Trailer"),
 			cast: credits.cast.length > 20 ? credits.cast.slice(0, 20) : credits.cast,
-			crew: credits.crew.length > 5 ? credits.crew.slice(0, 5) : credits.crew,
+			crew: credits.crew.filter(
+				(member: any) =>
+					member.job in ["Director", "Writer", "Original Music Composer"]
+			),
 			providers:
 				regionCode in providers.results
 					? providers.results[regionCode]

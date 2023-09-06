@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSegments } from "expo-router";
-import { Poster } from "@/features/posters/components/Poster";
+import { Poster } from "@/features/poster";
 
 interface PostersContext {
 	posters: Poster[];
