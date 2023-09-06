@@ -1,6 +1,10 @@
-import { Episode } from "./Episode";
+import { Cast, Crew } from "./Credits";
 import { Genre } from "./Genre";
+import { Video } from "./Video";
+import { Provider } from "./Providers";
+import { Recommendation } from "./Recommendation";
 import { Person } from "./Person";
+import { Episode } from "./Episode";
 
 export interface Show {
 	adult: boolean;
@@ -28,4 +32,9 @@ export interface ShowDetails extends Show {
 	languages: string[];
 	last_air_date: string;
 	last_episode_to_air: Episode;
+	video: Video;
+	cast: Cast[];
+	crew: Crew[];
+	providers: Provider[];
+	recommendations: Recommendation[];
 }

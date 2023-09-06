@@ -1,10 +1,11 @@
 import { Collection } from "./Collection";
 import { Cast, Crew } from "./Credits";
 import { Genre } from "./Genre";
-import { Language } from "./Language";
-import { Company, Country } from "./Production";
+import { Language, Country } from "./Locales";
+import { Company } from "./Company";
 import { Video } from "./Video";
-import { Provider } from "./Provider";
+import { Provider } from "./Providers";
+import { Recommendation } from "./Recommendation";
 
 export interface Movie {
 	adult: boolean;
@@ -18,7 +19,6 @@ export interface Movie {
 	poster_path: string | null;
 	release_date: string;
 	title: string;
-	video: boolean;
 	vote_average: number;
 	vote_count: number;
 }
@@ -36,8 +36,9 @@ export interface MovieDetails extends Movie {
 	spoken_languages: Language[];
 	status: string;
 	tagline: string;
-	providers: Provider[];
+	video: Video;
 	cast: Cast[];
 	crew: Crew[];
-	videos: Video[];
+	providers: Provider[];
+	recommendations: Recommendation[];
 }

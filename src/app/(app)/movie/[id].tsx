@@ -8,15 +8,13 @@ const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const query = useQuery<MovieDetails, Error>({
-		queryKey: ["media", id],
+		queryKey: ["movie", id],
 		queryFn: () => getMovie(id),
 	});
 
-	query.data && console.log(query.data.providers);
-
 	return (
 		<Box>
-			<Body>Hello</Body>
+			<Body>{id}</Body>
 		</Box>
 	);
 };

@@ -4,3 +4,10 @@ export interface Provider {
 	provider_id: number;
 	provider_name: string;
 }
+
+export interface Providers {
+	link: string;
+	flatrate?: Provider[];
+	buy?: Provider[];
+	rent?: Provider[];
+}

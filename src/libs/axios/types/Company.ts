@@ -4,8 +4,3 @@ export interface Company {
 	name: string;
 	origin_country: string;
 }
-
-export interface Country {
-	iso_3166_1: string;
-	name: string;
-}

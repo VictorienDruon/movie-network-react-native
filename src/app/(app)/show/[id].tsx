@@ -14,7 +14,7 @@ const MediaScreen = () => {
 
 	return (
 		<Box>
-			<Body>{JSON.stringify(query.data)}</Body>
+			<Body>Show</Body>
 		</Box>
 	);
 };
