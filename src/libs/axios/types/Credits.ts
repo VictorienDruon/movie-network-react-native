@@ -1,4 +1,4 @@
-export interface Cast {
+export interface CastMember {
 	adult: boolean;
 	cast_id: number;
 	character: string;
@@ -13,7 +13,7 @@ export interface Cast {
 	profile_path: string;
 }
 
-export interface Crew {
+export interface CrewMember {
 	adult: boolean;
 	credit_id: string;
 	department: string;
@@ -24,5 +24,13 @@ export interface Crew {
 	name: string;
 	original_name: string;
 	popularity: number;
+	profile_path: string;
+}
+
+export interface Creator {
+	credit_id: string;
+	gender: number;
+	id: number;
+	name: string;
 	profile_path: string;
 }

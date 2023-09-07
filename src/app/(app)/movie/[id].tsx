@@ -1,15 +1,14 @@
 import { Dimensions, FlatList, ScrollView } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { formatTime } from "@/utils/time";
+import { formatDuration } from "@/utils/time";
 import { pluralize } from "@/utils/texts";
-import { getDateWithYear } from "@/utils/dates";
+import { getDateWithYear, getYear } from "@/utils/dates";
 import { formatMoney } from "@/utils/numbers";
 import { getMovie } from "@/libs/axios/api/details";
 import { MovieDetails } from "@/libs/axios/types/Movie";
 import {
-	Avatar,
 	Body,
 	Box,
 	Button,
@@ -21,6 +20,8 @@ import {
 	Title,
 	VStack,
 } from "@/components/ui";
+import Card from "@/features/card";
+import Person from "@/features/person";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -56,15 +57,21 @@ const MovieScreen = () => {
 
 	return (
 		<ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-			<YoutubePlayer videoId={video.key} height={height} play={true} />
+			{video ? (
+				<YoutubePlayer videoId={video.key} height={height} play={true} />
+			) : (
+				<Box height={height} bg="neutral-5" />
+			)}
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
-					<Heading>{title}</Heading>
+					{title.length > 0 && <Heading>{title}</Heading>}
 					<HStack space={8}>
-						<Subtitle>{release_date.slice(0, 4)}</Subtitle>
-						<Subtitle>•</Subtitle>
-						<Subtitle>{formatTime(runtime)}</Subtitle>
+						{release_date.length > 0 && (
+							<Subtitle>{getYear(new Date(release_date))}</Subtitle>
+						)}
+						{release_date.length > 0 && runtime > 0 && <Subtitle>•</Subtitle>}
+						{runtime > 0 && <Subtitle>{formatDuration(runtime)}</Subtitle>}
 					</HStack>
 				</VStack>
 
@@ -77,117 +84,80 @@ const MovieScreen = () => {
 					</Button>
 				</VStack>
 
-				<Body px={16} textAlign="justify">
-					{overview}
-				</Body>
+				{overview.length > 0 && (
+					<Body px={16} textAlign="justify">
+						{overview}
+					</Body>
+				)}
 
-				<HStack px={16} flexWrap="wrap" space={8}>
-					{genres.map((genre) => (
-						<Box key={genre.id} px={8} py={4} bg="neutral-3" borderRadius="lg">
-							<Metadata>{genre.name}</Metadata>
-						</Box>
-					))}
-				</HStack>
-
-				<VStack space={8}>
-					<Title pl={16}>Recommendations</Title>
-					<FlatList
-						data={recommendations}
-						keyExtractor={(r) => r.id.toString()}
-						renderItem={({ item: recommendation }) => (
-							<VStack alignItems="center" width={100} marginRight={8} space={2}>
-								<Image
-									src={`https://image.tmdb.org/t/p/w185${recommendation.poster_path}`}
-									alt={recommendation.title}
-									width={100}
-									aspectRatio={5 / 7}
-									borderRadius="sm"
-								/>
-								<Body
-									fontSize={13}
-									textAlign="center"
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{recommendation.title}
-								</Body>
-							</VStack>
-						)}
-						contentContainerStyle={{ paddingHorizontal: 16 }}
-						showsHorizontalScrollIndicator={false}
-						horizontal
-					/>
-				</VStack>
-
-				<VStack space={8}>
-					<Title pl={16}>Cast</Title>
-					<FlatList
-						data={cast}
-						keyExtractor={(c) => c.id.toString()}
-						renderItem={({ item: member }) => (
-							<Box alignItems="center" width={96} mr={8}>
-								<Avatar
-									src={`https://image.tmdb.org/t/p/w185${member.profile_path}`}
-									size={80}
-									alt={member.name}
-								/>
-								<Body
-									fontSize={13}
-									textAlign="center"
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{member.name}
-								</Body>
-								<Metadata
-									textAlign="center"
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{member.character}
-								</Metadata>
+				{genres.length > 0 && (
+					<HStack px={16} flexWrap="wrap" space={8}>
+						{genres.map((genre) => (
+							<Box
+								key={genre.id}
+								px={8}
+								py={4}
+								bg="neutral-3"
+								borderRadius="lg"
+							>
+								<Metadata>{genre.name}</Metadata>
 							</Box>
-						)}
-						contentContainerStyle={{ paddingHorizontal: 16 }}
-						showsHorizontalScrollIndicator={false}
-						horizontal
-					/>
-				</VStack>
+						))}
+					</HStack>
+				)}
 
-				<VStack space={8}>
-					<Title pl={16}>Crew</Title>
-					<FlatList
-						data={crew}
-						keyExtractor={(c) => c.credit_id.toString()}
-						renderItem={({ item: member }) => (
-							<Box alignItems="center" width={96} mr={8}>
-								<Avatar
-									src={`https://image.tmdb.org/t/p/w185${member.profile_path}`}
-									size={80}
-									alt={member.name}
+				{recommendations.length > 0 && (
+					<VStack space={8}>
+						<Title pl={16}>Recommendations</Title>
+						<FlatList
+							data={recommendations}
+							keyExtractor={(r) => r.id.toString()}
+							renderItem={({ item: recommendation }) => (
+								<Card
+									{...recommendation}
+									mx={8}
+									onPress={() =>
+										router.push({
+											pathname: "/(app)/movie/[id]",
+											params: { id: recommendation.id },
+										})
+									}
 								/>
-								<Body
-									fontSize={13}
-									textAlign="center"
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{member.name}
-								</Body>
-								<Metadata
-									textAlign="center"
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{member.job}
-								</Metadata>
-							</Box>
-						)}
-						contentContainerStyle={{ paddingHorizontal: 16 }}
-						showsHorizontalScrollIndicator={false}
-						horizontal
-					/>
-				</VStack>
+							)}
+							contentContainerStyle={{ paddingHorizontal: 8 }}
+							showsHorizontalScrollIndicator={false}
+							horizontal
+						/>
+					</VStack>
+				)}
+
+				{cast.length > 0 && (
+					<VStack space={8}>
+						<Title pl={16}>Cast</Title>
+						<FlatList
+							data={cast}
+							keyExtractor={(c) => c.id.toString()}
+							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							contentContainerStyle={{ paddingHorizontal: 12 }}
+							showsHorizontalScrollIndicator={false}
+							horizontal
+						/>
+					</VStack>
+				)}
+
+				{crew.length > 0 && (
+					<VStack space={8}>
+						<Title pl={16}>Crew</Title>
+						<FlatList
+							data={crew}
+							keyExtractor={(c) => c.credit_id.toString()}
+							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							contentContainerStyle={{ paddingHorizontal: 12 }}
+							showsHorizontalScrollIndicator={false}
+							horizontal
+						/>
+					</VStack>
+				)}
 
 				{belongs_to_collection && (
 					<VStack px={16} space={8}>
@@ -214,43 +184,59 @@ const MovieScreen = () => {
 
 				<VStack px={16} space={4}>
 					<Title>Informations</Title>
-					<Box>
-						<Body fontSize={13}>
-							{pluralize(production_companies.length, "Studio")}
-						</Body>
-						<Metadata>
-							{production_companies.flatMap((c) => c.name).join(", ")}
-						</Metadata>
-					</Box>
-					<Box>
-						<Body fontSize={13}>{`${pluralize(
-							production_companies.length,
-							"Region"
-						)} of origin`}</Body>
-						<Metadata>
-							{production_countries.flatMap((c) => c.name).join(", ")}
-						</Metadata>
-					</Box>
-					<Box>
-						<Body fontSize={13}>Release Date</Body>
-						<Metadata>{getDateWithYear(new Date(release_date))}</Metadata>
-					</Box>
-					<Box>
-						<Body fontSize={13}>
-							{pluralize(spoken_languages.length, "Language")}
-						</Body>
-						<Metadata>
-							{spoken_languages.flatMap((l) => l.name).join(", ")}
-						</Metadata>
-					</Box>
-					<Box>
-						<Body fontSize={13}>Budget</Body>
-						<Metadata>{formatMoney(budget)}</Metadata>
-					</Box>
-					<Box>
-						<Body fontSize={13}>Revenue</Body>
-						<Metadata>{formatMoney(revenue)}</Metadata>
-					</Box>
+					{production_companies.length > 0 && (
+						<Box>
+							<Body fontSize={13}>
+								{pluralize(production_companies.length, "Studio")}
+							</Body>
+							<Metadata>
+								{production_companies.flatMap((c) => c.name).join(", ")}
+							</Metadata>
+						</Box>
+					)}
+
+					{production_countries.length > 0 && (
+						<Box>
+							<Body fontSize={13}>{`${pluralize(
+								production_countries.length,
+								"Region"
+							)} of origin`}</Body>
+							<Metadata>
+								{production_countries.flatMap((c) => c.name).join(", ")}
+							</Metadata>
+						</Box>
+					)}
+
+					{release_date.length > 0 && (
+						<Box>
+							<Body fontSize={13}>Release Date</Body>
+							<Metadata>{getDateWithYear(new Date(release_date))}</Metadata>
+						</Box>
+					)}
+
+					{spoken_languages.length > 0 && (
+						<Box>
+							<Body fontSize={13}>
+								{pluralize(spoken_languages.length, "Language")}
+							</Body>
+							<Metadata>
+								{spoken_languages.flatMap((l) => l.name).join(", ")}
+							</Metadata>
+						</Box>
+					)}
+
+					{budget > 0 && (
+						<Box>
+							<Body fontSize={13}>Budget</Body>
+							<Metadata>{formatMoney(budget)}</Metadata>
+						</Box>
+					)}
+					{revenue > 0 && (
+						<Box>
+							<Body fontSize={13}>Revenue</Body>
+							<Metadata>{formatMoney(revenue)}</Metadata>
+						</Box>
+					)}
 				</VStack>
 			</VStack>
 		</ScrollView>

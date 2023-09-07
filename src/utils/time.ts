@@ -1,10 +1,11 @@
 //copy/paste from https://github.com/HenrikJoreteg/milliseconds/blob/master/milliseconds.js
 
-export function formatTime(duration: number) {
+export function formatDuration(duration: number) {
 	const hours = Math.floor(duration / 60);
 	const minutes = duration % 60;
 
-	return `${hours}h ${minutes}m`;
+	if (hours > 0) return `${hours}h ${minutes}m`;
+	return `${minutes}m`;
 }
 
 function calc(m: number) {

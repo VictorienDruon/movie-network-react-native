@@ -34,6 +34,10 @@ export function getDateWithYear(date: Date) {
 	return dateFormat(date, "mmm d yyyy");
 }
 
+export function getYear(date: Date) {
+	return dateFormat(date, "yyyy");
+}
+
 export function getRelativeDate(dateString: string) {
 	const now = new Date();
 	const date = new Date(dateString);

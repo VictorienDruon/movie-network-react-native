@@ -3,8 +3,9 @@ import { api } from "..";
 import { MovieDetails } from "../types/Movie";
 import { ShowDetails } from "../types/Show";
 import { Video } from "../types/Video";
+import { CrewMember } from "../types/Credits";
 
-export async function getMovie(id: string) {
+export async function getMovie(movieId: string) {
 	const locales = getLocales();
 	const regionCode = locales[0].regionCode;
 
@@ -14,24 +15,39 @@ export async function getMovie(id: string) {
 	});
 
 	try {
-		const { data } = await api.get(`/movie/${id}`, {
+		const { data } = await api.get(`/movie/${movieId}`, {
 			params,
 		});
 
-		const { videos, credits, "watch/providers": providers, ...rest } = data;
+		const {
+			videos,
+			credits,
+			"watch/providers": watchProviders,
+			recommendations: { results },
+			...rest
+		} = data;
+
+		const video = videos.results.find(
+			(video: Video) => video.type === "Trailer"
+		);
+		const cast =
+			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+		const crew = credits.crew.filter((member: CrewMember) =>
+			["Director", "Writer", "Original Music Composer"].includes(member.job)
+		);
+		const providers =
+			regionCode in watchProviders.results
+				? watchProviders.results[regionCode]
+				: watchProviders.results.US;
+		const recommendations = results;
 
 		const details: MovieDetails = {
+			video,
+			cast,
+			crew,
+			providers,
+			recommendations,
 			...rest,
-			video: videos.results.find((video: Video) => video.type === "Trailer"),
-			cast: credits.cast.length > 20 ? credits.cast.slice(0, 20) : credits.cast,
-			crew: credits.crew.filter((member: any) =>
-				["Director", "Writer", "Original Music Composer"].includes(member.job)
-			),
-			providers:
-				regionCode in providers.results
-					? providers.results[regionCode]
-					: providers.results.US,
-			recommendations: data.recommendations.results,
 		};
 
 		return details;
@@ -54,21 +70,31 @@ export async function getShow(id: string) {
 			params,
 		});
 
-		const { videos, credits, "watch/providers": providers, ...rest } = data;
+		const {
+			videos,
+			credits,
+			"watch/providers": watchProviders,
+			recommendations: { results },
+			...rest
+		} = data;
+
+		const video = videos.results.find(
+			(video: Video) => video.type === "Trailer"
+		);
+		const cast =
+			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+		const providers =
+			regionCode in watchProviders.results
+				? watchProviders.results[regionCode]
+				: watchProviders.results.US;
+		const recommendations = results;
 
 		const details: ShowDetails = {
+			video,
+			cast,
+			providers,
+			recommendations,
 			...rest,
-			video: videos.results.find((video: Video) => video.type === "Trailer"),
-			cast: credits.cast.length > 20 ? credits.cast.slice(0, 20) : credits.cast,
-			crew: credits.crew.filter(
-				(member: any) =>
-					member.job in ["Director", "Writer", "Original Music Composer"]
-			),
-			providers:
-				regionCode in providers.results
-					? providers.results[regionCode]
-					: providers.results.US,
-			recommendations: data.recommendations.results,
 		};
 
 		return details;

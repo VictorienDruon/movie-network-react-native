@@ -3,11 +3,10 @@ import { Pagination } from "../types/Pagination";
 import { Movie } from "../types/Movie";
 import { Show } from "../types/Show";
 
-export async function discoverMovies(page: number) {
+export async function discoverMovies() {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
-		page: page.toString(),
 	});
 
 	try {
@@ -15,20 +14,18 @@ export async function discoverMovies(page: number) {
 			params,
 		});
 
-		return {
-			movies: data.results,
-			nextCursor: data.page < data.total_pages ? data.page + 1 : undefined,
-		};
+		const movies = data.results.filter((movie) => movie.poster_path !== null);
+
+		return movies;
 	} catch (error) {
 		throw error;
 	}
 }
 
-export async function discoverShows(page: number) {
+export async function discoverShows() {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
-		page: page.toString(),
 	});
 
 	try {
@@ -36,10 +33,9 @@ export async function discoverShows(page: number) {
 			params,
 		});
 
-		return {
-			shows: data.results,
-			nextCursor: data.page < data.total_pages ? data.page + 1 : undefined,
-		};
+		const shows = data.results.filter((show) => show.poster_path !== null);
+
+		return shows;
 	} catch (error) {
 		throw error;
 	}

@@ -1,44 +1,30 @@
 import { useRef, useState } from "react";
-import {
-	Dimensions,
-	FlatList,
-	TextInput,
-	TouchableOpacity,
-} from "react-native";
+import { FlatList, TextInput, TouchableOpacity } from "react-native";
 import { Link, Stack } from "expo-router";
 import debounce from "lodash.debounce";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { usePosters } from "@/providers/posters";
 import { discoverShows } from "@/libs/axios/api/discover";
 import { searchShows } from "@/libs/axios/api/search";
 import { Show } from "@/libs/axios/types/Show";
-import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";
-import SearchPoster from "@/features/search-poster";
-import SearckPosterSkeletons from "@/features/search-poster/components/CardSkeletons";
-
-interface ShowsPage {
-	shows: Show[];
-	nextCursor: number;
-}
+import Card from "@/features/card";
+import CardSkeleton from "@/features/card/components/CardSkeleton";
 
 const ShowsModal = () => {
 	const { isSelected, toggle, push } = usePosters();
 	const [value, setValue] = useState<string>("");
 	const inputRef = useRef<TextInput>(null);
-	const { width } = Dimensions.get("screen");
-	const margin = (width - 332) / 6;
 
-	const initQuery = useInfiniteQuery<ShowsPage, Error>({
+	const initQuery = useQuery<Show[], Error>({
 		queryKey: ["discoverShows"],
-		queryFn: ({ pageParam = 1 }) => discoverShows(pageParam),
-		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		queryFn: discoverShows,
 	});
 
-	const query = useInfiniteQuery<ShowsPage, Error>({
+	const query = useQuery<Show[], Error>({
 		queryKey: ["searchShows", value],
-		queryFn: ({ pageParam = 1 }) => searchShows(value, pageParam),
-		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		queryFn: () => searchShows(value),
 		enabled: value.length > 0,
 	});
 
@@ -55,9 +41,7 @@ const ShowsModal = () => {
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	const isLoading = (value && query.isLoading) || initQuery.isLoading;
-	const data = value ? query.data : initQuery.data;
-	const hasNextPage = value ? query.hasNextPage : initQuery.hasNextPage;
-	const fetchNextPage = value ? query.fetchNextPage : initQuery.fetchNextPage;
+	const shows = value ? query.data : initQuery.data;
 
 	return (
 		<>
@@ -82,69 +66,70 @@ const ShowsModal = () => {
 				}}
 			/>
 
-			<Box flex={1} px={16}>
-				<Box justifyContent="center" height={56} borderColor="neutral-6">
-					<HStack
+			<Box alignItems="center">
+				<HStack
+					alignItems="center"
+					height={40}
+					m={8}
+					p={8}
+					pl={16}
+					space={8}
+					bg="neutral-3"
+					borderRadius="xl"
+				>
+					<Input
+						ref={inputRef}
 						flex={1}
-						alignItems="center"
-						maxHeight={40}
-						p={8}
-						pl={16}
-						space={8}
-						bg="neutral-3"
-						borderRadius="xl"
-					>
-						<Input
-							ref={inputRef}
-							flex={1}
-							placeholder={`Search for a TV show`}
-							color="neutral-12"
-							placeholderTextColor="neutral-9"
-							autoCapitalize="none"
-							autoCorrect={false}
-							onChangeText={handleValueChange}
-						/>
+						placeholder={`Search for a TV Show`}
+						color="neutral-12"
+						placeholderTextColor="neutral-9"
+						autoCapitalize="none"
+						autoCorrect={false}
+						onChangeText={handleValueChange}
+					/>
 
-						<Button
-							rightIcon="X"
-							variant="secondary"
-							onPress={handleClearPress}
-						/>
-					</HStack>
-				</Box>
+					<Button
+						rightIcon="X"
+						variant="secondary"
+						onPress={handleClearPress}
+					/>
+				</HStack>
 
 				{isLoading ? (
-					<SearckPosterSkeletons count={9} margin={margin} />
+					<FlatList
+						data={Array.from({ length: 9 })}
+						keyExtractor={(_, index) => index.toString()}
+						renderItem={() => <CardSkeleton m={8} />}
+						contentContainerStyle={{ paddingBottom: 128 }}
+						ListEmptyComponent={<EmptyState>No results.</EmptyState>}
+						numColumns={3}
+						showsVerticalScrollIndicator={false}
+					/>
 				) : (
 					<FlatList
-						data={data.pages.flatMap((page) => page.shows)}
-						numColumns={3}
-						keyExtractor={(show) => show.id.toString()}
-						renderItem={({ item: show }) => (
-							<SearchPoster
-								title={show.name}
-								posterPath={show.poster_path}
-								isSelected={isSelected(show.id)}
-								margin={margin}
+						data={shows}
+						keyExtractor={(item) => item.id.toString()}
+						renderItem={({ item }) => (
+							<Card
+								title={item.name}
+								{...item}
+								m={8}
+								isSelected={isSelected(item.id)}
 								onPress={() =>
 									toggle({
 										type: "show",
-										id: show.id,
-										title: show.name,
-										poster_path: show.poster_path,
+										id: item.id,
+										title: item.name,
+										poster_path: item.poster_path,
 									})
 								}
 							/>
 						)}
-						ListEmptyComponent={<EmptyState>No results</EmptyState>}
-						ListFooterComponent={
-							<Box pb={64}>
-								{hasNextPage && (
-									<SearckPosterSkeletons count={3} margin={margin} />
-								)}
-							</Box>
-						}
-						onEndReached={() => fetchNextPage()}
+						contentContainerStyle={{
+							paddingBottom: 128,
+						}}
+						ListEmptyComponent={<EmptyState>No results.</EmptyState>}
+						numColumns={3}
 						showsVerticalScrollIndicator={false}
 					/>
 				)}
