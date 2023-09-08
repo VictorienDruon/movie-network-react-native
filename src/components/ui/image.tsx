@@ -1,4 +1,5 @@
-import { Image as ExpoImage } from "expo-image";
+import { useState } from "react";
+import { Image as ExpoImage, ImageContentFit } from "expo-image";
 import {
 	spacing,
 	SpacingProps,
@@ -10,6 +11,8 @@ import {
 	useRestyle,
 } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
+import Skeleton from "./skeleton";
+import { Box } from "./box";
 
 type RestyleProps = SpacingProps<Theme> &
 	LayoutProps<Theme> &
@@ -24,22 +27,33 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
 type ImageProps = RestyleProps & {
 	src: string;
 	alt: string;
-	onLoadEnd?: () => void;
+	contentFit?: ImageContentFit;
 	children?: React.ReactNode;
 };
 
 export const Image = ({
 	src,
 	alt,
-	onLoadEnd,
+	contentFit,
 	children,
 	...rest
 }: ImageProps) => {
+	const [isLoading, setIsLoading] = useState(src ? true : false);
 	const props = useRestyle(restyleFunctions, rest);
 
 	return (
-		<ExpoImage source={src} alt={alt} onLoadEnd={onLoadEnd} {...props}>
-			{children}
-		</ExpoImage>
+		<Box position="relative">
+			<ExpoImage
+				source={src}
+				alt={alt}
+				contentFit={contentFit}
+				onLoadEnd={() => setIsLoading(false)}
+				{...props}
+			>
+				{children}
+			</ExpoImage>
+
+			{isLoading && <Skeleton position="absolute" {...props} />}
+		</Box>
 	);
 };

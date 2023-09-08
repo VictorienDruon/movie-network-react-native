@@ -21,7 +21,7 @@ import {
 } from "@/components/ui";
 import Card from "@/features/card";
 import Person from "@/features/person";
-import Video from "@/features/video";
+import Video from "@/components/ui/video";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -38,6 +38,7 @@ const MovieScreen = () => {
 	const {
 		video,
 		backdrop_path,
+		poster_path,
 		title,
 		release_date,
 		runtime,
@@ -56,7 +57,11 @@ const MovieScreen = () => {
 
 	return (
 		<ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-			<Video video={video} backdropPath={backdrop_path} />
+			<Video
+				video={video}
+				backdropPath={backdrop_path}
+				posterPath={poster_path}
+			/>
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
@@ -79,11 +84,7 @@ const MovieScreen = () => {
 					</Button>
 				</VStack>
 
-				{overview.length > 0 && (
-					<Body px={16} textAlign="justify">
-						{overview}
-					</Body>
-				)}
+				{overview.length > 0 && <Body px={16}>{overview}</Body>}
 
 				{genres.length > 0 && (
 					<HStack px={16} flexWrap="wrap" space={8}>
@@ -172,6 +173,8 @@ const MovieScreen = () => {
 										width={175}
 										aspectRatio={16 / 9}
 										borderRadius="sm"
+										borderWidth={1}
+										borderColor="neutral-6"
 									/>
 								</TouchableOpacity>
 							</Link>

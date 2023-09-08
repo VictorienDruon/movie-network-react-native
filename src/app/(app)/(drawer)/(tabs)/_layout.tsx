@@ -2,7 +2,7 @@ import { TouchableOpacity } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { Tabs, useNavigation } from "expo-router";
 import { useSession } from "@/providers/session";
-import { Avatar, Box, Icon } from "@/components/ui";
+import { Avatar, Box, Icon, Skeleton } from "@/components/ui";
 
 const TabsLayout = () => {
 	const navigation = useNavigation();
@@ -12,16 +12,19 @@ const TabsLayout = () => {
 		<Tabs
 			screenOptions={{
 				tabBarShowLabel: false,
-				headerLeft: () =>
-					user && (
-						<TouchableOpacity
-							onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-						>
-							<Box px={20}>
+				headerLeft: () => (
+					<TouchableOpacity
+						onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+					>
+						<Box mx={20}>
+							{user ? (
 								<Avatar src={user.avatar_url} alt="Drawer" size={32} />
-							</Box>
-						</TouchableOpacity>
-					),
+							) : (
+								<Skeleton width={32} height={32} borderRadius="full" />
+							)}
+						</Box>
+					</TouchableOpacity>
+				),
 			}}
 		>
 			<Tabs.Screen

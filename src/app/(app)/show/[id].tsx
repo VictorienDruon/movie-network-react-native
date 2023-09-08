@@ -15,7 +15,7 @@ import {
 	Title,
 	VStack,
 } from "@/components/ui";
-import Video from "@/features/video";
+import Video from "@/components/ui/video";
 import Card from "@/features/card";
 import Person from "@/features/person";
 
@@ -34,6 +34,7 @@ const MovieScreen = () => {
 	const {
 		video,
 		backdrop_path,
+		poster_path,
 		name,
 		first_air_date,
 		last_episode_to_air,
@@ -51,7 +52,11 @@ const MovieScreen = () => {
 			showsVerticalScrollIndicator={false}
 			bounces={false}
 		>
-			<Video video={video} backdropPath={backdrop_path} />
+			<Video
+				video={video}
+				backdropPath={backdrop_path}
+				posterPath={poster_path}
+			/>
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
@@ -77,11 +82,7 @@ const MovieScreen = () => {
 					</Button>
 				</VStack>
 
-				{overview.length > 0 && (
-					<Body px={16} textAlign="justify">
-						{overview}
-					</Body>
-				)}
+				{overview.length > 0 && <Body px={16}>{overview}</Body>}
 
 				{genres.length > 0 && (
 					<HStack px={16} flexWrap="wrap" space={8}>
@@ -108,6 +109,7 @@ const MovieScreen = () => {
 							renderItem={({ item: recommendation }) => (
 								<Card
 									{...recommendation}
+									title={recommendation.name}
 									mx={8}
 									onPress={() =>
 										router.push({
