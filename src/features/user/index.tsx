@@ -22,7 +22,7 @@ export const User = ({ user, ...props }: UserProps) => {
 		>
 			<TouchableOpacity>
 				<HStack space={8} alignItems="center" {...props}>
-					<Avatar size={40} src={avatar_url} alt={name} />
+					<Avatar size={40} src={avatar_url} alt={`${name} avatar`} />
 
 					<Title>{name}</Title>
 				</HStack>

@@ -1,5 +1,4 @@
-import { Dimensions, FlatList, ScrollView } from "react-native";
-import YoutubePlayer from "react-native-youtube-iframe";
+import { FlatList, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getDateWithYear, getYear } from "@/utils/dates";
@@ -16,13 +15,12 @@ import {
 	Title,
 	VStack,
 } from "@/components/ui";
+import Video from "@/features/video";
 import Card from "@/features/card";
 import Person from "@/features/person";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { width } = Dimensions.get("screen");
-	const height = width * 0.5625;
 
 	const query = useQuery<ShowDetails, Error>({
 		queryKey: ["movie", id],
@@ -35,6 +33,7 @@ const MovieScreen = () => {
 
 	const {
 		video,
+		backdrop_path,
 		name,
 		first_air_date,
 		last_episode_to_air,
@@ -46,19 +45,13 @@ const MovieScreen = () => {
 		in_production,
 	} = query.data;
 
-	console.log(in_production);
-
 	return (
 		<ScrollView
 			stickyHeaderIndices={[0]}
 			showsVerticalScrollIndicator={false}
 			bounces={false}
 		>
-			{video ? (
-				<YoutubePlayer videoId={video.key} height={height} play={true} />
-			) : (
-				<Box height={height} bg="neutral-5" />
-			)}
+			<Video video={video} backdropPath={backdrop_path} />
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>

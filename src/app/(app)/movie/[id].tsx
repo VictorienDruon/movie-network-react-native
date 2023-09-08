@@ -1,6 +1,5 @@
-import { Dimensions, FlatList, ScrollView } from "react-native";
-import YoutubePlayer from "react-native-youtube-iframe";
-import { router, useLocalSearchParams } from "expo-router";
+import { FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
 import { pluralize } from "@/utils/texts";
@@ -22,11 +21,10 @@ import {
 } from "@/components/ui";
 import Card from "@/features/card";
 import Person from "@/features/person";
+import Video from "@/features/video";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { width } = Dimensions.get("screen");
-	const height = width * 0.5625;
 
 	const query = useQuery<MovieDetails, Error>({
 		queryKey: ["movie", id],
@@ -39,6 +37,7 @@ const MovieScreen = () => {
 
 	const {
 		video,
+		backdrop_path,
 		title,
 		release_date,
 		runtime,
@@ -57,11 +56,7 @@ const MovieScreen = () => {
 
 	return (
 		<ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-			{video ? (
-				<YoutubePlayer videoId={video.key} height={height} play={true} />
-			) : (
-				<Box height={height} bg="neutral-5" />
-			)}
+			<Video video={video} backdropPath={backdrop_path} />
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
@@ -163,13 +158,23 @@ const MovieScreen = () => {
 					<VStack px={16} space={8}>
 						<Title>Collection</Title>
 						<VStack width={175} space={2}>
-							<Image
-								src={`https://image.tmdb.org/t/p/w300${belongs_to_collection.backdrop_path}`}
-								alt={belongs_to_collection.name}
-								width={175}
-								aspectRatio={16 / 9}
-								borderRadius="sm"
-							/>
+							<Link
+								href={{
+									pathname: "/(app)/collection/[id]",
+									params: { id: belongs_to_collection.id },
+								}}
+								asChild
+							>
+								<TouchableOpacity>
+									<Image
+										src={`https://image.tmdb.org/t/p/w300${belongs_to_collection.backdrop_path}`}
+										alt={belongs_to_collection.name}
+										width={175}
+										aspectRatio={16 / 9}
+										borderRadius="sm"
+									/>
+								</TouchableOpacity>
+							</Link>
 							<Body
 								fontSize={13}
 								textAlign="center"

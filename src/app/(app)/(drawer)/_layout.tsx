@@ -34,7 +34,7 @@ const DrawerLayout = () => {
 							>
 								<TouchableOpacity>
 									<VStack space={20}>
-										<Avatar size={40} src={user.avatar_url} alt={user.name} />
+										<Avatar size={40} src={user.avatar_url} alt="Your avatar" />
 										<Heading>{user.name}</Heading>
 									</VStack>
 								</TouchableOpacity>

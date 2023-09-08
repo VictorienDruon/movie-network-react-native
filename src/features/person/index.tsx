@@ -30,7 +30,7 @@ const Person = ({
 				<Avatar
 					src={`https://image.tmdb.org/t/p/w185${profile_path}`}
 					size={80}
-					alt={name}
+					alt={`${name} avatar`}
 				/>
 			</TouchableOpacity>
 		</Link>

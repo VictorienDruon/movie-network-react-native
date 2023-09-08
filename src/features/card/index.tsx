@@ -38,7 +38,7 @@ const Card = ({
 				{poster_path ? (
 					<Image
 						src={`https://image.tmdb.org/t/p/w185${poster_path}`}
-						alt={title}
+						alt={`${title} poster`}
 						width={100}
 						aspectRatio={5 / 7}
 						borderRadius="sm"

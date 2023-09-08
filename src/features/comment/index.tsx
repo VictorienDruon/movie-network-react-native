@@ -34,7 +34,11 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 	return (
 		<HStack space={8} p={16}>
 			<TouchableOpacity onPress={handleAvatarPress}>
-				<Avatar src={author.avatar_url} size={28} alt={author.name} />
+				<Avatar
+					src={author.avatar_url}
+					size={28}
+					alt={`${author.name} avatar`}
+				/>
 			</TouchableOpacity>
 
 			<VStack space={2} flex={1}>

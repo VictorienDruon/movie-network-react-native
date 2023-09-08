@@ -46,7 +46,7 @@ export const Poster = ({
 				<TouchableOpacity>
 					<Image
 						src={`https://image.tmdb.org/t/p/${imageSizes[size]}${poster_path}`}
-						alt={title}
+						alt={`${title} poster`}
 						alignItems="center"
 						borderRadius="md"
 						aspectRatio={5 / 7}

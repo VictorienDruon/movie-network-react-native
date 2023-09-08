@@ -59,7 +59,7 @@ const CreateScreen = () => {
 				<VStack flex={1} space={28} p={32}>
 					<HStack justifyContent="space-between" alignItems="center" space={16}>
 						<HStack alignItems="center" space={16}>
-							<Avatar src={user.avatar_url} size={48} alt={user.name} />
+							<Avatar src={user.avatar_url} size={48} alt="Your avatar" />
 
 							<Title>{user.name}</Title>
 						</HStack>

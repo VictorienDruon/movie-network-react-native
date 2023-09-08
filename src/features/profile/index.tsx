@@ -56,7 +56,7 @@ export const Profile = ({ profile }: { profile: Profile }) => {
 			space={8}
 		>
 			<VStack space={8}>
-				<Avatar size={64} src={avatar_url} alt={name} />
+				<Avatar size={64} src={avatar_url} alt={`${name} avatar`} />
 
 				<Heading>{name}</Heading>
 

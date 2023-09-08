@@ -18,7 +18,7 @@ const TabsLayout = () => {
 							onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
 						>
 							<Box px={20}>
-								<Avatar src={user.avatar_url} alt={user.name} size={32} />
+								<Avatar src={user.avatar_url} alt="Drawer" size={32} />
 							</Box>
 						</TouchableOpacity>
 					),

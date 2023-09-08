@@ -30,24 +30,30 @@ export async function getMovie(movieId: string) {
 		const video = videos.results.find(
 			(video: Video) => video.type === "Trailer"
 		);
+
 		const cast =
 			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+
 		const crew = credits.crew.filter((member: CrewMember) =>
 			["Director", "Writer", "Original Music Composer"].includes(member.job)
 		);
+
 		const providers =
 			regionCode in watchProviders.results
 				? watchProviders.results[regionCode]
 				: watchProviders.results.US;
-		const recommendations = results;
+
+		const recommendations = results.filter(
+			(result: any) => result.poster_path !== null
+		);
 
 		const details: MovieDetails = {
+			...rest,
 			video,
 			cast,
 			crew,
 			providers,
 			recommendations,
-			...rest,
 		};
 
 		return details;
@@ -81,20 +87,25 @@ export async function getShow(id: string) {
 		const video = videos.results.find(
 			(video: Video) => video.type === "Trailer"
 		);
+
 		const cast =
 			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+
 		const providers =
 			regionCode in watchProviders.results
 				? watchProviders.results[regionCode]
 				: watchProviders.results.US;
-		const recommendations = results;
+
+		const recommendations = results.filter(
+			(result: any) => result.poster_path !== null
+		);
 
 		const details: ShowDetails = {
+			...rest,
 			video,
 			cast,
 			providers,
 			recommendations,
-			...rest,
 		};
 
 		return details;
