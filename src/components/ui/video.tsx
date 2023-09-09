@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Dimensions } from "react-native";
 import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe";
-import { Video as TVideo } from "@/libs/axios/types/Video";
-import { Image, Box, Skeleton } from "@/components/ui";
+import { Box } from "./box";
+import { Image } from "./image";
 
 interface VideoProps {
-	video: TVideo;
+	videoKey: string;
 	backdropPath: string;
 	posterPath: string;
 }
 
-const Video = ({ video, backdropPath, posterPath }: VideoProps) => {
+export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { width } = Dimensions.get("screen");
 	const height = width * 0.5625;
@@ -21,9 +21,9 @@ const Video = ({ video, backdropPath, posterPath }: VideoProps) => {
 
 	return (
 		<>
-			{video && (
+			{videoKey.length > 0 && (
 				<YoutubePlayer
-					videoId={video.key}
+					videoId={videoKey}
 					play={true}
 					height={height}
 					onChangeState={handleReady}
@@ -32,7 +32,7 @@ const Video = ({ video, backdropPath, posterPath }: VideoProps) => {
 
 			{isLoading && (
 				<Box
-					position={video ? "absolute" : "relative"}
+					position={videoKey ? "absolute" : "relative"}
 					width="100%"
 					height={height}
 					bg="neutral-3"
@@ -57,5 +57,3 @@ const Video = ({ video, backdropPath, posterPath }: VideoProps) => {
 		</>
 	);
 };
-
-export default Video;

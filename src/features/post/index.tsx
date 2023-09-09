@@ -1,9 +1,8 @@
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
-import { Box, Body, Metadata, HStack, VStack } from "@/components/ui";
-import { Poster } from "@/features/poster";
+import { Body, Metadata, HStack, VStack } from "@/components/ui";
 import { User } from "@/features/user";
-import Layout from "@/features/poster/components/Layout";
+import { Poster } from "@/features/poster";
 import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -26,10 +25,23 @@ export const Post = ({ post }: { post: Post }) => {
 
 			<Body>{content}</Body>
 
-			{posters.length > 0 && (
-				<Box alignItems="center" maxHeight={300}>
-					<Layout posters={posters} />
-				</Box>
+			{posters.length === 1 ? (
+				<Poster poster={posters[0]} size="lg" textPosition="top" />
+			) : posters.length === 2 ? (
+				<>
+					<Poster poster={posters[0]} size="md" textPosition="top" />
+					<Poster poster={posters[1]} size="md" textPosition="top" />
+				</>
+			) : posters.length === 3 ? (
+				<>
+					<Poster poster={posters[0]} size="sm" textPosition="top" />
+					<Poster poster={posters[1]} size="sm" textPosition="top" />
+					<Poster poster={posters[2]} size="sm" textPosition="top" />
+				</>
+			) : (
+				posters.length > 3 && (
+					<Poster poster={posters[0]} size="lg" textPosition="top" />
+				)
 			)}
 
 			<Actions postId={id} userHasLikedPost={user_has_liked_post} />

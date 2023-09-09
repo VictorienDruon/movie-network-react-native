@@ -1,9 +1,7 @@
 import { getLocales } from "expo-localization";
 import { api } from "..";
-import { MovieDetails } from "../types/Movie";
-import { ShowDetails } from "../types/Show";
-import { Video } from "../types/Video";
-import { CrewMember } from "../types/Credits";
+import Movie from "../types/Movie";
+import Show from "../types/Show";
 
 export async function getMovie(movieId: string) {
 	const locales = getLocales();
@@ -19,44 +17,74 @@ export async function getMovie(movieId: string) {
 			params,
 		});
 
-		const {
-			videos,
-			credits,
-			"watch/providers": watchProviders,
-			recommendations: { results },
-			...rest
-		} = data;
+		const movie: Movie = {
+			id: data.id,
+			title: data.title,
+			poster_path: data.poster_path,
+			backdrop_path: data.backdrop_path,
+			overview: data.overview,
+			release_date: data.release_date,
+			runtime: data.runtime,
+			budget: data.budget,
+			revenue: data.revenue,
+			genres: data.genres,
+			collection: data.belongs_to_collection,
+			companies: data.production_companies.flatMap(
+				(company: any) => company.name
+			),
+			countries: data.production_countries.flatMap(
+				(country: any) => country.name
+			),
+			languages: data.spoken_languages.flatMap(
+				(language: any) => language.name
+			),
 
-		const video = videos.results.find(
-			(video: Video) => video.type === "Trailer"
-		);
+			cast:
+				data.credits.cast.length > 20
+					? data.credits.cast.slice(0, 20).map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.character,
+							profile_path: member.profile_path,
+					  }))
+					: data.credits.cast.map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.character,
+							profile_path: member.profile_path,
+					  })),
 
-		const cast =
-			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+			crew: data.credits.crew
+				.filter((member: any) =>
+					["Director", "Writer", "Original Music Composer"].includes(member.job)
+				)
+				.map((member: any) => ({
+					id: member.id,
+					name: member.name,
+					role: member.job,
+					profile_path: member.profile_path,
+				})),
 
-		const crew = credits.crew.filter((member: CrewMember) =>
-			["Director", "Writer", "Original Music Composer"].includes(member.job)
-		);
+			recommendations: data.recommendations.results
+				.filter((movie: any) => movie.poster_path !== null)
+				.map((movie: any) => ({
+					id: movie.id,
+					title: movie.title,
+					poster_path: movie.poster_path,
+					type: "movie",
+				})),
 
-		const providers =
-			regionCode in watchProviders.results
-				? watchProviders.results[regionCode]
-				: watchProviders.results.US;
+			videoKey: data.videos.results.find(
+				(video: any) => video.type === "Trailer"
+			).key,
 
-		const recommendations = results.filter(
-			(result: any) => result.poster_path !== null
-		);
-
-		const details: MovieDetails = {
-			...rest,
-			video,
-			cast,
-			crew,
-			providers,
-			recommendations,
+			providers:
+				regionCode in data["watch/providers"].results
+					? data["watch/providers"].results[regionCode]
+					: data["watch/providers"].results.US,
 		};
 
-		return details;
+		return movie;
 	} catch (error) {
 		throw error;
 	}
@@ -76,39 +104,58 @@ export async function getShow(id: string) {
 			params,
 		});
 
-		const {
-			videos,
-			credits,
-			"watch/providers": watchProviders,
-			recommendations: { results },
-			...rest
-		} = data;
+		const show: Show = {
+			id: data.id,
+			title: data.name,
+			poster_path: data.poster_path,
+			overview: data.overview,
+			backdrop_path: data.backdrop_path,
+			first_air_date: data.first_air_date,
+			last_episode_to_air: data.last_episode_to_air,
+			in_production: data.in_production,
+			genres: data.genres,
 
-		const video = videos.results.find(
-			(video: Video) => video.type === "Trailer"
-		);
+			cast:
+				data.credits.cast.length > 20
+					? data.credits.cast.slice(0, 20).map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.character,
+							profile_path: member.profile_path,
+					  }))
+					: data.credits.cast.map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.character,
+							profile_path: member.profile_path,
+					  })),
 
-		const cast =
-			credits.cast.length > 20 ? data.credits.cast.slice(0, 20) : credits.cast;
+			created_by: data.created_by.map((creator: any) => ({
+				id: creator.id,
+				name: creator.name,
+				profile_path: creator.profile_path,
+			})),
 
-		const providers =
-			regionCode in watchProviders.results
-				? watchProviders.results[regionCode]
-				: watchProviders.results.US;
+			recommendations: data.recommendations.results
+				.filter((movie: any) => movie.poster_path !== null)
+				.map((movie: any) => ({
+					id: movie.id,
+					title: movie.title,
+					poster_path: movie.poster_path,
+					type: "movie",
+				})),
 
-		const recommendations = results.filter(
-			(result: any) => result.poster_path !== null
-		);
+			videoKey: data.videos.results.find(
+				(video: any) => video.type === "Trailer"
+			).key,
 
-		const details: ShowDetails = {
-			...rest,
-			video,
-			cast,
-			providers,
-			recommendations,
+			providers:
+				regionCode in data["watch/providers"].results
+					? data["watch/providers"].results[regionCode]
+					: data["watch/providers"].results.US,
 		};
 
-		return details;
+		return show;
 	} catch (error) {
 		throw error;
 	}

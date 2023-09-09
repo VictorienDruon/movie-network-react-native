@@ -1,57 +1,75 @@
-import { AnimatableStringValue, TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
-import { Box, BoxProps, TextProps, Title, Image, Blur } from "@/components/ui";
-
-type PosterSize = "sm" | "md" | "lg";
+import { TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+import { usePosters } from "@/providers/posters";
+import { Database } from "@/libs/supabase/types/database.types";
+import {
+	VStack,
+	Image,
+	Body,
+	BoxProps,
+	Box,
+	Icon,
+	Blur,
+	Title,
+	TextProps,
+} from "@/components/ui";
 
 export type Poster = {
-	type: "movie" | "show";
 	id: number;
 	title: string;
 	poster_path: string;
+	type: "movie" | "show";
 };
 
-interface PosterProps extends BoxProps {
+type PosterSize = "sm" | "md" | "lg";
+
+interface PosterProps extends Omit<BoxProps, "id"> {
 	poster: Poster;
-	size: PosterSize;
-	rotate?: AnimatableStringValue;
-	shadow?: boolean;
+	action?: "select" | "navigate";
+	size?: PosterSize;
+	textPosition?: "top" | "bottom";
 }
 
 export const Poster = ({
 	poster,
-	size,
-	rotate,
-	shadow = true,
+	action = "navigate",
+	size = "sm",
+	textPosition = "bottom",
 	...props
 }: PosterProps) => {
-	const { type, id, title, poster_path } = poster;
+	const { id, title, poster_path, type } = poster;
+	const context = usePosters();
 
-	return (
-		<Box
-			position="relative"
-			bg="neutral-3"
-			borderRadius="md"
-			style={{ transform: [{ rotate: rotate ? rotate : "0deg" }] }}
-			{...(shadow && { ...boxShadow })}
-			{...props}
-		>
-			<Link
-				href={{
+	const handlePress = () => {
+		action === "select"
+			? context.toggle(poster)
+			: router.push({
 					pathname: `/(app)/${type}/[id]`,
 					params: { id },
-				}}
-				asChild
-			>
-				<TouchableOpacity>
-					<Image
-						src={`https://image.tmdb.org/t/p/${imageSizes[size]}${poster_path}`}
-						alt={`${title} poster`}
-						alignItems="center"
-						borderRadius="md"
-						aspectRatio={5 / 7}
-						{...boxSizes[size]}
-					>
+			  });
+	};
+
+	return (
+		<VStack
+			position="relative"
+			alignItems="center"
+			space={2}
+			{...dimensionsSizes[size]}
+			{...props}
+		>
+			<TouchableOpacity onPress={handlePress}>
+				<Image
+					src={`https://image.tmdb.org/t/p/w185${poster_path}`}
+					alt={`${title} poster`}
+					aspectRatio={5 / 7}
+					alignItems="center"
+					borderRadius="sm"
+					borderWidth={1}
+					borderColor="neutral-6"
+					{...dimensionsSizes[size]}
+					{...imageSizes[size]}
+				>
+					{textPosition === "top" && (
 						<Blur intensity={15} tint="dark" borderRadius="full">
 							<Title
 								color="white"
@@ -62,30 +80,75 @@ export const Poster = ({
 								{title}
 							</Title>
 						</Blur>
-					</Image>
-				</TouchableOpacity>
-			</Link>
-		</Box>
+					)}
+				</Image>
+
+				{action === "select" && context.isSelected(id) && (
+					<Box
+						position="absolute"
+						justifyContent="center"
+						alignItems="center"
+						width={100}
+						aspectRatio={5 / 7}
+					>
+						<Box
+							width="100%"
+							height="100%"
+							backgroundColor="primary-5"
+							opacity={0.6}
+							borderRadius="sm"
+						/>
+						<Box
+							position="absolute"
+							justifyContent="center"
+							alignItems="center"
+							width={28}
+							height={28}
+							bg="primary-9"
+							borderRadius="full"
+							borderWidth={1}
+							borderColor="white"
+						>
+							<Icon name="Check" size={20} color="white" />
+						</Box>
+					</Box>
+				)}
+			</TouchableOpacity>
+
+			{textPosition === "bottom" && (
+				<Body
+					fontSize={13}
+					textAlign="center"
+					numberOfLines={1}
+					ellipsizeMode="tail"
+				>
+					{title}
+				</Body>
+			)}
+		</VStack>
 	);
 };
 
-const imageSizes: { [key in PosterSize]: string } = {
-	lg: "w500",
-	md: "w342",
-	sm: "w342",
+const dimensionsSizes: { [key in PosterSize]: BoxProps } = {
+	lg: {
+		width: 200,
+	},
+	md: {
+		width: 150,
+	},
+	sm: {
+		width: 100,
+	},
 };
 
-const boxSizes: { [key in PosterSize]: BoxProps } = {
+const imageSizes: { [key in PosterSize]: BoxProps } = {
 	lg: {
-		height: 300,
 		padding: 8,
 	},
 	md: {
-		height: 225,
 		padding: 6,
 	},
 	sm: {
-		height: 180,
 		padding: 4,
 	},
 };
@@ -106,12 +169,4 @@ const textSizes: { [key in PosterSize]: TextProps } = {
 		py: 2,
 		fontSize: 8,
 	},
-};
-
-const boxShadow: BoxProps = {
-	shadowColor: "black",
-	shadowOffset: { width: 0, height: 15 },
-	shadowOpacity: 0.2,
-	shadowRadius: 15,
-	elevation: 5,
 };

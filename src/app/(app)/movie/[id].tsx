@@ -1,12 +1,12 @@
 import { FlatList, ScrollView, TouchableOpacity } from "react-native";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
 import { pluralize } from "@/utils/texts";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { formatMoney } from "@/utils/numbers";
 import { getMovie } from "@/libs/axios/api/details";
-import { MovieDetails } from "@/libs/axios/types/Movie";
+import Movie from "@/libs/axios/types/Movie";
 import {
 	Body,
 	Box,
@@ -18,15 +18,15 @@ import {
 	Subtitle,
 	Title,
 	VStack,
+	Video,
 } from "@/components/ui";
-import Card from "@/features/card";
-import Person from "@/features/person";
-import Video from "@/components/ui/video";
+import { Poster } from "@/features/poster";
+import { Person } from "@/features/person";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<MovieDetails, Error>({
+	const query = useQuery<Movie, Error>({
 		queryKey: ["movie", id],
 		queryFn: () => getMovie(id),
 	});
@@ -36,29 +36,29 @@ const MovieScreen = () => {
 	if (query.isError) return null;
 
 	const {
-		video,
-		backdrop_path,
-		poster_path,
 		title,
+		poster_path,
+		backdrop_path,
+		overview,
 		release_date,
 		runtime,
-		overview,
-		genres,
-		recommendations,
-		cast,
-		crew,
-		belongs_to_collection,
-		production_companies,
-		production_countries,
-		spoken_languages,
 		budget,
 		revenue,
+		genres,
+		collection,
+		companies,
+		countries,
+		languages,
+		cast,
+		crew,
+		recommendations,
+		videoKey,
 	} = query.data;
 
 	return (
 		<ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
 			<Video
-				video={video}
+				videoKey={videoKey}
 				backdropPath={backdrop_path}
 				posterPath={poster_path}
 			/>
@@ -109,16 +109,7 @@ const MovieScreen = () => {
 							data={recommendations}
 							keyExtractor={(r) => r.id.toString()}
 							renderItem={({ item: recommendation }) => (
-								<Card
-									{...recommendation}
-									mx={8}
-									onPress={() =>
-										router.push({
-											pathname: "/(app)/movie/[id]",
-											params: { id: recommendation.id },
-										})
-									}
-								/>
+								<Poster mx={8} poster={recommendation} />
 							)}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
@@ -133,7 +124,9 @@ const MovieScreen = () => {
 						<FlatList
 							data={cast}
 							keyExtractor={(c) => c.id.toString()}
-							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							renderItem={({ item: person }) => (
+								<Person person={person} mx={4} />
+							)}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							showsHorizontalScrollIndicator={false}
 							horizontal
@@ -146,8 +139,10 @@ const MovieScreen = () => {
 						<Title pl={16}>Crew</Title>
 						<FlatList
 							data={crew}
-							keyExtractor={(c) => c.credit_id.toString()}
-							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							keyExtractor={(c) => c.id.toString()}
+							renderItem={({ item: person }) => (
+								<Person person={person} mx={4} />
+							)}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							showsHorizontalScrollIndicator={false}
 							horizontal
@@ -155,21 +150,21 @@ const MovieScreen = () => {
 					</VStack>
 				)}
 
-				{belongs_to_collection && (
+				{collection && (
 					<VStack px={16} space={8}>
 						<Title>Collection</Title>
 						<VStack width={175} space={2}>
 							<Link
 								href={{
 									pathname: "/(app)/collection/[id]",
-									params: { id: belongs_to_collection.id },
+									params: { id: collection.id },
 								}}
 								asChild
 							>
 								<TouchableOpacity>
 									<Image
-										src={`https://image.tmdb.org/t/p/w300${belongs_to_collection.backdrop_path}`}
-										alt={belongs_to_collection.name}
+										src={`https://image.tmdb.org/t/p/w300${collection.backdrop_path}`}
+										alt={collection.name}
 										width={175}
 										aspectRatio={16 / 9}
 										borderRadius="sm"
@@ -184,7 +179,7 @@ const MovieScreen = () => {
 								numberOfLines={1}
 								ellipsizeMode="tail"
 							>
-								{belongs_to_collection.name}
+								{collection.name}
 							</Body>
 						</VStack>
 					</VStack>
@@ -192,26 +187,20 @@ const MovieScreen = () => {
 
 				<VStack px={16} space={4}>
 					<Title>Informations</Title>
-					{production_companies.length > 0 && (
+					{companies.length > 0 && (
 						<Box>
-							<Body fontSize={13}>
-								{pluralize(production_companies.length, "Studio")}
-							</Body>
-							<Metadata>
-								{production_companies.flatMap((c) => c.name).join(", ")}
-							</Metadata>
+							<Body fontSize={13}>{pluralize(companies.length, "Studio")}</Body>
+							<Metadata>{companies.join(", ")}</Metadata>
 						</Box>
 					)}
 
-					{production_countries.length > 0 && (
+					{countries.length > 0 && (
 						<Box>
 							<Body fontSize={13}>{`${pluralize(
-								production_countries.length,
+								countries.length,
 								"Region"
 							)} of origin`}</Body>
-							<Metadata>
-								{production_countries.flatMap((c) => c.name).join(", ")}
-							</Metadata>
+							<Metadata>{countries.join(", ")}</Metadata>
 						</Box>
 					)}
 
@@ -222,14 +211,12 @@ const MovieScreen = () => {
 						</Box>
 					)}
 
-					{spoken_languages.length > 0 && (
+					{languages.length > 0 && (
 						<Box>
 							<Body fontSize={13}>
-								{pluralize(spoken_languages.length, "Language")}
+								{pluralize(languages.length, "Language")}
 							</Body>
-							<Metadata>
-								{spoken_languages.flatMap((l) => l.name).join(", ")}
-							</Metadata>
+							<Metadata>{languages.join(", ")}</Metadata>
 						</Box>
 					)}
 

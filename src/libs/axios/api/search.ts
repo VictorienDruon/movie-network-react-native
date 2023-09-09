@@ -1,7 +1,6 @@
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
-import { Movie } from "../types/Movie";
-import { Show } from "../types/Show";
+import { Poster } from "@/features/poster";
 
 export async function searchMovies(query: string) {
 	const params = new URLSearchParams({
@@ -15,7 +14,14 @@ export async function searchMovies(query: string) {
 			params,
 		});
 
-		const movies = data.results.filter((movie) => movie.poster_path !== null);
+		const movies: Poster[] = data.results
+			.filter((movie) => movie.poster_path !== null)
+			.map((movie) => ({
+				id: movie.id,
+				title: movie.title,
+				poster_path: movie.poster_path,
+				type: "movie",
+			}));
 
 		return movies;
 	} catch (error) {
@@ -31,11 +37,18 @@ export async function searchShows(query: string) {
 	});
 
 	try {
-		const { data } = await api.get<Pagination<Show>>("/search/tv", {
+		const { data } = await api.get<Pagination>("/search/tv", {
 			params,
 		});
 
-		const shows = data.results.filter((show) => show.poster_path !== null);
+		const shows: Poster[] = data.results
+			.filter((show) => show.poster_path !== null)
+			.map((show) => ({
+				id: show.id,
+				title: show.title,
+				poster_path: show.poster_path,
+				type: "movie",
+			}));
 
 		return shows;
 	} catch (error) {

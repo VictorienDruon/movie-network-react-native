@@ -1,9 +1,9 @@
 import { FlatList, ScrollView } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { getShow } from "@/libs/axios/api/details";
-import { ShowDetails } from "@/libs/axios/types/Show";
+import Show from "@/libs/axios/types/Show";
 import {
 	Body,
 	Box,
@@ -14,15 +14,15 @@ import {
 	Subtitle,
 	Title,
 	VStack,
+	Video,
 } from "@/components/ui";
-import Video from "@/components/ui/video";
-import Card from "@/features/card";
-import Person from "@/features/person";
+import { Poster } from "@/features/poster";
+import { Person } from "@/features/person";
 
-const MovieScreen = () => {
+const ShowScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<ShowDetails, Error>({
+	const query = useQuery<Show, Error>({
 		queryKey: ["movie", id],
 		queryFn: () => getShow(id),
 	});
@@ -32,18 +32,18 @@ const MovieScreen = () => {
 	if (query.isError) return null;
 
 	const {
-		video,
-		backdrop_path,
+		title,
 		poster_path,
-		name,
+		backdrop_path,
+		overview,
 		first_air_date,
 		last_episode_to_air,
-		overview,
+		in_production,
 		genres,
-		recommendations,
 		cast,
 		created_by,
-		in_production,
+		recommendations,
+		videoKey,
 	} = query.data;
 
 	return (
@@ -53,14 +53,14 @@ const MovieScreen = () => {
 			bounces={false}
 		>
 			<Video
-				video={video}
+				videoKey={videoKey}
 				backdropPath={backdrop_path}
 				posterPath={poster_path}
 			/>
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
-					{name.length > 0 && <Heading>{name}</Heading>}
+					{title.length > 0 && <Heading>{title}</Heading>}
 					<HStack space={8}>
 						{first_air_date.length > 0 && (
 							<Subtitle>{getYear(new Date(first_air_date))}</Subtitle>
@@ -107,17 +107,7 @@ const MovieScreen = () => {
 							data={recommendations}
 							keyExtractor={(r) => r.id.toString()}
 							renderItem={({ item: recommendation }) => (
-								<Card
-									{...recommendation}
-									title={recommendation.name}
-									mx={8}
-									onPress={() =>
-										router.push({
-											pathname: "/(app)/show/[id]",
-											params: { id: recommendation.id },
-										})
-									}
-								/>
+								<Poster poster={recommendation} mx={8} />
 							)}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
@@ -131,8 +121,10 @@ const MovieScreen = () => {
 						<Title pl={16}>Cast</Title>
 						<FlatList
 							data={cast}
-							keyExtractor={(c) => c.id.toString()}
-							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							keyExtractor={(person) => person.id.toString()}
+							renderItem={({ item: person }) => (
+								<Person person={person} mx={4} />
+							)}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							showsHorizontalScrollIndicator={false}
 							horizontal
@@ -145,8 +137,10 @@ const MovieScreen = () => {
 						<Title pl={16}>Created By</Title>
 						<FlatList
 							data={created_by}
-							keyExtractor={(c) => c.id.toString()}
-							renderItem={({ item: member }) => <Person {...member} mx={4} />}
+							keyExtractor={(person) => person.id.toString()}
+							renderItem={({ item: person }) => (
+								<Person person={person} mx={4} />
+							)}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							showsHorizontalScrollIndicator={false}
 							horizontal
@@ -183,4 +177,4 @@ const MovieScreen = () => {
 	);
 };
 
-export default MovieScreen;
+export default ShowScreen;

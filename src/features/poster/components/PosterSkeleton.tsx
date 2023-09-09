@@ -1,6 +1,6 @@
 import { BoxProps, Skeleton, VStack } from "@/components/ui";
 
-const CardSkeleton = (props: BoxProps) => (
+const PosterSkeleton = (props: BoxProps) => (
 	<VStack space={4} {...props}>
 		<Skeleton
 			width={100}
@@ -13,4 +13,4 @@ const CardSkeleton = (props: BoxProps) => (
 	</VStack>
 );
 
-export default CardSkeleton;
+export default PosterSkeleton;
