@@ -1,7 +1,8 @@
+import { TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
-import { Body, Metadata, HStack, VStack } from "@/components/ui";
-import { User } from "@/features/user";
+import { Body, Metadata, HStack, VStack, Avatar, Title } from "@/components/ui";
 import { Poster } from "@/features/poster";
 import Actions from "./components/Actions";
 
@@ -18,7 +19,25 @@ export const Post = ({ post }: { post: Post }) => {
 	return (
 		<VStack space={20} p={16}>
 			<HStack justifyContent="space-between" space={8}>
-				<User user={author} />
+				<Link
+					href={{
+						pathname: "/(app)/profile/[id]/(tabs)",
+						params: { id },
+					}}
+					asChild
+				>
+					<TouchableOpacity>
+						<HStack space={8} alignItems="center">
+							<Avatar
+								size={40}
+								src={author.avatar_url}
+								alt={`${author.name} avatar`}
+							/>
+
+							<Title>{author.name}</Title>
+						</HStack>
+					</TouchableOpacity>
+				</Link>
 
 				<Metadata>{getRelativeDate(created_at)}</Metadata>
 			</HStack>

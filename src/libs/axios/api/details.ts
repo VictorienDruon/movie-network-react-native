@@ -17,6 +17,10 @@ export async function getMovie(movieId: string) {
 			params,
 		});
 
+		const video = data.videos.results.find(
+			(video: any) => video.type === "Trailer"
+		);
+
 		const movie: Movie = {
 			id: data.id,
 			title: data.title,
@@ -74,9 +78,7 @@ export async function getMovie(movieId: string) {
 					type: "movie",
 				})),
 
-			videoKey: data.videos.results.find(
-				(video: any) => video.type === "Trailer"
-			).key,
+			videoKey: video ? video.key : "",
 
 			providers:
 				regionCode in data["watch/providers"].results
@@ -103,6 +105,10 @@ export async function getShow(id: string) {
 		const { data } = await api.get(`/tv/${id}`, {
 			params,
 		});
+
+		const video = data.videos.results.find(
+			(video: any) => video.type === "Trailer"
+		);
 
 		const show: Show = {
 			id: data.id,
@@ -142,12 +148,10 @@ export async function getShow(id: string) {
 					id: movie.id,
 					title: movie.title,
 					poster_path: movie.poster_path,
-					type: "movie",
+					type: "show",
 				})),
 
-			videoKey: data.videos.results.find(
-				(video: any) => video.type === "Trailer"
-			).key,
+			videoKey: video ? video.key : "",
 
 			providers:
 				regionCode in data["watch/providers"].results

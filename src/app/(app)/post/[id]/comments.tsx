@@ -6,7 +6,7 @@ import { ErrorState, EmptyState } from "@/components/common";
 import { Box } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
-import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
+import CommentSkeleton from "@/features/comment/components/CommentSkeleton";
 
 interface CommentsPage {
 	comments: Comment[];
@@ -22,7 +22,13 @@ const CommentsModal = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <CommentSkeletons count={2} />;
+	if (query.isLoading)
+		return (
+			<>
+				<CommentSkeleton />
+				<CommentSkeleton />
+			</>
+		);
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
@@ -34,7 +40,7 @@ const CommentsModal = () => {
 				renderItem={({ item: comment }) => <Comment comment={comment} />}
 				ListEmptyComponent={<EmptyState>There are no comments yet.</EmptyState>}
 				ListFooterComponent={
-					<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>
+					<Box pb={64}>{query.hasNextPage && <CommentSkeleton />}</Box>
 				}
 				onEndReached={() => query.fetchNextPage()}
 				showsVerticalScrollIndicator={false}

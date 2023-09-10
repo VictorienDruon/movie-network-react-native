@@ -1,7 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { usePosters } from "@/providers/posters";
-import { Database } from "@/libs/supabase/types/database.types";
 import {
 	VStack,
 	Image,
@@ -54,7 +53,7 @@ export const Poster = ({
 			position="relative"
 			alignItems="center"
 			space={2}
-			{...dimensionsSizes[size]}
+			{...boxSizes[size]}
 			{...props}
 		>
 			<TouchableOpacity onPress={handlePress}>
@@ -66,7 +65,7 @@ export const Poster = ({
 					borderRadius="sm"
 					borderWidth={1}
 					borderColor="neutral-6"
-					{...dimensionsSizes[size]}
+					{...boxSizes[size]}
 					{...imageSizes[size]}
 				>
 					{textPosition === "top" && (
@@ -129,7 +128,7 @@ export const Poster = ({
 	);
 };
 
-const dimensionsSizes: { [key in PosterSize]: BoxProps } = {
+const boxSizes: { [key in PosterSize]: BoxProps } = {
 	lg: {
 		width: 200,
 	},

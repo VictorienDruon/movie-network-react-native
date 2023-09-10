@@ -43,7 +43,7 @@ export async function discoverShows() {
 			.filter((show) => show.poster_path !== null)
 			.map((show) => ({
 				id: show.id,
-				title: show.title,
+				title: show.name,
 				poster_path: show.poster_path,
 				type: "movie",
 			}));

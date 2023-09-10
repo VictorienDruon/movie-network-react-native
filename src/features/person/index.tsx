@@ -1,6 +1,14 @@
 import { TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
-import { Box, Avatar, Body, Metadata, BoxProps, Icon } from "@/components/ui";
+import {
+	Box,
+	Avatar,
+	Body,
+	Metadata,
+	BoxProps,
+	Icon,
+	VStack,
+} from "@/components/ui";
 
 export interface Person {
 	id: number;
@@ -16,7 +24,7 @@ interface PersonProps extends Omit<BoxProps, "id"> {
 export const Person = ({ person, ...props }: PersonProps) => {
 	const { id, name, role, profile_path } = person;
 	return (
-		<Box alignItems="center" width={96} {...props}>
+		<VStack alignItems="center" width={96} space={0} {...props}>
 			<Link
 				href={{
 					pathname: "/person/[id]",
@@ -60,6 +68,6 @@ export const Person = ({ person, ...props }: PersonProps) => {
 					{role}
 				</Metadata>
 			)}
-		</Box>
+		</VStack>
 	);
 };

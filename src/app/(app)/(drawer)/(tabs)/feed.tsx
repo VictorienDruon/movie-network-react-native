@@ -5,7 +5,7 @@ import { getAll } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/common";
 import { Box, Icon, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
-import PostSkeletons from "@/features/post/components/PostSkeletons";
+import PostSkeleton from "@/features/post/components/PostSkeleton";
 
 interface PostsPage {
 	posts: Post[];
@@ -19,7 +19,13 @@ const FeedScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return <PostSkeletons count={4} />;
+	if (query.isLoading)
+		return (
+			<>
+				<PostSkeleton />
+				<PostSkeleton />
+			</>
+		);
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
@@ -31,7 +37,7 @@ const FeedScreen = () => {
 				renderItem={({ item: post }) => <Post post={post} />}
 				ItemSeparatorComponent={() => <Separator />}
 				ListFooterComponent={
-					<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
+					<Box pb={64}>{query.hasNextPage && <PostSkeleton />}</Box>
 				}
 				refreshControl={<RefreshControl refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}

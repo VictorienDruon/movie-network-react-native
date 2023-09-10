@@ -94,29 +94,33 @@ const ShowsModal = () => {
 					/>
 				</HStack>
 
-				{isLoading ? (
-					<FlatList
-						data={Array.from({ length: 12 })}
-						keyExtractor={(_, index) => index.toString()}
-						renderItem={() => <PosterSkeleton m={8} />}
-						contentContainerStyle={{ paddingBottom: 128 }}
-						ListEmptyComponent={<EmptyState>No results.</EmptyState>}
-						numColumns={3}
-						showsVerticalScrollIndicator={false}
-					/>
-				) : (
-					<FlatList
-						data={posters}
-						keyExtractor={(poster) => poster.id.toString()}
-						renderItem={({ item: poster }) => <Poster poster={poster} m={8} />}
-						contentContainerStyle={{
-							paddingBottom: 128,
-						}}
-						ListEmptyComponent={<EmptyState>No results.</EmptyState>}
-						numColumns={3}
-						showsVerticalScrollIndicator={false}
-					/>
-				)}
+				<Box>
+					{isLoading ? (
+						<FlatList
+							data={Array.from({ length: 12 })}
+							keyExtractor={(_, index) => index.toString()}
+							renderItem={() => <PosterSkeleton m={8} />}
+							contentContainerStyle={{ paddingBottom: 128 }}
+							ListEmptyComponent={<EmptyState>No results.</EmptyState>}
+							numColumns={3}
+							showsVerticalScrollIndicator={false}
+						/>
+					) : (
+						<FlatList
+							data={posters}
+							keyExtractor={(poster) => poster.id.toString()}
+							renderItem={({ item: poster }) => (
+								<Poster poster={poster} m={8} />
+							)}
+							contentContainerStyle={{
+								paddingBottom: 128,
+							}}
+							ListEmptyComponent={<EmptyState>No results.</EmptyState>}
+							numColumns={3}
+							showsVerticalScrollIndicator={false}
+						/>
+					)}
+				</Box>
 			</Box>
 		</>
 	);

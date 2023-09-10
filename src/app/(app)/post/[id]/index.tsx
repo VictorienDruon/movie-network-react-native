@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
 import { ErrorState } from "@/components/common";
 import { Post } from "@/features/post";
-import PostSkeletons from "@/features/post/components/PostSkeletons";
+import PostSkeleton from "@/features/post/components/PostSkeleton";
 
 const PostScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,7 +13,7 @@ const PostScreen = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isLoading) return <PostSkeletons />;
+	if (query.isLoading) return <PostSkeleton />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 

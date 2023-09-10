@@ -7,6 +7,7 @@ import { getDateWithYear, getYear } from "@/utils/dates";
 import { formatMoney } from "@/utils/numbers";
 import { getMovie } from "@/libs/axios/api/details";
 import Movie from "@/libs/axios/types/Movie";
+import { ErrorState } from "@/components/common";
 import {
 	Body,
 	Box,
@@ -15,6 +16,7 @@ import {
 	Heading,
 	Image,
 	Metadata,
+	Skeleton,
 	Subtitle,
 	Title,
 	VStack,
@@ -22,6 +24,8 @@ import {
 } from "@/components/ui";
 import { Poster } from "@/features/poster";
 import { Person } from "@/features/person";
+import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PersonSkeleton from "@/features/person/components/PersonSkeleton";
 
 const MovieScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -31,9 +35,62 @@ const MovieScreen = () => {
 		queryFn: () => getMovie(id),
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading)
+		return (
+			<VStack space={16}>
+				<Skeleton width="100%" aspectRatio={16 / 9} />
 
-	if (query.isError) return null;
+				<VStack pb={64} space={24}>
+					<VStack px={16} space={4}>
+						<Skeleton width={256} height={24} borderRadius="md" />
+						<Skeleton width={128} height={14} borderRadius="md" />
+					</VStack>
+
+					<VStack px={16} space={8}>
+						<Button variant="primary" leftIcon="Play" fillIcon={true}>
+							Play
+						</Button>
+						<Button variant="outline" leftIcon="Plus">
+							Add to Watchlist
+						</Button>
+					</VStack>
+
+					<VStack px={16} space={4}>
+						<Skeleton width="100%" height={16} borderRadius="md" />
+						<Skeleton width="100%" height={16} borderRadius="md" />
+						<Skeleton width="30%" height={16} borderRadius="md" />
+					</VStack>
+
+					<HStack px={16} space={8}>
+						<Skeleton width={64} height={20} borderRadius="lg" />
+						<Skeleton width={64} height={20} borderRadius="lg" />
+						<Skeleton width={64} height={20} borderRadius="lg" />
+					</HStack>
+
+					<VStack pl={16} space={8}>
+						<Title>Recommendations</Title>
+						<HStack space={16}>
+							<PosterSkeleton />
+							<PosterSkeleton />
+							<PosterSkeleton />
+							<PosterSkeleton />
+						</HStack>
+					</VStack>
+
+					<VStack pl={16} space={8}>
+						<Title>Cast</Title>
+						<HStack space={16}>
+							<PersonSkeleton />
+							<PersonSkeleton />
+							<PersonSkeleton />
+							<PersonSkeleton />
+						</HStack>
+					</VStack>
+				</VStack>
+			</VStack>
+		);
+
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	const {
 		title,
@@ -123,7 +180,7 @@ const MovieScreen = () => {
 						<Title pl={16}>Cast</Title>
 						<FlatList
 							data={cast}
-							keyExtractor={(c) => c.id.toString()}
+							keyExtractor={(p) => p.id.toString() + p.role}
 							renderItem={({ item: person }) => (
 								<Person person={person} mx={4} />
 							)}
@@ -139,7 +196,7 @@ const MovieScreen = () => {
 						<Title pl={16}>Crew</Title>
 						<FlatList
 							data={crew}
-							keyExtractor={(c) => c.id.toString()}
+							keyExtractor={(p) => p.id.toString() + p.role}
 							renderItem={({ item: person }) => (
 								<Person person={person} mx={4} />
 							)}

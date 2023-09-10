@@ -6,7 +6,7 @@ import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/common";
 import { Box, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
-import PostSkeletons from "@/features/post/components/PostSkeletons";
+import PostSkeleton from "@/features/post/components/PostSkeleton";
 import { useParams } from "./_layout";
 
 interface PostsPage {
@@ -40,7 +40,7 @@ const LikesTab = () => {
 				<EmptyState>This user has not liked any posts yet.</EmptyState>
 			}
 			ListFooterComponent={
-				<Box pb={64}>{query.hasNextPage && <PostSkeletons />}</Box>
+				<Box pb={64}>{query.hasNextPage && <PostSkeleton />}</Box>
 			}
 			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}

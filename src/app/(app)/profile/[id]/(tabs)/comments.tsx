@@ -6,7 +6,7 @@ import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/common";
 import { Box } from "@/components/ui";
 import { Comment } from "@/features/comment";
-import CommentSkeletons from "@/features/comment/components/CommentSkeletons";
+import CommentSkeleton from "@/features/comment/components/CommentSkeleton";
 import { useParams } from "./_layout";
 
 interface CommentsPage {
@@ -39,7 +39,7 @@ const CommentsTab = () => {
 				<EmptyState>This user has not posted any comments yet.</EmptyState>
 			}
 			ListFooterComponent={
-				<Box pb={64}>{query.hasNextPage && <CommentSkeletons />}</Box>
+				<Box pb={64}>{query.hasNextPage && <CommentSkeleton />}</Box>
 			}
 			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}

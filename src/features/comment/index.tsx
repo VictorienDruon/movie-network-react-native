@@ -41,7 +41,7 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 				/>
 			</TouchableOpacity>
 
-			<VStack space={2} flex={1}>
+			<VStack space={8} flex={1}>
 				<Title>{author.name}</Title>
 
 				<TouchableOpacity onPress={handleCommentPress}>
