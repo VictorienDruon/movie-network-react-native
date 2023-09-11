@@ -108,9 +108,9 @@ const ShowsModal = () => {
 					) : (
 						<FlatList
 							data={posters}
-							keyExtractor={(poster) => poster.id.toString()}
+							keyExtractor={(poster) => poster.tmdb_id.toString()}
 							renderItem={({ item: poster }) => (
-								<Poster poster={poster} m={8} />
+								<Poster poster={poster} action="select" m={8} />
 							)}
 							contentContainerStyle={{
 								paddingBottom: 128,

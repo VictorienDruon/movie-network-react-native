@@ -4,7 +4,7 @@ import { Poster } from "@/features/poster";
 
 interface PostersContext {
 	posters: Poster[];
-	isSelected: (id: number) => boolean;
+	isSelected: (tmdb_id: number, type: string) => boolean;
 	toggle: (attachment: Poster) => void;
 	push: () => void;
 }
@@ -17,7 +17,7 @@ export const PostersProvider = ({
 	children: React.ReactNode;
 }) => {
 	const [posters, setPosters] = useState<Poster[]>([]);
-	const [postersId, setPostersId] = useState<Set<number>>(new Set());
+	const [postersId, setPostersId] = useState<Set<string>>(new Set());
 
 	const [draftPosters, setDraftPosters] = useState(posters);
 	const [draftPostersId, setDraftPostersId] = useState(postersId);
@@ -29,23 +29,24 @@ export const PostersProvider = ({
 		setDraftPostersId(postersId);
 	}, [segments]);
 
-	const isSelected = (id: number) => draftPostersId.has(id);
+	const isSelected = (tmdb_id: number, type: string) =>
+		draftPostersId.has(tmdb_id + type);
 
 	const toggle = (attachment: Poster) => {
-		if (isSelected(attachment.id)) {
+		if (isSelected(attachment.tmdb_id, attachment.type)) {
 			setDraftPosters((prev) =>
-				prev.filter((item) => item.id !== attachment.id)
+				prev.filter((item) => item.tmdb_id !== attachment.tmdb_id)
 			);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
-				newSet.delete(attachment.id);
+				newSet.delete(attachment.tmdb_id + attachment.type);
 				return newSet;
 			});
 		} else if (draftPosters.length < 30) {
 			setDraftPosters((prev) => [...prev, attachment]);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
-				newSet.add(attachment.id);
+				newSet.add(attachment.tmdb_id + attachment.type);
 				return newSet;
 			});
 		} else {

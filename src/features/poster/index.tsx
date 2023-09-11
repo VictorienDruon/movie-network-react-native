@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { AnimatableStringValue, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { usePosters } from "@/providers/posters";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 
 export type Poster = {
-	id: number;
+	tmdb_id: number;
 	title: string;
 	poster_path: string;
 	type: "movie" | "show";
@@ -26,17 +26,21 @@ interface PosterProps extends Omit<BoxProps, "id"> {
 	poster: Poster;
 	action?: "select" | "navigate";
 	size?: PosterSize;
+	decoration?: "shadow" | "border";
 	textPosition?: "top" | "bottom";
+	rotate?: AnimatableStringValue;
 }
 
 export const Poster = ({
 	poster,
 	action = "navigate",
 	size = "sm",
+	decoration = "border",
 	textPosition = "bottom",
+	rotate,
 	...props
 }: PosterProps) => {
-	const { id, title, poster_path, type } = poster;
+	const { tmdb_id, title, poster_path, type } = poster;
 	const context = usePosters();
 
 	const handlePress = () => {
@@ -44,7 +48,7 @@ export const Poster = ({
 			? context.toggle(poster)
 			: router.push({
 					pathname: `/(app)/${type}/[id]`,
-					params: { id },
+					params: { id: tmdb_id },
 			  });
 	};
 
@@ -53,7 +57,9 @@ export const Poster = ({
 			position="relative"
 			alignItems="center"
 			space={2}
+			style={{ transform: [{ rotate: rotate ? rotate : "0deg" }] }}
 			{...boxSizes[size]}
+			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}
 		>
 			<TouchableOpacity onPress={handlePress}>
@@ -63,10 +69,9 @@ export const Poster = ({
 					aspectRatio={5 / 7}
 					alignItems="center"
 					borderRadius="sm"
-					borderWidth={1}
-					borderColor="neutral-6"
 					{...boxSizes[size]}
 					{...imageSizes[size]}
+					{...(decoration === "border" && { ...boxBorder })}
 				>
 					{textPosition === "top" && (
 						<Blur intensity={15} tint="dark" borderRadius="full">
@@ -82,7 +87,7 @@ export const Poster = ({
 					)}
 				</Image>
 
-				{action === "select" && context.isSelected(id) && (
+				{action === "select" && context.isSelected(tmdb_id, type) && (
 					<Box
 						position="absolute"
 						justifyContent="center"
@@ -168,4 +173,19 @@ const textSizes: { [key in PosterSize]: TextProps } = {
 		py: 2,
 		fontSize: 8,
 	},
+};
+
+const boxBorder: BoxProps = {
+	borderWidth: 1,
+	borderColor: "neutral-6",
+};
+
+const boxShadow: BoxProps = {
+	backgroundColor: "neutral-3",
+	borderRadius: "sm",
+	shadowColor: "black",
+	shadowOffset: { width: 0, height: 10 },
+	shadowOpacity: 0.15,
+	shadowRadius: 15,
+	elevation: 5,
 };

@@ -72,7 +72,7 @@ export async function getMovie(movieId: string) {
 			recommendations: data.recommendations.results
 				.filter((movie: any) => movie.poster_path !== null)
 				.map((movie: any) => ({
-					id: movie.id,
+					tmdb_id: movie.id,
 					title: movie.title,
 					poster_path: movie.poster_path,
 					type: "movie",
@@ -145,8 +145,8 @@ export async function getShow(id: string) {
 			recommendations: data.recommendations.results
 				.filter((movie: any) => movie.poster_path !== null)
 				.map((movie: any) => ({
-					id: movie.id,
-					title: movie.title,
+					tmdb_id: movie.id,
+					title: movie.name,
 					poster_path: movie.poster_path,
 					type: "show",
 				})),

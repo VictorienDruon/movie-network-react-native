@@ -8,8 +8,7 @@ const CommentSkeleton = () => (
 			<Skeleton width={100} height={20} borderRadius="md" />
 			<VStack space={2}>
 				<Skeleton width="100%" height={16} borderRadius="md" />
-				<Skeleton width="100%" height={16} borderRadius="md" />
-				<Skeleton width="30%" height={16} borderRadius="md" />
+				<Skeleton width="80%" height={16} borderRadius="md" />
 			</VStack>
 		</VStack>
 

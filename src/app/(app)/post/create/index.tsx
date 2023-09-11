@@ -23,11 +23,14 @@ import {
 	VStack,
 	Input,
 } from "@/components/ui";
+import PostersLayout from "@/features/poster/components/PostersLayout";
 
 const CreateScreen = () => {
 	const queryClient = useQueryClient();
 	const { user } = useSession();
 	const { posters } = usePosters();
+
+	console.log(posters);
 
 	const { control, formState, handleSubmit } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
@@ -88,6 +91,8 @@ const CreateScreen = () => {
 							/>
 						)}
 					/>
+
+					<PostersLayout posters={posters} />
 				</VStack>
 			</ScrollView>
 

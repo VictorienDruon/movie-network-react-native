@@ -70,20 +70,26 @@ const MovieScreen = () => {
 					<VStack pl={16} space={8}>
 						<Title>Recommendations</Title>
 						<HStack space={16}>
-							<PosterSkeleton />
-							<PosterSkeleton />
-							<PosterSkeleton />
-							<PosterSkeleton />
+							<FlatList
+								data={Array.from({ length: 4 }, (_, i) => i)}
+								keyExtractor={(item) => item.toString()}
+								renderItem={() => <PosterSkeleton mx={8} />}
+								horizontal={true}
+								scrollEnabled={false}
+							/>
 						</HStack>
 					</VStack>
 
 					<VStack pl={16} space={8}>
 						<Title>Cast</Title>
 						<HStack space={16}>
-							<PersonSkeleton />
-							<PersonSkeleton />
-							<PersonSkeleton />
-							<PersonSkeleton />
+							<FlatList
+								data={Array.from({ length: 4 }, (_, i) => i)}
+								keyExtractor={(item) => item.toString()}
+								renderItem={() => <PersonSkeleton mx={4} />}
+								horizontal={true}
+								scrollEnabled={false}
+							/>
 						</HStack>
 					</VStack>
 				</VStack>
@@ -122,12 +128,12 @@ const MovieScreen = () => {
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
-					{title.length > 0 && <Heading>{title}</Heading>}
+					{title?.length > 0 && <Heading>{title}</Heading>}
 					<HStack space={8}>
-						{release_date.length > 0 && (
+						{release_date?.length > 0 && (
 							<Subtitle>{getYear(new Date(release_date))}</Subtitle>
 						)}
-						{release_date.length > 0 && runtime > 0 && <Subtitle>•</Subtitle>}
+						{release_date?.length > 0 && runtime > 0 && <Subtitle>•</Subtitle>}
 						{runtime > 0 && <Subtitle>{formatDuration(runtime)}</Subtitle>}
 					</HStack>
 				</VStack>
@@ -141,9 +147,9 @@ const MovieScreen = () => {
 					</Button>
 				</VStack>
 
-				{overview.length > 0 && <Body px={16}>{overview}</Body>}
+				{overview?.length > 0 && <Body px={16}>{overview}</Body>}
 
-				{genres.length > 0 && (
+				{genres?.length > 0 && (
 					<HStack px={16} flexWrap="wrap" space={8}>
 						{genres.map((genre) => (
 							<Box
@@ -159,14 +165,14 @@ const MovieScreen = () => {
 					</HStack>
 				)}
 
-				{recommendations.length > 0 && (
+				{recommendations?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Recommendations</Title>
 						<FlatList
 							data={recommendations}
-							keyExtractor={(r) => r.id.toString()}
+							keyExtractor={(r) => r.tmdb_id.toString()}
 							renderItem={({ item: recommendation }) => (
-								<Poster mx={8} poster={recommendation} />
+								<Poster poster={recommendation} mx={8} />
 							)}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
@@ -175,7 +181,7 @@ const MovieScreen = () => {
 					</VStack>
 				)}
 
-				{cast.length > 0 && (
+				{cast?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Cast</Title>
 						<FlatList
@@ -191,7 +197,7 @@ const MovieScreen = () => {
 					</VStack>
 				)}
 
-				{crew.length > 0 && (
+				{crew?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Crew</Title>
 						<FlatList
@@ -244,34 +250,36 @@ const MovieScreen = () => {
 
 				<VStack px={16} space={4}>
 					<Title>Informations</Title>
-					{companies.length > 0 && (
+					{companies?.length > 0 && (
 						<Box>
-							<Body fontSize={13}>{pluralize(companies.length, "Studio")}</Body>
+							<Body fontSize={13}>
+								{pluralize(companies?.length, "Studio")}
+							</Body>
 							<Metadata>{companies.join(", ")}</Metadata>
 						</Box>
 					)}
 
-					{countries.length > 0 && (
+					{countries?.length > 0 && (
 						<Box>
 							<Body fontSize={13}>{`${pluralize(
-								countries.length,
+								countries?.length,
 								"Region"
 							)} of origin`}</Body>
 							<Metadata>{countries.join(", ")}</Metadata>
 						</Box>
 					)}
 
-					{release_date.length > 0 && (
+					{release_date?.length > 0 && (
 						<Box>
 							<Body fontSize={13}>Release Date</Body>
 							<Metadata>{getDateWithYear(new Date(release_date))}</Metadata>
 						</Box>
 					)}
 
-					{languages.length > 0 && (
+					{languages?.length > 0 && (
 						<Box>
 							<Body fontSize={13}>
-								{pluralize(languages.length, "Language")}
+								{pluralize(languages?.length, "Language")}
 							</Body>
 							<Metadata>{languages.join(", ")}</Metadata>
 						</Box>

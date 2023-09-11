@@ -1,3 +1,4 @@
+import { AnimatableStringValue } from "react-native";
 import { BoxProps, Skeleton, VStack } from "@/components/ui";
 
 type PosterSize = "sm" | "md" | "lg";
@@ -5,17 +6,20 @@ type PosterSize = "sm" | "md" | "lg";
 interface PosterSkeletonProps extends BoxProps {
 	size?: PosterSize;
 	textPosition?: "top" | "bottom";
+	rotate?: AnimatableStringValue;
 }
 
 const PosterSkeleton = ({
 	size = "sm",
 	textPosition = "bottom",
+	rotate,
 	...props
 }: PosterSkeletonProps) => (
 	<VStack
 		position="relative"
 		alignItems="center"
 		space={2}
+		style={{ transform: [{ rotate: rotate ? rotate : "0deg" }] }}
 		{...boxSizes[size]}
 		{...props}
 	>

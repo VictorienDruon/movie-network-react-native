@@ -16,7 +16,7 @@ export async function discoverMovies() {
 		const movies: Poster[] = data.results
 			.filter((movie) => movie.poster_path !== null)
 			.map((movie) => ({
-				id: movie.id,
+				tmdb_id: movie.id,
 				title: movie.title,
 				poster_path: movie.poster_path,
 				type: "movie",
@@ -42,10 +42,10 @@ export async function discoverShows() {
 		const shows: Poster[] = data.results
 			.filter((show) => show.poster_path !== null)
 			.map((show) => ({
-				id: show.id,
+				tmdb_id: show.id,
 				title: show.name,
 				poster_path: show.poster_path,
-				type: "movie",
+				type: "show",
 			}));
 
 		return shows;

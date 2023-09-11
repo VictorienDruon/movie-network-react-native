@@ -114,23 +114,26 @@ export interface Database {
       posters: {
         Row: {
           created_at: string
-          id: number
+          id: string
           poster_path: string
           title: string
+          tmdb_id: number
           type: string
         }
         Insert: {
           created_at?: string
-          id: number
+          id?: string
           poster_path: string
           title: string
+          tmdb_id: number
           type: string
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           poster_path?: string
           title?: string
+          tmdb_id?: number
           type?: string
         }
         Relationships: []
@@ -166,15 +169,15 @@ export interface Database {
       posts_posters: {
         Row: {
           post_id: string
-          poster_id: number
+          poster_id: string
         }
         Insert: {
           post_id: string
-          poster_id: number
+          poster_id: string
         }
         Update: {
           post_id?: string
-          poster_id?: number
+          poster_id?: string
         }
         Relationships: [
           {

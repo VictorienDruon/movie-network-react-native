@@ -1,7 +1,7 @@
-import { Skeleton, VStack } from "@/components/ui";
+import { BoxProps, Skeleton, VStack } from "@/components/ui";
 
-const PersonSkeleton = () => (
-	<VStack alignItems="center" width={96} space={2}>
+const PersonSkeleton = (props: BoxProps) => (
+	<VStack alignItems="center" width={96} space={2} {...props}>
 		<Skeleton width={80} height={80} borderRadius="full" />
 
 		<Skeleton width={80} height={12} borderRadius="md" />

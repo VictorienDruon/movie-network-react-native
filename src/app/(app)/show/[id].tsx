@@ -66,20 +66,26 @@ const ShowScreen = () => {
 					<VStack pl={16} space={8}>
 						<Title>Recommendations</Title>
 						<HStack space={16}>
-							<PosterSkeleton />
-							<PosterSkeleton />
-							<PosterSkeleton />
-							<PosterSkeleton />
+							<FlatList
+								data={Array.from({ length: 4 }, (_, i) => i)}
+								keyExtractor={(item) => item.toString()}
+								renderItem={() => <PosterSkeleton mx={8} />}
+								horizontal={true}
+								scrollEnabled={false}
+							/>
 						</HStack>
 					</VStack>
 
 					<VStack pl={16} space={8}>
 						<Title>Cast</Title>
 						<HStack space={16}>
-							<PersonSkeleton />
-							<PersonSkeleton />
-							<PersonSkeleton />
-							<PersonSkeleton />
+							<FlatList
+								data={Array.from({ length: 4 }, (_, i) => i)}
+								keyExtractor={(item) => item.toString()}
+								renderItem={() => <PersonSkeleton mx={4} />}
+								horizontal={true}
+								scrollEnabled={false}
+							/>
 						</HStack>
 					</VStack>
 				</VStack>
@@ -117,12 +123,12 @@ const ShowScreen = () => {
 
 			<VStack pt={16} pb={64} space={24}>
 				<VStack px={16} space={4}>
-					{title.length > 0 && <Heading>{title}</Heading>}
+					{title?.length > 0 && <Heading>{title}</Heading>}
 					<HStack space={8}>
-						{first_air_date.length > 0 && (
+						{first_air_date?.length > 0 && (
 							<Subtitle>{getYear(new Date(first_air_date))}</Subtitle>
 						)}
-						{first_air_date.length > 0 &&
+						{first_air_date?.length > 0 &&
 							last_episode_to_air?.season_number > 0 && <Subtitle>•</Subtitle>}
 						{last_episode_to_air?.season_number > 0 && (
 							<Subtitle>{`${last_episode_to_air.season_number} seasons`}</Subtitle>
@@ -139,9 +145,9 @@ const ShowScreen = () => {
 					</Button>
 				</VStack>
 
-				{overview.length > 0 && <Body px={16}>{overview}</Body>}
+				{overview?.length > 0 && <Body px={16}>{overview}</Body>}
 
-				{genres.length > 0 && (
+				{genres?.length > 0 && (
 					<HStack px={16} flexWrap="wrap" space={8}>
 						{genres.map((genre) => (
 							<Box
@@ -157,12 +163,12 @@ const ShowScreen = () => {
 					</HStack>
 				)}
 
-				{recommendations.length > 0 && (
+				{recommendations?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Recommendations</Title>
 						<FlatList
 							data={recommendations}
-							keyExtractor={(r) => r.id.toString()}
+							keyExtractor={(r) => r.tmdb_id.toString()}
 							renderItem={({ item: recommendation }) => (
 								<Poster poster={recommendation} mx={8} />
 							)}
@@ -173,7 +179,7 @@ const ShowScreen = () => {
 					</VStack>
 				)}
 
-				{cast.length > 0 && (
+				{cast?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Cast</Title>
 						<FlatList
@@ -189,7 +195,7 @@ const ShowScreen = () => {
 					</VStack>
 				)}
 
-				{created_by.length > 0 && (
+				{created_by?.length > 0 && (
 					<VStack space={8}>
 						<Title pl={16}>Created By</Title>
 						<FlatList
@@ -208,7 +214,7 @@ const ShowScreen = () => {
 				<VStack px={16} space={4}>
 					<Title>Informations</Title>
 
-					{first_air_date.length > 0 && (
+					{first_air_date?.length > 0 && (
 						<Box>
 							<Body fontSize={13}>First Air Date</Body>
 							<Metadata>{getDateWithYear(new Date(first_air_date))}</Metadata>

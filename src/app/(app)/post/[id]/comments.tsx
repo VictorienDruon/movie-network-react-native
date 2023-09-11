@@ -24,10 +24,12 @@ const CommentsModal = () => {
 
 	if (query.isLoading)
 		return (
-			<>
-				<CommentSkeleton />
-				<CommentSkeleton />
-			</>
+			<FlatList
+				data={Array.from({ length: 4 }, (_, i) => i)}
+				keyExtractor={(item) => item.toString()}
+				renderItem={() => <CommentSkeleton />}
+				scrollEnabled={false}
+			/>
 		);
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;

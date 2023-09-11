@@ -4,6 +4,7 @@ import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
 import { Body, Metadata, HStack, VStack, Avatar, Title } from "@/components/ui";
 import { Poster } from "@/features/poster";
+import PostersLayout from "@/features/poster/components/PostersLayout";
 import Actions from "./components/Actions";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -44,24 +45,7 @@ export const Post = ({ post }: { post: Post }) => {
 
 			<Body>{content}</Body>
 
-			{posters.length === 1 ? (
-				<Poster poster={posters[0]} size="lg" textPosition="top" />
-			) : posters.length === 2 ? (
-				<>
-					<Poster poster={posters[0]} size="md" textPosition="top" />
-					<Poster poster={posters[1]} size="md" textPosition="top" />
-				</>
-			) : posters.length === 3 ? (
-				<>
-					<Poster poster={posters[0]} size="sm" textPosition="top" />
-					<Poster poster={posters[1]} size="sm" textPosition="top" />
-					<Poster poster={posters[2]} size="sm" textPosition="top" />
-				</>
-			) : (
-				posters.length > 3 && (
-					<Poster poster={posters[0]} size="lg" textPosition="top" />
-				)
-			)}
+			<PostersLayout posters={posters} />
 
 			<Actions postId={id} userHasLikedPost={user_has_liked_post} />
 		</VStack>

@@ -21,10 +21,13 @@ const FeedScreen = () => {
 
 	if (query.isLoading)
 		return (
-			<>
-				<PostSkeleton />
-				<PostSkeleton />
-			</>
+			<FlatList
+				data={Array.from({ length: 2 }, (_, i) => i)}
+				keyExtractor={(item) => item.toString()}
+				renderItem={() => <PostSkeleton />}
+				ItemSeparatorComponent={() => <Separator />}
+				scrollEnabled={false}
+			/>
 		);
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
