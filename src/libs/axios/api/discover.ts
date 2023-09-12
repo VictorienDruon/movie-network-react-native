@@ -2,10 +2,14 @@ import { api } from "..";
 import { Pagination } from "../types/Pagination";
 import { Poster } from "@/features/poster";
 
-export async function discoverMovies() {
+const MAX_POSTERS = 18;
+const MAX_PAGES = 10;
+
+export async function discoverMovies(page: number) {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
+		page: page.toString(),
 	});
 
 	try {
@@ -13,7 +17,7 @@ export async function discoverMovies() {
 			params,
 		});
 
-		const movies: Poster[] = data.results
+		const posters: Poster[] = data.results
 			.filter((movie) => movie.poster_path !== null)
 			.map((movie) => ({
 				tmdb_id: movie.id,
@@ -22,16 +26,24 @@ export async function discoverMovies() {
 				type: "movie",
 			}));
 
-		return movies;
+		return {
+			posters:
+				posters.length > MAX_POSTERS ? posters.slice(0, MAX_POSTERS) : posters,
+			nextCursor:
+				data.page < data.total_pages && data.page < MAX_PAGES
+					? data.page + 1
+					: undefined,
+		};
 	} catch (error) {
 		throw error;
 	}
 }
 
-export async function discoverShows() {
+export async function discoverShows(page: number) {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
+		page: page.toString(),
 	});
 
 	try {
@@ -39,8 +51,8 @@ export async function discoverShows() {
 			params,
 		});
 
-		const shows: Poster[] = data.results
-			.filter((show) => show.poster_path !== null)
+		const posters: Poster[] = data.results
+			.filter((movie) => movie.poster_path !== null)
 			.map((show) => ({
 				tmdb_id: show.id,
 				title: show.name,
@@ -48,7 +60,14 @@ export async function discoverShows() {
 				type: "show",
 			}));
 
-		return shows;
+		return {
+			posters:
+				posters.length > MAX_POSTERS ? posters.slice(0, MAX_POSTERS) : posters,
+			nextCursor:
+				data.page < data.total_pages && data.page < MAX_PAGES
+					? data.page + 1
+					: undefined,
+		};
 	} catch (error) {
 		throw error;
 	}

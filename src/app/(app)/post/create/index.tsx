@@ -30,8 +30,6 @@ const CreateScreen = () => {
 	const { user } = useSession();
 	const { posters } = usePosters();
 
-	console.log(posters);
-
 	const { control, formState, handleSubmit } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
 	});
@@ -61,17 +59,14 @@ const CreateScreen = () => {
 				<VStack flex={1} space={28} p={32}>
 					<HStack justifyContent="space-between" alignItems="center" space={16}>
 						<HStack alignItems="center" space={16}>
-							<Avatar src={user.avatar_url} size={48} alt="Your avatar" />
+							{user && (
+								<Avatar src={user.avatar_url} size={40} alt="Your avatar" />
+							)}
 
-							<Title>{user.name}</Title>
+							{user && <Title>{user.name}</Title>}
 						</HStack>
 
-						<Button
-							variant="outline"
-							size="sm"
-							rightIcon="Globe"
-							disabled={true}
-						>
+						<Button variant="outline" size="sm" rightIcon="Globe">
 							Public
 						</Button>
 					</HStack>
@@ -110,13 +105,25 @@ const CreateScreen = () => {
 					borderColor="neutral-6"
 				>
 					<HStack space={32}>
-						<Link href="/(app)/post/create/movies" asChild>
+						<Link
+							href={{
+								pathname: "/(app)/post/create/[attachments]",
+								params: { attachments: "movies" },
+							}}
+							asChild
+						>
 							<TouchableOpacity>
 								<Icon name="Clapperboard" color="primary-9" size={24} />
 							</TouchableOpacity>
 						</Link>
 
-						<Link href="/(app)/post/create/shows" asChild>
+						<Link
+							href={{
+								pathname: "/(app)/post/create/[attachments]",
+								params: { attachments: "shows" },
+							}}
+							asChild
+						>
 							<TouchableOpacity>
 								<Icon name="Tv" color="primary-9" size={24} />
 							</TouchableOpacity>
@@ -124,7 +131,7 @@ const CreateScreen = () => {
 					</HStack>
 
 					<Button
-						rightIcon={formState.isValid ? "ArrowRight" : "Lock"}
+						rightIcon="ArrowRight"
 						disabled={!formState.isValid || mutation.isLoading}
 						onPress={handlePostSubmit}
 					>

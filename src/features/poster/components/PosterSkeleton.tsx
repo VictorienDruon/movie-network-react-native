@@ -7,19 +7,25 @@ interface PosterSkeletonProps extends BoxProps {
 	size?: PosterSize;
 	textPosition?: "top" | "bottom";
 	rotate?: AnimatableStringValue;
+	gridSpacing?: number;
 }
 
 const PosterSkeleton = ({
 	size = "sm",
 	textPosition = "bottom",
 	rotate,
+	gridSpacing,
 	...props
 }: PosterSkeletonProps) => (
 	<VStack
 		position="relative"
 		alignItems="center"
 		space={2}
-		style={{ transform: [{ rotate: rotate ? rotate : "0deg" }] }}
+		style={{
+			marginHorizontal: gridSpacing,
+			marginBottom: gridSpacing,
+			transform: [{ rotate: rotate ? rotate : "0deg" }],
+		}}
 		{...boxSizes[size]}
 		{...props}
 	>

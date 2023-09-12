@@ -43,12 +43,8 @@ const ShowScreen = () => {
 					</VStack>
 
 					<VStack px={16} space={8}>
-						<Button variant="primary" leftIcon="Play" fillIcon={true}>
-							Play
-						</Button>
-						<Button variant="outline" leftIcon="Plus">
-							Add to Watchlist
-						</Button>
+						<Skeleton width="100%" height={30} borderRadius="lg" />
+						<Skeleton width="100%" height={30} borderRadius="lg" />
 					</VStack>
 
 					<VStack px={16} space={4}>
@@ -110,11 +106,7 @@ const ShowScreen = () => {
 	} = query.data;
 
 	return (
-		<ScrollView
-			stickyHeaderIndices={[0]}
-			showsVerticalScrollIndicator={false}
-			bounces={false}
-		>
+		<ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
 			<Video
 				videoKey={videoKey}
 				backdropPath={backdrop_path}

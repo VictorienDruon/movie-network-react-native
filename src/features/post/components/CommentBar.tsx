@@ -34,7 +34,7 @@ const CommentBar = ({ postId }: { postId: string }) => {
 		<HStack
 			flex={1}
 			alignItems="center"
-			maxHeight={40}
+			height={40}
 			p={8}
 			pl={16}
 			space={8}

@@ -46,7 +46,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 						/>
 					) : (
 						<Image
-							src={`https://image.tmdb.org/t/p/w342${posterPath}`}
+							src={`https://image.tmdb.org/t/p/w500${posterPath}`}
 							alt="Backdrop image"
 							contentFit="contain"
 							height={height}

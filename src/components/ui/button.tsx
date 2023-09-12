@@ -33,6 +33,7 @@ export const Button = ({
 		<HStack
 			alignItems="center"
 			justifyContent="center"
+			opacity={disabled ? 0.5 : 1}
 			{...boxSizes[size]}
 			{...boxVariants[variant]}
 			{...props}

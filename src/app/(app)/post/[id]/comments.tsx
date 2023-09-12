@@ -2,8 +2,9 @@ import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByPost } from "@/libs/supabase/api/comments";
+import { useSession } from "@/providers/session";
 import { ErrorState, EmptyState } from "@/components/common";
-import { Box } from "@/components/ui";
+import { Avatar, Box, HStack } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";
 import CommentSkeleton from "@/features/comment/components/CommentSkeleton";
@@ -15,6 +16,7 @@ interface CommentsPage {
 
 const CommentsModal = () => {
 	const { id: postId } = useLocalSearchParams<{ id: string }>();
+	const { user } = useSession();
 
 	const query = useInfiniteQuery<CommentsPage, Error>({
 		queryKey: ["comments", postId],
@@ -52,15 +54,17 @@ const CommentsModal = () => {
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
 				keyboardVerticalOffset={116}
 			>
-				<Box
-					justifyContent="center"
+				<HStack
+					alignItems="center"
 					height={56}
 					px={16}
+					space={8}
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
+					{user && <Avatar size={40} src={user.avatar_url} alt={user.name} />}
 					<CommentBar postId={postId} />
-				</Box>
+				</HStack>
 			</KeyboardAvoidingView>
 		</Box>
 	);

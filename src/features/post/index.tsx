@@ -23,7 +23,7 @@ export const Post = ({ post }: { post: Post }) => {
 				<Link
 					href={{
 						pathname: "/(app)/profile/[id]/(tabs)",
-						params: { id },
+						params: { id: author.id },
 					}}
 					asChild
 				>

@@ -29,6 +29,7 @@ interface PosterProps extends Omit<BoxProps, "id"> {
 	decoration?: "shadow" | "border";
 	textPosition?: "top" | "bottom";
 	rotate?: AnimatableStringValue;
+	gridSpacing?: number;
 }
 
 export const Poster = ({
@@ -38,6 +39,7 @@ export const Poster = ({
 	decoration = "border",
 	textPosition = "bottom",
 	rotate,
+	gridSpacing,
 	...props
 }: PosterProps) => {
 	const { tmdb_id, title, poster_path, type } = poster;
@@ -57,14 +59,18 @@ export const Poster = ({
 			position="relative"
 			alignItems="center"
 			space={2}
-			style={{ transform: [{ rotate: rotate ? rotate : "0deg" }] }}
+			style={{
+				marginHorizontal: gridSpacing,
+				marginBottom: gridSpacing,
+				transform: [{ rotate: rotate ? rotate : "0deg" }],
+			}}
 			{...boxSizes[size]}
 			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`https://image.tmdb.org/t/p/w185${poster_path}`}
+					src={`https://image.tmdb.org/t/p/${imagesResolution[size]}${poster_path}`}
 					alt={`${title} poster`}
 					aspectRatio={5 / 7}
 					alignItems="center"
@@ -155,6 +161,12 @@ const imageSizes: { [key in PosterSize]: BoxProps } = {
 	sm: {
 		padding: 4,
 	},
+};
+
+const imagesResolution: { [key in PosterSize]: string } = {
+	lg: "w780",
+	md: "w500",
+	sm: "w342",
 };
 
 const textSizes: { [key in PosterSize]: TextProps } = {
