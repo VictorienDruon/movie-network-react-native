@@ -21,11 +21,13 @@ const PosterSkeleton = ({
 		position="relative"
 		alignItems="center"
 		space={2}
-		style={{
-			marginHorizontal: gridSpacing,
-			marginBottom: gridSpacing,
-			transform: [{ rotate: rotate ? rotate : "0deg" }],
-		}}
+		style={[
+			gridSpacing && {
+				marginHorizontal: gridSpacing,
+				marginBottom: gridSpacing,
+			},
+			rotate && { transform: [{ rotate: rotate }] },
+		]}
 		{...boxSizes[size]}
 		{...props}
 	>

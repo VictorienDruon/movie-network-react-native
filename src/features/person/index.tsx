@@ -13,7 +13,7 @@ import {
 export interface Person {
 	id: number;
 	name: string;
-	role?: string;
+	role: string;
 	profile_path: string;
 }
 
@@ -63,7 +63,7 @@ export const Person = ({ person, ...props }: PersonProps) => {
 			>
 				{name}
 			</Body>
-			{role && (
+			{role && role !== "Creator" && (
 				<Metadata textAlign="center" numberOfLines={1} ellipsizeMode="tail">
 					{role}
 				</Metadata>

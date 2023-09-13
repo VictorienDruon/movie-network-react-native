@@ -40,7 +40,7 @@ export async function searchMovies(query: string, page: number) {
 	}
 }
 
-export async function searchShows(query: string, page: number) {
+export async function searchTv(query: string, page: number) {
 	const params = new URLSearchParams({
 		query,
 		include_adult: "false",
@@ -55,11 +55,11 @@ export async function searchShows(query: string, page: number) {
 
 		const posters: Poster[] = data.results
 			.filter((movie) => movie.poster_path !== null)
-			.map((show) => ({
-				tmdb_id: show.id,
-				title: show.name,
-				poster_path: show.poster_path,
-				type: "show",
+			.map((tv) => ({
+				tmdb_id: tv.id,
+				title: tv.name,
+				poster_path: tv.poster_path,
+				type: "tv",
 			}));
 
 		return {

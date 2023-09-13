@@ -107,8 +107,8 @@ const CreateScreen = () => {
 					<HStack space={32}>
 						<Link
 							href={{
-								pathname: "/(app)/post/create/[attachments]",
-								params: { attachments: "movies" },
+								pathname: "/(app)/post/create/posters-picker/[type]",
+								params: { type: "movie" },
 							}}
 							asChild
 						>
@@ -119,8 +119,8 @@ const CreateScreen = () => {
 
 						<Link
 							href={{
-								pathname: "/(app)/post/create/[attachments]",
-								params: { attachments: "shows" },
+								pathname: "/(app)/post/create/posters-picker/[type]",
+								params: { type: "tv" },
 							}}
 							asChild
 						>

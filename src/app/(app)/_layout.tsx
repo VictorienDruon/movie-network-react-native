@@ -8,7 +8,7 @@ const AppLayout = () => (
 		<Stack>
 			<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
 
-			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "Profile" }} />
+			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "" }} />
 			<Stack.Screen
 				name="profile/[id]/following"
 				options={{ title: "Following", presentation: "modal" }}
@@ -28,9 +28,11 @@ const AppLayout = () => (
 				}}
 			/>
 
-			<Stack.Screen name="movie/[id]" options={{ title: "Movie" }} />
-
-			<Stack.Screen name="show/[id]" options={{ title: "Show" }} />
+			<Stack.Screen name="details/[type]/[id]/index" options={{ title: "" }} />
+			<Stack.Screen
+				name="details/[type]/[id]/providers"
+				options={{ title: "Where to Watch", presentation: "modal" }}
+			/>
 		</Stack>
 	</QueryClientProvider>
 );

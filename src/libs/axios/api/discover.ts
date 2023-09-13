@@ -39,7 +39,7 @@ export async function discoverMovies(page: number) {
 	}
 }
 
-export async function discoverShows(page: number) {
+export async function discoverTv(page: number) {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
@@ -53,11 +53,11 @@ export async function discoverShows(page: number) {
 
 		const posters: Poster[] = data.results
 			.filter((movie) => movie.poster_path !== null)
-			.map((show) => ({
-				tmdb_id: show.id,
-				title: show.name,
-				poster_path: show.poster_path,
-				type: "show",
+			.map((tv) => ({
+				tmdb_id: tv.id,
+				title: tv.name,
+				poster_path: tv.poster_path,
+				type: "tv",
 			}));
 
 		return {

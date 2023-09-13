@@ -1,19 +1,14 @@
-import { getLocales } from "expo-localization";
 import { api } from "..";
-import Movie from "../types/Movie";
-import Show from "../types/Show";
+import Details from "../types/Details";
 
-export async function getMovie(movieId: string) {
-	const locales = getLocales();
-	const regionCode = locales[0].regionCode;
-
+export async function getMovie(id: string) {
 	const params = new URLSearchParams({
 		language: "en-US",
-		append_to_response: "videos,credits,watch/providers,recommendations",
+		append_to_response: "videos,credits,recommendations",
 	});
 
 	try {
-		const { data } = await api.get(`/movie/${movieId}`, {
+		const { data } = await api.get(`/movie/${id}`, {
 			params,
 		});
 
@@ -21,7 +16,7 @@ export async function getMovie(movieId: string) {
 			(video: any) => video.type === "Trailer"
 		);
 
-		const movie: Movie = {
+		const movie: Details = {
 			id: data.id,
 			title: data.title,
 			poster_path: data.poster_path,
@@ -79,11 +74,6 @@ export async function getMovie(movieId: string) {
 				})),
 
 			videoKey: video ? video.key : "",
-
-			providers:
-				regionCode in data["watch/providers"].results
-					? data["watch/providers"].results[regionCode]
-					: data["watch/providers"].results.US,
 		};
 
 		return movie;
@@ -92,10 +82,7 @@ export async function getMovie(movieId: string) {
 	}
 }
 
-export async function getShow(id: string) {
-	const locales = getLocales();
-	const regionCode = locales[0].regionCode;
-
+export async function getTv(id: string) {
 	const params = new URLSearchParams({
 		language: "en-US",
 		append_to_response: "videos,credits,watch/providers,recommendations",
@@ -110,13 +97,13 @@ export async function getShow(id: string) {
 			(video: any) => video.type === "Trailer"
 		);
 
-		const show: Show = {
+		const tv: Details = {
 			id: data.id,
 			title: data.name,
 			poster_path: data.poster_path,
 			overview: data.overview,
 			backdrop_path: data.backdrop_path,
-			first_air_date: data.first_air_date,
+			release_date: data.first_air_date,
 			last_episode_to_air: data.last_episode_to_air,
 			in_production: data.in_production,
 			genres: data.genres,
@@ -136,9 +123,10 @@ export async function getShow(id: string) {
 							profile_path: member.profile_path,
 					  })),
 
-			created_by: data.created_by.map((creator: any) => ({
+			crew: data.created_by.map((creator: any) => ({
 				id: creator.id,
 				name: creator.name,
+				role: "Creator",
 				profile_path: creator.profile_path,
 			})),
 
@@ -148,18 +136,13 @@ export async function getShow(id: string) {
 					tmdb_id: movie.id,
 					title: movie.name,
 					poster_path: movie.poster_path,
-					type: "show",
+					type: "tv",
 				})),
 
 			videoKey: video ? video.key : "",
-
-			providers:
-				regionCode in data["watch/providers"].results
-					? data["watch/providers"].results[regionCode]
-					: data["watch/providers"].results.US,
 		};
 
-		return show;
+		return tv;
 	} catch (error) {
 		throw error;
 	}

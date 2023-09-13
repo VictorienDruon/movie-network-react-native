@@ -9,8 +9,8 @@ import { Link, Stack, useLocalSearchParams } from "expo-router";
 import debounce from "lodash.debounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { usePosters } from "@/providers/posters";
-import { discoverMovies, discoverShows } from "@/libs/axios/api/discover";
-import { searchMovies, searchShows } from "@/libs/axios/api/search";
+import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
+import { searchMovies, searchTv } from "@/libs/axios/api/search";
 import { ErrorState, EmptyState } from "@/components/common";
 import { Box, Button, HStack, Input, Title } from "@/components/ui";
 import { Poster } from "@/features/poster";
@@ -22,24 +22,26 @@ interface PostersPage {
 }
 
 const AttachmentsModal = () => {
-	const { attachments } = useLocalSearchParams<{ attachments: string }>();
+	const { type } = useLocalSearchParams<{
+		type: "movie" | "tv";
+	}>();
 	const { push } = usePosters();
 	const [value, setValue] = useState<string>("");
 	const inputRef = useRef<TextInput>(null);
 	const { width } = Dimensions.get("screen");
 	const gridSpacing = (width - 332) / 6;
 
-	const discoverFn = attachments === "movies" ? discoverMovies : discoverShows;
-	const searchFn = attachments === "movies" ? searchMovies : searchShows;
+	const discoverFn = type === "movie" ? discoverMovies : discoverTv;
+	const searchFn = type === "movie" ? searchMovies : searchTv;
 
 	const initQuery = useInfiniteQuery<PostersPage, Error>({
-		queryKey: ["discover", attachments],
+		queryKey: ["discover", type],
 		queryFn: ({ pageParam = 1 }) => discoverFn(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
 	const query = useInfiniteQuery<PostersPage, Error>({
-		queryKey: ["search", attachments, value],
+		queryKey: ["search", type, value],
 		queryFn: ({ pageParam = 1 }) => searchFn(value, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
@@ -66,7 +68,7 @@ const AttachmentsModal = () => {
 		<>
 			<Stack.Screen
 				options={{
-					title: attachments === "movies" ? "Select Movies" : "Select TV Shows",
+					title: type === "movie" ? "Select Movies" : "Select TV Shows",
 					headerLeft: () => (
 						<Link href=".." asChild>
 							<TouchableOpacity>

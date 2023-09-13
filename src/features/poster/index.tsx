@@ -17,7 +17,7 @@ export type Poster = {
 	tmdb_id: number;
 	title: string;
 	poster_path: string;
-	type: "movie" | "show";
+	type: "movie" | "tv";
 };
 
 type PosterSize = "sm" | "md" | "lg";
@@ -49,8 +49,8 @@ export const Poster = ({
 		action === "select"
 			? context.toggle(poster)
 			: router.push({
-					pathname: `/(app)/${type}/[id]`,
-					params: { id: tmdb_id },
+					pathname: `/(app)/details/[type]/[id]`,
+					params: { type, id: tmdb_id },
 			  });
 	};
 
@@ -59,11 +59,13 @@ export const Poster = ({
 			position="relative"
 			alignItems="center"
 			space={2}
-			style={{
-				marginHorizontal: gridSpacing,
-				marginBottom: gridSpacing,
-				transform: [{ rotate: rotate ? rotate : "0deg" }],
-			}}
+			style={[
+				gridSpacing && {
+					marginHorizontal: gridSpacing,
+					marginBottom: gridSpacing,
+				},
+				rotate && { transform: [{ rotate: rotate }] },
+			]}
 			{...boxSizes[size]}
 			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}

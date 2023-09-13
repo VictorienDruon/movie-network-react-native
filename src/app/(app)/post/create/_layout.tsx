@@ -5,7 +5,10 @@ const CreateLayout = () => (
 	<PostersProvider>
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
-			<Stack.Screen name="[attachments]" options={{ presentation: "modal" }} />
+			<Stack.Screen
+				name="posters-picker/[type]"
+				options={{ presentation: "modal" }}
+			/>
 		</Stack>
 	</PostersProvider>
 );
