@@ -24,31 +24,32 @@ const CommentsModal = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading)
-		return (
-			<FlatList
-				data={Array.from({ length: 4 }, (_, i) => i)}
-				keyExtractor={(item) => item.toString()}
-				renderItem={() => <CommentSkeleton />}
-				scrollEnabled={false}
-			/>
-		);
-
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
 		<Box flex={1} pb={48}>
-			<FlatList
-				data={query.data.pages.flatMap((page) => page.comments)}
-				keyExtractor={(comment) => comment.id}
-				renderItem={({ item: comment }) => <Comment comment={comment} />}
-				ListEmptyComponent={<EmptyState>There are no comments yet.</EmptyState>}
-				ListFooterComponent={
-					<Box pb={64}>{query.hasNextPage && <CommentSkeleton />}</Box>
-				}
-				onEndReached={() => query.fetchNextPage()}
-				showsVerticalScrollIndicator={false}
-			/>
+			{query.isLoading ? (
+				<FlatList
+					data={Array.from({ length: 4 }, (_, i) => i)}
+					keyExtractor={(item) => item.toString()}
+					renderItem={() => <CommentSkeleton />}
+					scrollEnabled={false}
+				/>
+			) : (
+				<FlatList
+					data={query.data.pages.flatMap((page) => page.comments)}
+					keyExtractor={(comment) => comment.id}
+					renderItem={({ item: comment }) => <Comment comment={comment} />}
+					ListEmptyComponent={
+						<EmptyState>There are no comments yet.</EmptyState>
+					}
+					ListFooterComponent={
+						<Box pb={64}>{query.hasNextPage && <CommentSkeleton />}</Box>
+					}
+					onEndReached={() => query.fetchNextPage()}
+					showsVerticalScrollIndicator={false}
+				/>
+			)}
 
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : "height"}

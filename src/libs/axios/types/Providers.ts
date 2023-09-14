@@ -11,3 +11,7 @@ export interface Providers {
 	buy?: Provider[];
 	rent?: Provider[];
 }
+
+export interface LocaleProviders {
+	[region: string]: Providers;
+}

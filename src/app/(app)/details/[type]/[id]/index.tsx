@@ -2,7 +2,7 @@ import { FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { Link, Stack, router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
-import { capitalizeFirstLetter, pluralize } from "@/utils/texts";
+import { pluralize } from "@/utils/texts";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { formatMoney } from "@/utils/numbers";
 import { getMovie, getTv } from "@/libs/axios/api/details";
@@ -42,18 +42,32 @@ const DetailsScreen = () => {
 
 	if (query.isLoading)
 		return (
-			<VStack space={16}>
+			<VStack space={12}>
 				<Skeleton width="100%" aspectRatio={16 / 9} />
 
-				<VStack pb={64} space={24}>
+				<VStack space={24}>
 					<VStack px={16} space={4}>
 						<Skeleton width={256} height={24} borderRadius="md" />
-						<Skeleton width={128} height={14} borderRadius="md" />
+						<Skeleton width={128} height={16} borderRadius="md" />
 					</VStack>
 
 					<VStack px={16} space={8}>
-						<Skeleton width="100%" height={30} borderRadius="lg" />
-						<Skeleton width="100%" height={30} borderRadius="lg" />
+						<Button
+							variant="primary"
+							leftIcon="Play"
+							fillIcon={true}
+							onPress={() =>
+								router.push({
+									pathname: "/(app)/details/[type]/[id]/providers",
+									params: { type, id },
+								})
+							}
+						>
+							Play
+						</Button>
+						<Button variant="outline" leftIcon="Plus">
+							Add to Watchlist
+						</Button>
 					</VStack>
 
 					<VStack px={16} space={4}>
@@ -133,7 +147,7 @@ const DetailsScreen = () => {
 					posterPath={poster_path}
 				/>
 
-				<VStack pt={16} pb={64} space={24}>
+				<VStack pt={12} pb={64} space={24}>
 					<VStack px={16} space={4}>
 						{title?.length > 0 && <Heading>{title}</Heading>}
 						<HStack space={8}>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dimensions } from "react-native";
 import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe";
+import useFocus from "@/hooks/useFocus";
 import { Box } from "./box";
 import { Image } from "./image";
 
@@ -11,6 +12,7 @@ interface VideoProps {
 }
 
 export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
+	const isFocused = useFocus();
 	const [isLoading, setIsLoading] = useState(true);
 	const { width } = Dimensions.get("screen");
 	const height = width * 0.5625;
@@ -24,7 +26,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 			{videoKey.length > 0 && (
 				<YoutubePlayer
 					videoId={videoKey}
-					play={true}
+					play={isFocused}
 					height={height}
 					onChangeState={handleReady}
 				/>

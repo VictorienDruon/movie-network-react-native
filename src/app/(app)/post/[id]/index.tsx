@@ -1,3 +1,4 @@
+import { ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
@@ -17,7 +18,11 @@ const PostScreen = () => {
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
-	return <Post post={query.data} />;
+	return (
+		<ScrollView>
+			<Post post={query.data} />
+		</ScrollView>
+	);
 };
 
 export default PostScreen;
