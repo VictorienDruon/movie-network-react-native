@@ -5,8 +5,8 @@ import { countryCode } from "emoji-flags";
 import { useQuery } from "@tanstack/react-query";
 import { getProviders } from "@/libs/axios/api/providers";
 import { LocaleProviders } from "@/libs/axios/types/Providers";
-import { ErrorState } from "@/components/common";
-import { HStack, Image, Metadata, Title, VStack } from "@/components/ui";
+import { EmptyState, ErrorState } from "@/components/common";
+import { Image, Title, VStack } from "@/components/ui";
 
 const ProvidersModal = () => {
 	const { type, id } = useLocalSearchParams<{
@@ -21,9 +21,14 @@ const ProvidersModal = () => {
 	});
 
 	if (query.isLoading) return null;
+
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	const availableRegions = Object.keys(query.data);
+
+	if (availableRegions.length === 0)
+		return <EmptyState>No providers available in your region</EmptyState>;
+
 	const defaultRegion = availableRegions[0];
 	const availableCountries = availableRegions.map((region) =>
 		countryCode(region)
@@ -35,22 +40,6 @@ const ProvidersModal = () => {
 
 	return (
 		<VStack pt={16} space={16}>
-			<HStack px={16} flexWrap="wrap" space={8}>
-				{availableCountries.map((c) => (
-					<HStack
-						key={c.code}
-						px={8}
-						py={4}
-						space={2}
-						bg="neutral-3"
-						borderRadius="lg"
-					>
-						<Metadata>{c.emoji}</Metadata>
-						<Metadata>{c.name}</Metadata>
-					</HStack>
-				))}
-			</HStack>
-
 			{flatrate && (
 				<VStack space={8}>
 					<Title pl={16}>Streaming</Title>

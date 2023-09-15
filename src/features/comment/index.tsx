@@ -33,7 +33,10 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 
 	return (
 		<HStack space={8} p={16}>
-			<TouchableOpacity onPress={handleAvatarPress}>
+			<TouchableOpacity
+				disabled={segments[1] !== "post"}
+				onPress={handleAvatarPress}
+			>
 				<Avatar
 					src={author.avatar_url}
 					size={28}
@@ -44,7 +47,10 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 			<VStack space={8} flex={1}>
 				<Title>{author.name}</Title>
 
-				<TouchableOpacity onPress={handleCommentPress}>
+				<TouchableOpacity
+					disabled={segments[1] !== "profile"}
+					onPress={handleCommentPress}
+				>
 					<Body>{content}</Body>
 				</TouchableOpacity>
 			</VStack>
