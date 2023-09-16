@@ -1,5 +1,7 @@
+import { CountryData } from "emoji-flags";
 import { Poster } from "@/features/poster";
 import { Person } from "@/features/person";
+import { ProvidersByRegion } from "./Providers";
 
 interface Details {
 	id: number;
@@ -34,6 +36,9 @@ interface Details {
 	crew?: Person[];
 	recommendations?: Poster[];
 	videoKey?: string;
+	providers?: ProvidersByRegion;
+	providersRegions?: CountryData[];
+	defaultRegion?: CountryData;
 }
 
 export default Details;

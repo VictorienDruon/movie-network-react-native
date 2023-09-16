@@ -1,5 +1,8 @@
+import { useRef, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity } from "react-native";
-import { Link, Stack, router, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { CountryData } from "emoji-flags";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
 import { pluralize } from "@/utils/texts";
@@ -16,22 +19,24 @@ import {
 	Heading,
 	Image,
 	Metadata,
-	Skeleton,
 	Subtitle,
 	Title,
 	VStack,
 	Video,
 } from "@/components/ui";
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
-import PersonSkeleton from "@/features/person/components/PersonSkeleton";
+import Information from "@/features/details/components/Information";
+import DetailsSkeleton from "@/features/details/components/DetailsSkeleton";
+import Credits from "@/features/details/components/Credits";
+import { ProvidersBottomSheet } from "@/features/details/bottom-sheets/Providers";
 
 const DetailsScreen = () => {
 	const { type, id } = useLocalSearchParams<{
 		type: "movie" | "tv";
 		id: string;
 	}>();
+	const [region, setRegion] = useState<CountryData>(null);
+	const providersBottomSheetRef = useRef<BottomSheet>(null);
 
 	const getDetails = type === "movie" ? getMovie : getTv;
 
@@ -40,78 +45,7 @@ const DetailsScreen = () => {
 		queryFn: () => getDetails(id),
 	});
 
-	if (query.isLoading)
-		return (
-			<>
-				<Stack.Screen options={{ title: "" }} />
-
-				<VStack space={12}>
-					<Skeleton width="100%" aspectRatio={16 / 9} />
-
-					<VStack space={24}>
-						<VStack px={16} space={4}>
-							<Skeleton width={256} height={26} borderRadius="md" />
-							<Skeleton width={128} height={14} borderRadius="md" />
-						</VStack>
-
-						<VStack px={16} space={8}>
-							<Button
-								variant="primary"
-								leftIcon="Play"
-								fillIcon={true}
-								onPress={() =>
-									router.push({
-										pathname: "/(app)/details/[type]/[id]/providers",
-										params: { type, id },
-									})
-								}
-							>
-								Play
-							</Button>
-							<Button variant="outline" leftIcon="Plus">
-								Add to Watchlist
-							</Button>
-						</VStack>
-
-						<VStack px={16} space={4}>
-							<Skeleton width="100%" height={16} borderRadius="md" />
-							<Skeleton width="100%" height={16} borderRadius="md" />
-							<Skeleton width="30%" height={16} borderRadius="md" />
-						</VStack>
-
-						<HStack px={16} space={8}>
-							<Skeleton width={64} height={20} borderRadius="lg" />
-							<Skeleton width={64} height={20} borderRadius="lg" />
-							<Skeleton width={64} height={20} borderRadius="lg" />
-						</HStack>
-
-						<VStack space={8}>
-							<Title pl={16}>Recommendations</Title>
-							<FlatList
-								data={Array.from({ length: 4 }, (_, i) => i)}
-								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PosterSkeleton mx={8} />}
-								contentContainerStyle={{ paddingHorizontal: 8 }}
-								horizontal={true}
-								scrollEnabled={false}
-							/>
-						</VStack>
-
-						<VStack space={8}>
-							<Title pl={16}>Cast</Title>
-							<FlatList
-								data={Array.from({ length: 4 }, (_, i) => i)}
-								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PersonSkeleton mx={4} />}
-								contentContainerStyle={{ paddingHorizontal: 12 }}
-								horizontal={true}
-								scrollEnabled={false}
-							/>
-						</VStack>
-					</VStack>
-				</VStack>
-			</>
-		);
+	if (query.isLoading) return <DetailsSkeleton />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
@@ -135,6 +69,9 @@ const DetailsScreen = () => {
 		crew,
 		recommendations,
 		videoKey,
+		providers,
+		providersRegions,
+		defaultRegion,
 	} = query.data;
 
 	return (
@@ -175,12 +112,7 @@ const DetailsScreen = () => {
 							variant="primary"
 							leftIcon="Play"
 							fillIcon={true}
-							onPress={() =>
-								router.push({
-									pathname: "/(app)/details/[type]/[id]/providers",
-									params: { type, id },
-								})
-							}
+							onPress={() => providersBottomSheetRef.current.snapToIndex(0)}
 						>
 							Play
 						</Button>
@@ -223,36 +155,13 @@ const DetailsScreen = () => {
 						</VStack>
 					)}
 
-					{cast?.length > 0 && (
-						<VStack space={8}>
-							<Title pl={16}>Cast</Title>
-							<FlatList
-								data={cast}
-								keyExtractor={(p) => p.id.toString() + p.role}
-								renderItem={({ item: person }) => (
-									<Person person={person} mx={4} />
-								)}
-								contentContainerStyle={{ paddingHorizontal: 12 }}
-								showsHorizontalScrollIndicator={false}
-								horizontal
-							/>
-						</VStack>
-					)}
+					{cast?.length > 0 && <Credits title="Cast" persons={cast} />}
 
 					{crew?.length > 0 && (
-						<VStack space={8}>
-							<Title pl={16}>{type === "movie" ? "Crew" : "Created By"}</Title>
-							<FlatList
-								data={crew}
-								keyExtractor={(p) => p.id.toString() + p.role}
-								renderItem={({ item: person }) => (
-									<Person person={person} mx={4} />
-								)}
-								contentContainerStyle={{ paddingHorizontal: 12 }}
-								showsHorizontalScrollIndicator={false}
-								horizontal
-							/>
-						</VStack>
+						<Credits
+							title={type === "movie" ? "Crew" : "Created By"}
+							persons={crew}
+						/>
 					)}
 
 					{collection && (
@@ -293,73 +202,62 @@ const DetailsScreen = () => {
 					<VStack px={16} space={4}>
 						<Title>Informations</Title>
 						{companies?.length > 0 && (
-							<Box>
-								<Body fontSize={13}>
-									{pluralize(companies?.length, "Studio")}
-								</Body>
-								<Metadata>{companies.join(", ")}</Metadata>
-							</Box>
+							<Information
+								title={pluralize(companies.length, "Studio")}
+								content={companies.join(", ")}
+							/>
 						)}
 
 						{countries?.length > 0 && (
-							<Box>
-								<Body fontSize={13}>{`${pluralize(
-									countries?.length,
-									"Region"
-								)} of origin`}</Body>
-								<Metadata>{countries.join(", ")}</Metadata>
-							</Box>
+							<Information
+								title={pluralize(countries.length, "Region")}
+								content={countries.join(", ")}
+							/>
 						)}
 
 						{release_date?.length > 0 && (
-							<Box>
-								<Body fontSize={13}>
-									{type === "movie" ? "Release Date" : "First Air Date"}
-								</Body>
-								<Metadata>{getDateWithYear(new Date(release_date))}</Metadata>
-							</Box>
+							<Information
+								title={type === "movie" ? "Release Date" : "First Air Date"}
+								content={getDateWithYear(new Date(release_date))}
+							/>
 						)}
 
 						{languages?.length > 0 && (
-							<Box>
-								<Body fontSize={13}>
-									{pluralize(languages?.length, "Language")}
-								</Body>
-								<Metadata>{languages.join(", ")}</Metadata>
-							</Box>
+							<Information
+								title={pluralize(languages.length, "Language")}
+								content={languages.join(", ")}
+							/>
 						)}
 
 						{budget > 0 && (
-							<Box>
-								<Body fontSize={13}>Budget</Body>
-								<Metadata>{formatMoney(budget)}</Metadata>
-							</Box>
+							<Information title="Budget" content={formatMoney(budget)} />
 						)}
 						{revenue > 0 && (
-							<Box>
-								<Body fontSize={13}>Revenue</Body>
-								<Metadata>{formatMoney(revenue)}</Metadata>
-							</Box>
+							<Information title="Revenue" content={formatMoney(revenue)} />
 						)}
 
 						{last_episode_to_air && (
-							<Box>
-								<Body fontSize={13}>Last Episode to Air</Body>
-								<Metadata>
-									{`S${last_episode_to_air.season_number}E${last_episode_to_air.episode_number} - ${last_episode_to_air.name}`}
-								</Metadata>
-							</Box>
+							<Information
+								title="Last Episode to Air"
+								content={`S${last_episode_to_air.season_number}E${last_episode_to_air.episode_number} - ${last_episode_to_air.name}`}
+							/>
 						)}
 
 						{type === "tv" && (
-							<Box>
-								<Body fontSize={13}>In Production</Body>
-								<Metadata>{in_production ? "Yes" : "No"}</Metadata>
-							</Box>
+							<Information
+								title="In Production"
+								content={in_production ? "Yes" : "No"}
+							/>
 						)}
 					</VStack>
 				</VStack>
 			</ScrollView>
+
+			<ProvidersBottomSheet
+				ref={providersBottomSheetRef}
+				region={region}
+				providers={providers[region.code]}
+			/>
 		</>
 	);
 };

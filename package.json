@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@bacons/expo-router-top-tabs": "^0.1.0",
+		"@gorhom/bottom-sheet": "^4",
 		"@hookform/resolvers": "^3.1.1",
 		"@radix-ui/colors": "^2.0.1",
 		"@react-native-async-storage/async-storage": "1.18.2",

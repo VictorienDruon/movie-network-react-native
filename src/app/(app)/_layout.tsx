@@ -26,11 +26,6 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
-
-			<Stack.Screen
-				name="details/[type]/[id]/providers"
-				options={{ title: "Where to Watch", presentation: "modal" }}
-			/>
 		</Stack>
 	</QueryClientProvider>
 );

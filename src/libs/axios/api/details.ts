@@ -1,11 +1,15 @@
+import { getLocales } from "expo-localization";
+import { countryCode } from "emoji-flags";
 import { api } from "..";
 import Details from "../types/Details";
 
 export async function getMovie(id: string) {
 	const params = new URLSearchParams({
 		language: "en-US",
-		append_to_response: "videos,credits,recommendations",
+		append_to_response: "videos,credits,recommendations,watch/providers",
 	});
+	const { regionCode } = getLocales()[0];
+	const userRegion = countryCode(regionCode);
 
 	try {
 		const { data } = await api.get(`/movie/${id}`, {
@@ -15,6 +19,8 @@ export async function getMovie(id: string) {
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
 		);
+
+		const providersRegionsCode = Object.keys(data["watch/providers"].results);
 
 		const movie: Details = {
 			id: data.id,
@@ -74,6 +80,15 @@ export async function getMovie(id: string) {
 				})),
 
 			videoKey: video ? video.key : "",
+
+			providers: data["watch/providers"].results,
+
+			providersRegions: providersRegionsCode.map((code) => countryCode(code)),
+
+			defaultRegion:
+				userRegion.code in providersRegionsCode
+					? userRegion
+					: countryCode(providersRegionsCode[0]),
 		};
 
 		return movie;
@@ -87,6 +102,8 @@ export async function getTv(id: string) {
 		language: "en-US",
 		append_to_response: "videos,credits,watch/providers,recommendations",
 	});
+	const { regionCode } = getLocales()[0];
+	const userRegion = countryCode(regionCode);
 
 	try {
 		const { data } = await api.get(`/tv/${id}`, {
@@ -96,6 +113,8 @@ export async function getTv(id: string) {
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
 		);
+
+		const providersRegionsCode = Object.keys(data["watch/providers"].results);
 
 		const tv: Details = {
 			id: data.id,
@@ -140,6 +159,15 @@ export async function getTv(id: string) {
 				})),
 
 			videoKey: video ? video.key : "",
+
+			providers: data["watch/providers"].results,
+
+			providersRegions: providersRegionsCode.map((code) => countryCode(code)),
+
+			defaultRegion:
+				userRegion.code in providersRegionsCode
+					? userRegion
+					: countryCode(providersRegionsCode[0]),
 		};
 
 		return tv;

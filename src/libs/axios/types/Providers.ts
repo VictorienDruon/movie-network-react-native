@@ -1,17 +1,12 @@
-export interface Provider {
-	display_priority: number;
-	logo_path: string;
-	provider_id: number;
-	provider_name: string;
-}
+import { Provider } from "@/features/provider";
 
-export interface Providers {
+export interface ProvidersByCategory {
 	link: string;
 	flatrate?: Provider[];
 	buy?: Provider[];
 	rent?: Provider[];
 }
 
-export interface LocaleProviders {
-	[region: string]: Providers;
+export interface ProvidersByRegion {
+	[region: string]: ProvidersByCategory;
 }
