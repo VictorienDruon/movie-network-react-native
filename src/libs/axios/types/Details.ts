@@ -1,33 +1,19 @@
-import { CountryData } from "emoji-flags";
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
-import { ProvidersByRegion } from "./Providers";
+import { Person } from "@/features/persons/components/Person";
+import { Providers } from "@/features/providers";
+import { Informations } from "@/features/informations";
+import { Collection } from "@/features/collection";
 
 interface Details {
 	id: number;
 	title?: string;
+	release_year: string;
 	poster_path?: string;
 	backdrop_path?: string;
 	overview?: string;
-	release_date?: string;
-	last_episode_to_air?: {
-		season_number: number;
-		episode_number: number;
-		name: string;
-	};
-	in_production?: boolean;
 	runtime?: number;
-	budget?: number;
-	revenue?: number;
-	collection?: {
-		id: number;
-		name: string;
-		poster_path: string;
-		backdrop_path: string;
-	};
-	companies?: string[];
-	countries?: string[];
-	languages?: string[];
+	season_number?: number;
+	collection?: Collection;
 	genres?: {
 		id: number;
 		name: string;
@@ -35,10 +21,11 @@ interface Details {
 	cast?: Person[];
 	crew?: Person[];
 	recommendations?: Poster[];
+	informations: Informations;
 	videoKey?: string;
-	providers?: ProvidersByRegion;
-	providersRegions?: CountryData[];
-	defaultRegion?: CountryData;
+	providers?: {
+		[key: string]: Providers;
+	};
 }
 
 export default Details;

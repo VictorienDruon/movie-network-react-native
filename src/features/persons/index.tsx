@@ -1,13 +1,13 @@
-import { Person } from "@/features/person";
-import { VStack, Title } from "@/components/ui";
 import { FlatList } from "react-native";
+import { VStack, Title } from "@/components/ui";
+import { Person } from "./components/Person";
 
-interface CreditsProps {
+interface PersonsProps {
 	title: string;
 	persons: Person[];
 }
 
-const Credits = ({ title, persons }: CreditsProps) => (
+const Persons = ({ title, persons }: PersonsProps) => (
 	<VStack space={8}>
 		<Title pl={16}>{title}</Title>
 		<FlatList
@@ -21,4 +21,4 @@ const Credits = ({ title, persons }: CreditsProps) => (
 	</VStack>
 );
 
-export default Credits;
+export default Persons;

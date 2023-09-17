@@ -1,26 +1,21 @@
-import { getLocales } from "expo-localization";
-import { countryCode } from "emoji-flags";
+import { getDateWithYear, getYear } from "@/utils/dates";
 import { api } from "..";
 import Details from "../types/Details";
 
-export async function getMovie(id: string) {
-	const params = new URLSearchParams({
-		language: "en-US",
-		append_to_response: "videos,credits,recommendations,watch/providers",
-	});
-	const { regionCode } = getLocales()[0];
-	const userRegion = countryCode(regionCode);
+const PARAMS = new URLSearchParams({
+	language: "en-US",
+	append_to_response: "videos,credits,recommendations,watch/providers",
+});
 
+export async function getMovie(id: string) {
 	try {
 		const { data } = await api.get(`/movie/${id}`, {
-			params,
+			params: PARAMS,
 		});
 
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
 		);
-
-		const providersRegionsCode = Object.keys(data["watch/providers"].results);
 
 		const movie: Details = {
 			id: data.id,
@@ -28,21 +23,11 @@ export async function getMovie(id: string) {
 			poster_path: data.poster_path,
 			backdrop_path: data.backdrop_path,
 			overview: data.overview,
-			release_date: data.release_date,
+			release_year: getYear(new Date(data.release_date)),
 			runtime: data.runtime,
-			budget: data.budget,
-			revenue: data.revenue,
+
 			genres: data.genres,
 			collection: data.belongs_to_collection,
-			companies: data.production_companies.flatMap(
-				(company: any) => company.name
-			),
-			countries: data.production_countries.flatMap(
-				(country: any) => country.name
-			),
-			languages: data.spoken_languages.flatMap(
-				(language: any) => language.name
-			),
 
 			cast:
 				data.credits.cast.length > 20
@@ -79,16 +64,24 @@ export async function getMovie(id: string) {
 					type: "movie",
 				})),
 
+			informations: {
+				companies: data.production_companies.flatMap(
+					(company: any) => company.name
+				),
+				countries: data.production_countries.flatMap(
+					(country: any) => country.name
+				),
+				languages: data.spoken_languages.flatMap(
+					(language: any) => language.name
+				),
+				release_date: getDateWithYear(new Date(data.release_date)),
+				budget: data.budget,
+				revenue: data.revenue,
+			},
+
 			videoKey: video ? video.key : "",
 
 			providers: data["watch/providers"].results,
-
-			providersRegions: providersRegionsCode.map((code) => countryCode(code)),
-
-			defaultRegion:
-				userRegion.code in providersRegionsCode
-					? userRegion
-					: countryCode(providersRegionsCode[0]),
 		};
 
 		return movie;
@@ -98,23 +91,14 @@ export async function getMovie(id: string) {
 }
 
 export async function getTv(id: string) {
-	const params = new URLSearchParams({
-		language: "en-US",
-		append_to_response: "videos,credits,watch/providers,recommendations",
-	});
-	const { regionCode } = getLocales()[0];
-	const userRegion = countryCode(regionCode);
-
 	try {
 		const { data } = await api.get(`/tv/${id}`, {
-			params,
+			params: PARAMS,
 		});
 
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
 		);
-
-		const providersRegionsCode = Object.keys(data["watch/providers"].results);
 
 		const tv: Details = {
 			id: data.id,
@@ -122,9 +106,8 @@ export async function getTv(id: string) {
 			poster_path: data.poster_path,
 			overview: data.overview,
 			backdrop_path: data.backdrop_path,
-			release_date: data.first_air_date,
-			last_episode_to_air: data.last_episode_to_air,
-			in_production: data.in_production,
+			release_year: getYear(new Date(data.first_air_date)),
+			season_number: data.last_episode_to_air.season_number,
 			genres: data.genres,
 
 			cast:
@@ -158,16 +141,15 @@ export async function getTv(id: string) {
 					type: "tv",
 				})),
 
+			informations: {
+				release_date: getDateWithYear(new Date(data.first_air_date)),
+				last_episode_to_air: data.last_episode_to_air,
+				in_production: data.in_production,
+			},
+
 			videoKey: video ? video.key : "",
 
 			providers: data["watch/providers"].results,
-
-			providersRegions: providersRegionsCode.map((code) => countryCode(code)),
-
-			defaultRegion:
-				userRegion.code in providersRegionsCode
-					? userRegion
-					: countryCode(providersRegionsCode[0]),
 		};
 
 		return tv;

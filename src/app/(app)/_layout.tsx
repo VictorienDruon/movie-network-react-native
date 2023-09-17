@@ -17,6 +17,8 @@ const AppLayout = () => (
 				options={{ title: "Followers", presentation: "modal" }}
 			/>
 
+			<Stack.Screen name="details/[type]/[id]" options={{ title: "Details" }} />
+
 			<Stack.Screen name="post/create" options={{ title: "Create a Post" }} />
 			<Stack.Screen name="post/[id]/index" options={{ title: "Post" }} />
 			<Stack.Screen

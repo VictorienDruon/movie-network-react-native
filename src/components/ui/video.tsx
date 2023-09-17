@@ -22,7 +22,15 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 	};
 
 	return (
-		<>
+		<Box
+			zIndex={1}
+			bg="neutral-3"
+			shadowColor="black"
+			shadowOffset={{ width: 0, height: 10 }}
+			shadowOpacity={0.2}
+			shadowRadius={10}
+			elevation={5}
+		>
 			{videoKey.length > 0 && (
 				<YoutubePlayer
 					videoId={videoKey}
@@ -56,6 +64,6 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 					)}
 				</Box>
 			)}
-		</>
+		</Box>
 	);
 };

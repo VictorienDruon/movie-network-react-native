@@ -50,26 +50,31 @@ export const theme = createTheme({
 		header: {
 			fontWeight: "700",
 			fontSize: 20,
+			lineHeight: 24,
 			color: "neutral-12",
 		},
 		title: {
 			fontWeight: "600",
 			fontSize: 16,
+			lineHeight: 20,
 			color: "neutral-12",
 		},
 		subtitle: {
 			fontWeight: "500",
 			fontSize: 14,
+			lineHeight: 18,
 			color: "neutral-11",
 		},
 		body: {
 			fontWeight: "400",
 			fontSize: 14,
+			lineHeight: 18,
 			color: "neutral-12",
 		},
 		metadata: {
 			fontWeight: "400",
 			fontSize: 11,
+			lineHeight: 14,
 			color: "neutral-11",
 		},
 		button: {

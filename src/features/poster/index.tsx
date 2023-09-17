@@ -184,7 +184,6 @@ const textSizes: { [key in PosterSize]: TextProps } = {
 	},
 	sm: {
 		px: 6,
-		py: 2,
 		fontSize: 8,
 	},
 };
