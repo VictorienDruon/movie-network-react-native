@@ -48,7 +48,7 @@ const DetailsScreen = () => {
 			initRegions(Object.keys(query.data.providers));
 			setIsInitiating(false);
 		}
-	}, [query.isFetched]);
+	}, [query.isFetched, type, id]);
 
 	if (query.isLoading || isInitiating) return <DetailsSkeleton />;
 
@@ -152,12 +152,7 @@ const DetailsScreen = () => {
 
 					{cast?.length > 0 && <Persons title="Cast" persons={cast} />}
 
-					{crew?.length > 0 && (
-						<Persons
-							title={type === "movie" ? "Crew" : "Created By"}
-							persons={crew}
-						/>
-					)}
+					{crew?.length > 0 && <Persons title="Crew" persons={crew} />}
 
 					{collection && <Collection collection={collection} />}
 

@@ -2,19 +2,24 @@ import { getDateWithYear, getYear } from "@/utils/dates";
 import { api } from "..";
 import Details from "../types/Details";
 
-const PARAMS = new URLSearchParams({
-	language: "en-US",
-	append_to_response: "videos,credits,recommendations,watch/providers",
-});
-
 export async function getMovie(id: string) {
+	const params = new URLSearchParams({
+		language: "en-US",
+		append_to_response: "videos,credits,recommendations,watch/providers",
+	});
 	try {
 		const { data } = await api.get(`/movie/${id}`, {
-			params: PARAMS,
+			params,
 		});
 
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
+		);
+
+		const cast = data.credits.cast;
+
+		const crew = data.credits.crew.filter((member: any) =>
+			["Director", "Writer", "Original Music Composer"].includes(member.job)
 		);
 
 		const movie: Details = {
@@ -30,30 +35,34 @@ export async function getMovie(id: string) {
 			collection: data.belongs_to_collection,
 
 			cast:
-				data.credits.cast.length > 20
-					? data.credits.cast.slice(0, 20).map((member: any) => ({
+				cast.length > 20
+					? cast.slice(0, 20).map((member: any) => ({
 							id: member.id,
 							name: member.name,
 							role: member.character,
 							profile_path: member.profile_path,
 					  }))
-					: data.credits.cast.map((member: any) => ({
+					: cast.map((member: any) => ({
 							id: member.id,
 							name: member.name,
 							role: member.character,
 							profile_path: member.profile_path,
 					  })),
 
-			crew: data.credits.crew
-				.filter((member: any) =>
-					["Director", "Writer", "Original Music Composer"].includes(member.job)
-				)
-				.map((member: any) => ({
-					id: member.id,
-					name: member.name,
-					role: member.job,
-					profile_path: member.profile_path,
-				})),
+			crew:
+				crew.legnth > 20
+					? crew.slice(0, 20).map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.job,
+							profile_path: member.profile_path,
+					  }))
+					: crew.map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.job,
+							profile_path: member.profile_path,
+					  })),
 
 			recommendations: data.recommendations.results
 				.filter((movie: any) => movie.poster_path !== null)
@@ -91,13 +100,27 @@ export async function getMovie(id: string) {
 }
 
 export async function getTv(id: string) {
+	const params = new URLSearchParams({
+		language: "en-US",
+		append_to_response:
+			"videos,aggregate_credits,recommendations,watch/providers",
+	});
+
 	try {
 		const { data } = await api.get(`/tv/${id}`, {
-			params: PARAMS,
+			params,
 		});
 
 		const video = data.videos.results.find(
 			(video: any) => video.type === "Trailer"
+		);
+
+		const cast = data["aggregate_credits"].cast;
+
+		const crew = data["aggregate_credits"].crew.filter((member: any) =>
+			["Director", "Writer", "Original Music Composer"].includes(
+				member.jobs[0].job
+			)
 		);
 
 		const tv: Details = {
@@ -111,26 +134,34 @@ export async function getTv(id: string) {
 			genres: data.genres,
 
 			cast:
-				data.credits.cast.length > 20
-					? data.credits.cast.slice(0, 20).map((member: any) => ({
+				cast.length > 20
+					? cast.slice(0, 20).map((member: any) => ({
 							id: member.id,
 							name: member.name,
-							role: member.character,
+							role: member.roles[0].character,
 							profile_path: member.profile_path,
 					  }))
-					: data.credits.cast.map((member: any) => ({
+					: cast.map((member: any) => ({
 							id: member.id,
 							name: member.name,
 							role: member.character,
 							profile_path: member.profile_path,
 					  })),
 
-			crew: data.created_by.map((creator: any) => ({
-				id: creator.id,
-				name: creator.name,
-				role: "Creator",
-				profile_path: creator.profile_path,
-			})),
+			crew:
+				crew.length > 20
+					? crew.slice(0, 20).map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.jobs[0].job,
+							profile_path: member.profile_path,
+					  }))
+					: crew.map((member: any) => ({
+							id: member.id,
+							name: member.name,
+							role: member.jobs[0].job,
+							profile_path: member.profile_path,
+					  })),
 
 			recommendations: data.recommendations.results
 				.filter((movie: any) => movie.poster_path !== null)
@@ -142,6 +173,7 @@ export async function getTv(id: string) {
 				})),
 
 			informations: {
+				created_by: data.created_by.flatMap((creator: any) => creator.name),
 				release_date: getDateWithYear(new Date(data.first_air_date)),
 				last_episode_to_air: data.last_episode_to_air,
 				in_production: data.in_production,

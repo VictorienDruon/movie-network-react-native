@@ -6,6 +6,7 @@ import Information from "./components/Information";
 export interface Informations {
 	companies?: string[];
 	countries?: string[];
+	created_by?: string[];
 	release_date?: string;
 	languages?: string[];
 	budget?: number;
@@ -27,6 +28,7 @@ export const Informations = ({ type, informations }: InformationsProps) => {
 	const {
 		companies,
 		countries,
+		created_by,
 		release_date,
 		languages,
 		budget,
@@ -50,6 +52,10 @@ export const Informations = ({ type, informations }: InformationsProps) => {
 					title={pluralize(countries.length, "Region")}
 					content={countries.join(", ")}
 				/>
+			)}
+
+			{created_by?.length > 0 && (
+				<Information title="Created By" content={created_by.join(", ")} />
 			)}
 
 			{release_date?.length > 0 && (

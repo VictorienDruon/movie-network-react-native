@@ -63,7 +63,7 @@ export const Person = ({ person, ...props }: PersonProps) => {
 			>
 				{name}
 			</Body>
-			{role && role !== "Creator" && (
+			{role && (
 				<Metadata textAlign="center" numberOfLines={1} ellipsizeMode="tail">
 					{role}
 				</Metadata>
