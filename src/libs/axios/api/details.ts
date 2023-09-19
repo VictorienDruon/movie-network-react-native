@@ -1,4 +1,4 @@
-import { getDateWithYear, getYear } from "@/utils/dates";
+import { getYear } from "@/utils/dates";
 import { api } from "..";
 import Details from "../types/Details";
 
@@ -83,7 +83,7 @@ export async function getMovie(id: string) {
 				languages: data.spoken_languages.flatMap(
 					(language: any) => language.name
 				),
-				release_date: getDateWithYear(new Date(data.release_date)),
+				release_date: data.release_date,
 				budget: data.budget,
 				revenue: data.revenue,
 			},
@@ -174,7 +174,7 @@ export async function getTv(id: string) {
 
 			informations: {
 				created_by: data.created_by.flatMap((creator: any) => creator.name),
-				release_date: getDateWithYear(new Date(data.first_air_date)),
+				release_date: data.first_air_date,
 				last_episode_to_air: data.last_episode_to_air,
 				in_production: data.in_production,
 			},

@@ -1,5 +1,6 @@
 import { formatMoney } from "@/utils/numbers";
 import { pluralize } from "@/utils/texts";
+import { getDateWithYear } from "@/utils/dates";
 import { VStack, Title } from "@/components/ui";
 import Information from "./components/Information";
 
@@ -61,7 +62,7 @@ export const Informations = ({ type, informations }: InformationsProps) => {
 			{release_date?.length > 0 && (
 				<Information
 					title={type === "movie" ? "Release Date" : "First Air Date"}
-					content={release_date}
+					content={getDateWithYear(new Date(release_date))}
 				/>
 			)}
 

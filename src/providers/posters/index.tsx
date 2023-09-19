@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useSegments } from "expo-router";
 import { Poster } from "@/features/poster";
 
+const MAX_POSTERS = 3;
+
 interface PostersContext {
 	posters: Poster[];
 	isSelected: (tmdb_id: number, type: string) => boolean;
@@ -42,7 +44,7 @@ export const PostersProvider = ({
 				newSet.delete(attachment.tmdb_id + attachment.type);
 				return newSet;
 			});
-		} else if (draftPosters.length < 30) {
+		} else if (draftPosters.length < MAX_POSTERS) {
 			setDraftPosters((prev) => [...prev, attachment]);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
@@ -50,7 +52,7 @@ export const PostersProvider = ({
 				return newSet;
 			});
 		} else {
-			alert("You can only attach 30 posters per post.");
+			alert(`You can attach a maximum of ${MAX_POSTERS} posters per post.`);
 		}
 	};
 

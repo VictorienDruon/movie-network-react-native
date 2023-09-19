@@ -4,12 +4,13 @@ import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 
 interface SheetProps extends Partial<BottomSheet> {
+	snaps: string[];
 	children: React.ReactNode;
 }
 
 export const Sheet = forwardRef<BottomSheet, SheetProps>(
-	({ children, ...props }, ref) => {
-		const snapPoints = useMemo(() => ["40%", "80%"], []);
+	({ snaps, children, ...props }, ref) => {
+		const snapPoints = useMemo(() => snaps, []);
 		const { colors } = useTheme<Theme>();
 
 		return (

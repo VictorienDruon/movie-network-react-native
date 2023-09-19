@@ -49,7 +49,7 @@ export const Poster = ({
 		action === "select"
 			? context.toggle(poster)
 			: router.push({
-					pathname: `/(app)/details/[type]/[id]`,
+					pathname: `/details/[type]/[id]`,
 					params: { type, id: tmdb_id },
 			  });
 	};
@@ -72,7 +72,7 @@ export const Poster = ({
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`https://image.tmdb.org/t/p/${imagesResolution[size]}${poster_path}`}
+					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${imagesResolution[size]}${poster_path}`}
 					alt={`${title} poster`}
 					aspectRatio={5 / 7}
 					alignItems="center"
@@ -166,9 +166,9 @@ const imageSizes: { [key in PosterSize]: BoxProps } = {
 };
 
 const imagesResolution: { [key in PosterSize]: string } = {
-	lg: "w780",
-	md: "w500",
-	sm: "w342",
+	lg: "/w780",
+	md: "/w500",
+	sm: "/w342",
 };
 
 const textSizes: { [key in PosterSize]: TextProps } = {

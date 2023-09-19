@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
-import { TouchableOpacity } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/providers/session";
@@ -18,6 +17,7 @@ import {
 	HStack,
 	Heading,
 	Avatar,
+	Link,
 } from "@/components/ui";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
@@ -97,36 +97,28 @@ const ProfileTabsLayout = () => {
 								<HStack space={6}>
 									<Link
 										href={{
-											pathname: "/(app)/profile/[id]/following",
+											pathname: "/profile/[id]/following",
 											params: { id },
 										}}
-										asChild
 									>
-										<TouchableOpacity>
-											<HStack space={4}>
-												<Body fontWeight="bold">{query.data.following}</Body>
-												<Body>Following</Body>
-											</HStack>
-										</TouchableOpacity>
+										<HStack space={4}>
+											<Body fontWeight="bold">{query.data.following}</Body>
+											<Body>Following</Body>
+										</HStack>
 									</Link>
 
 									<Body>•</Body>
 
 									<Link
 										href={{
-											pathname: "/(app)/profile/[id]/followers",
+											pathname: "/profile/[id]/followers",
 											params: { id },
 										}}
-										asChild
 									>
-										<TouchableOpacity>
-											<HStack space={4}>
-												<Body fontWeight="bold">{query.data.followers}</Body>
-												<Body>
-													{pluralize(query.data.followers, "Follower")}
-												</Body>
-											</HStack>
-										</TouchableOpacity>
+										<HStack space={4}>
+											<Body fontWeight="bold">{query.data.followers}</Body>
+											<Body>{pluralize(query.data.followers, "Follower")}</Body>
+										</HStack>
 									</Link>
 								</HStack>
 							</VStack>

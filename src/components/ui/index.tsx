@@ -11,3 +11,5 @@ export * from "./image";
 export * from "./blur";
 export * from "./video";
 export * from "./sheet";
+export * from "./link";
+export * from "./round-button";

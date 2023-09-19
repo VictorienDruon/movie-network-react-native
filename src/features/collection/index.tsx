@@ -1,6 +1,4 @@
-import { TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
-import { Body, Title, VStack, Image } from "@/components/ui";
+import { Body, Title, VStack, Image, Link } from "@/components/ui";
 
 export interface Collection {
 	id: number;
@@ -18,22 +16,19 @@ export const Collection = ({ collection }: { collection: Collection }) => {
 			<VStack width={175} space={2}>
 				<Link
 					href={{
-						pathname: "/(app)/collection/[id]",
+						pathname: "/collection/[id]",
 						params: { id },
 					}}
-					asChild
 				>
-					<TouchableOpacity>
-						<Image
-							src={`https://image.tmdb.org/t/p/w300${backdrop_path}`}
-							alt={name}
-							width={175}
-							aspectRatio={16 / 9}
-							borderRadius="sm"
-							borderWidth={1}
-							borderColor="neutral-6"
-						/>
-					</TouchableOpacity>
+					<Image
+						src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w300${backdrop_path}`}
+						alt={name}
+						width={175}
+						aspectRatio={16 / 9}
+						borderRadius="sm"
+						borderWidth={1}
+						borderColor="neutral-6"
+					/>
 				</Link>
 				<Body
 					fontSize={13}

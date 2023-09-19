@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { getLocales } from "expo-localization";
 import { useQuery } from "@tanstack/react-query";
+import { getCountry } from "iso-3166-1-alpha-2";
 import { formatDuration } from "@/utils/time";
-import { useRegions } from "@/providers/regions";
 import { getMovie, getTv } from "@/libs/axios/api/details";
 import Details from "@/libs/axios/types/Details";
 import { ErrorState } from "@/components/common";
 import {
+	Avatar,
 	Body,
 	Box,
 	Button,
@@ -26,15 +28,20 @@ import Persons from "@/features/persons";
 import { Collection } from "@/features/collection";
 import { Informations } from "@/features/informations";
 import { Providers } from "@/features/providers";
+import { Region } from "@/features/region";
 
 const DetailsScreen = () => {
 	const { type, id } = useLocalSearchParams<{
 		type: "movie" | "tv";
 		id: string;
 	}>();
-	const sheetRef = useRef(null);
-	const [isInitiating, setIsInitiating] = useState(true);
-	const { selectedRegion, initRegions } = useRegions();
+
+	const providersRef = useRef(null);
+	const regionsRef = useRef(null);
+
+	const [regions, setRegions] = useState<Region[]>(null);
+	const [selectedRegion, setSelectedRegion] = useState<Region>(null);
+	const { regionCode: userRegion } = getLocales()[0];
 
 	const getDetails = type === "movie" ? getMovie : getTv;
 
@@ -45,12 +52,19 @@ const DetailsScreen = () => {
 
 	useEffect(() => {
 		if (query.isFetched) {
-			initRegions(Object.keys(query.data.providers));
-			setIsInitiating(false);
+			const regions = Object.keys(query.data.providers).map((code) => ({
+				name: getCountry(code),
+				code,
+				flag: `http://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg`,
+			}));
+			const selectedRegion =
+				regions.find((region) => region.code === userRegion) || regions[0];
+			setRegions(regions);
+			setSelectedRegion(selectedRegion);
 		}
-	}, [query.isFetched, type, id]);
+	}, [query.isFetched]);
 
-	if (query.isLoading || isInitiating) return <DetailsSkeleton />;
+	if (query.isLoading || selectedRegion === null) return <DetailsSkeleton />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
@@ -74,6 +88,8 @@ const DetailsScreen = () => {
 
 	return (
 		<>
+			<Stack.Screen options={{ title }} />
+
 			<Video
 				videoKey={videoKey}
 				backdropPath={backdrop_path}
@@ -107,7 +123,7 @@ const DetailsScreen = () => {
 							variant="primary"
 							leftIcon="Play"
 							fillIcon={true}
-							onPress={() => sheetRef.current.snapToIndex(0)}
+							onPress={() => providersRef.current.snapToIndex(0)}
 						>
 							Play
 						</Button>
@@ -160,29 +176,23 @@ const DetailsScreen = () => {
 				</VStack>
 			</ScrollView>
 
-			<Sheet ref={sheetRef}>
-				<VStack pt={8} space={16}>
-					<HStack
-						justifyContent="space-between"
-						alignItems="center"
-						px={16}
-						space={16}
-					>
-						<Box maxWidth="70%">
-							<Heading
-								fontSize={18}
-								numberOfLines={1}
-								ellipsizeMode="tail"
-							>{`${selectedRegion.flag} ${selectedRegion.name}`}</Heading>
+			<Sheet ref={providersRef} snaps={["35%", "70%"]}>
+				<VStack pt={8} space={24}>
+					<HStack alignItems="center" px={16} space={16}>
+						<Avatar
+							src={selectedRegion.flag}
+							size={28}
+							alt={selectedRegion.name}
+						/>
+
+						<Box flex={1} maxWidth="70%">
+							<Heading fontSize={18} numberOfLines={1} ellipsizeMode="tail">
+								{selectedRegion.name}
+							</Heading>
 						</Box>
 
 						<Button
-							onPress={() =>
-								router.push({
-									pathname: "/(app)/details/[type]/[id]/regions",
-									params: { type, id },
-								})
-							}
+							onPress={() => regionsRef.current.snapToIndex(0)}
 							leftIcon="Repeat"
 							size="sm"
 						>
@@ -192,6 +202,31 @@ const DetailsScreen = () => {
 
 					<Providers providers={providers[selectedRegion.code]} />
 				</VStack>
+			</Sheet>
+
+			<Sheet ref={regionsRef} snaps={["90%"]}>
+				<Box py={8} borderBottomWidth={1} borderColor="neutral-6">
+					<Heading px={16} fontSize={18}>
+						Available Regions
+					</Heading>
+				</Box>
+
+				<FlatList
+					data={regions}
+					keyExtractor={(r) => r.code}
+					renderItem={({ item: region }) => (
+						<Region
+							region={region}
+							isSelected={region === selectedRegion}
+							onPress={() => setSelectedRegion(region)}
+						/>
+					)}
+					contentContainerStyle={{
+						paddingTop: 8,
+						paddingBottom: 64,
+						paddingHorizontal: 16,
+					}}
+				/>
 			</Sheet>
 		</>
 	);

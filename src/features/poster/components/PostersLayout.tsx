@@ -3,8 +3,6 @@ import { Poster } from "..";
 
 const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 	switch (posters.length) {
-		case 0:
-			return null;
 		case 1:
 			return (
 				<Box position="relative" alignItems="center" maxHeight={280}>
@@ -69,16 +67,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 				</Box>
 			);
 		default:
-			return (
-				<Box position="relative" alignItems="center" maxHeight={280}>
-					<Poster
-						poster={posters[0]}
-						size="lg"
-						decoration="shadow"
-						textPosition="top"
-					/>
-				</Box>
-			);
+			return null;
 	}
 };
 

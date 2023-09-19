@@ -1,9 +1,8 @@
-import { FlatList, TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
+import { FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/common";
-import { Box, Icon, Separator } from "@/components/ui";
+import { Box, RoundButton, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeleton from "@/features/post/components/PostSkeleton";
 
@@ -47,27 +46,20 @@ const FeedScreen = () => {
 				onEndReached={() => query.fetchNextPage()}
 			/>
 
-			<Link href="/(app)/post/create" asChild>
-				<TouchableOpacity
-					style={{ position: "absolute", bottom: 12, right: 12 }}
-				>
-					<Box
-						justifyContent="center"
-						alignItems="center"
-						width={56}
-						height={56}
-						bg="primary-9"
-						borderRadius="full"
-						shadowColor="primary-9"
-						shadowOffset={{ width: 0, height: 3 }}
-						shadowOpacity={0.3}
-						shadowRadius={3}
-						elevation={5}
-					>
-						<Icon name="Plus" size={24} color="white" />
-					</Box>
-				</TouchableOpacity>
-			</Link>
+			<RoundButton
+				variant="primary"
+				size="lg"
+				icon="Plus"
+				href="/post/create"
+				position="absolute"
+				bottom={12}
+				right={12}
+				shadowColor="primary-9"
+				shadowOffset={{ width: 0, height: 3 }}
+				shadowOpacity={0.3}
+				shadowRadius={3}
+				elevation={5}
+			/>
 		</Box>
 	);
 };

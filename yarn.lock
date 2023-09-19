@@ -2247,6 +2247,11 @@
   resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
   integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
 
+"@types/iso-3166-1-alpha-2@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/iso-3166-1-alpha-2/-/iso-3166-1-alpha-2-1.0.0.tgz#00211e6e524067891af82eb2b137ba7c1fdabf9e"
+  integrity sha512-ORG4uhzcTGmsZ6o8t3khARl5tIdu+4mdy82V20jW7LNFZ5i898AMFFmqO+0EeDalQ2JKcIzkTP7n7WhBEHo0FA==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.4"
   resolved "https://registry.npmjs.org/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz"
@@ -3242,11 +3247,6 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
-
-country-list-with-dial-code-and-flag@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/country-list-with-dial-code-and-flag/-/country-list-with-dial-code-and-flag-5.0.3.tgz#5cc8efd862a7850869583947f436f4aa2e18fce4"
-  integrity sha512-lz/jjHO351Nigjgc2B7WQSH7kycU/pCKBFh0fyN92efZGCbm9b4H9N83MABzqXFl2fMa9bmvPwBykbGZUrhLKw==
 
 cross-fetch@^3.1.5:
   version "3.1.8"
@@ -4614,6 +4614,13 @@ isexe@^2.0.0:
   resolved "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
+iso-3166-1-alpha-2@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/iso-3166-1-alpha-2/-/iso-3166-1-alpha-2-1.0.1.tgz#010282bb475c8281f96f7e36314a3aba7552749e"
+  integrity sha512-hehv4FOIieRgJ4+AOdRptTB0wD6nSX85O731hGin0ZbLCyeQ+rVMtvUPBnsnjJCDgG5jCRtU4wGHXE85lSJk9Q==
+  dependencies:
+    mout "^1.2.3"
+
 isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
@@ -5514,6 +5521,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+mout@^1.2.3:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/mout/-/mout-1.2.4.tgz#9ffd261c4d6509e7ebcbf6b641a89b36ecdf8155"
+  integrity sha512-mZb9uOruMWgn/fw28DG4/yE3Kehfk1zKCLhuDU2O3vlKdnBBr4XaOCqVTflJ5aODavGUPqFHZgrFX3NJVuxGhQ==
 
 ms@2.0.0:
   version "2.0.0"

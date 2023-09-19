@@ -22,15 +22,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 	};
 
 	return (
-		<Box
-			zIndex={1}
-			bg="neutral-3"
-			shadowColor="black"
-			shadowOffset={{ width: 0, height: 10 }}
-			shadowOpacity={0.2}
-			shadowRadius={10}
-			elevation={5}
-		>
+		<Box zIndex={1}>
 			{videoKey.length > 0 && (
 				<YoutubePlayer
 					videoId={videoKey}
@@ -49,14 +41,14 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 				>
 					{backdropPath ? (
 						<Image
-							src={`https://image.tmdb.org/t/p/w780${backdropPath}`}
+							src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w780${backdropPath}`}
 							alt="Backdrop image"
 							width="100%"
 							height={height}
 						/>
 					) : (
 						<Image
-							src={`https://image.tmdb.org/t/p/w500${posterPath}`}
+							src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w500${posterPath}`}
 							alt="Backdrop image"
 							contentFit="contain"
 							height={height}

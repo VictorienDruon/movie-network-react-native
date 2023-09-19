@@ -8,6 +8,7 @@ const AppLayout = () => (
 		<Stack>
 			<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
 
+			<Stack.Screen name="profile/[id]/(tabs)" options={{ title: "Profile" }} />
 			<Stack.Screen
 				name="profile/[id]/following"
 				options={{ title: "Following", presentation: "modal" }}

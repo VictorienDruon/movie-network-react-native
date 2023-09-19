@@ -1,12 +1,9 @@
-import { TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { Link, router } from "expo-router";
-import { openURL } from "expo-linking";
 import { Drawer } from "expo-router/drawer";
 import { useSession } from "@/providers/session";
 import {
 	Avatar,
-	Box,
+	Link,
 	HStack,
 	Heading,
 	Icon,
@@ -16,7 +13,7 @@ import {
 } from "@/components/ui";
 
 const DrawerLayout = () => {
-	const { isSessionLoaded, user } = useSession();
+	const { user } = useSession();
 
 	return (
 		<Drawer
@@ -26,65 +23,55 @@ const DrawerLayout = () => {
 			drawerContent={() => (
 				<DrawerContentScrollView
 					scrollEnabled={false}
-					contentContainerStyle={{ height: "100%" }}
+					contentContainerStyle={{ height: "90%" }}
 				>
-					<VStack
-						flex={1}
-						justifyContent="space-between"
-						px={20}
-						pt={20}
-						pb={96}
-						space={64}
-					>
-						{user ? (
-							<Link
-								href={{
-									pathname: "/(app)/profile/[id]/(tabs)",
+					<VStack flex={1} justifyContent="space-between" px={20} space={64}>
+						<Link
+							href={
+								user && {
+									pathname: "/profile/[id]",
 									params: { id: user.id },
-								}}
-								asChild
-							>
-								<TouchableOpacity>
-									<VStack space={20}>
-										<Avatar size={40} src={user.avatar_url} alt="Your avatar" />
-										<Heading>{user.name}</Heading>
-									</VStack>
-								</TouchableOpacity>
-							</Link>
-						) : (
-							<VStack space={20}>
-								<Skeleton width={40} height={40} borderRadius="full" />
-								<Skeleton width={150} height={24} borderRadius="md" />
-							</VStack>
-						)}
+								}
+							}
+						>
+							{user ? (
+								<VStack space={20}>
+									<Avatar size={40} src={user.avatar_url} alt="Your avatar" />
+									<Heading>{user.name}</Heading>
+								</VStack>
+							) : (
+								<VStack space={20}>
+									<Skeleton width={40} height={40} borderRadius="full" />
+									<Skeleton width={150} height={24} borderRadius="md" />
+								</VStack>
+							)}
+						</Link>
 
 						<VStack space={32}>
-							<TouchableOpacity
-								onPress={() =>
-									router.push({
-										pathname: "/(app)/profile/[id]/(tabs)",
+							<Link
+								href={
+									user && {
+										pathname: "/profile/[id]",
 										params: { id: user.id },
-									})
+									}
 								}
 							>
 								<HStack alignItems="center" space={24}>
 									<Icon name="User2" size={24} color="neutral-12" />
 									<Heading fontWeight="600">Profile</Heading>
 								</HStack>
-							</TouchableOpacity>
+							</Link>
 
-							<Link href={"/(app)/profile/settings"} asChild>
-								<TouchableOpacity>
-									<HStack alignItems="center" space={24}>
-										<Icon
-											name="Cog"
-											size={24}
-											strokeWidth={2}
-											color="neutral-12"
-										/>
-										<Heading fontWeight="600">Settings</Heading>
-									</HStack>
-								</TouchableOpacity>
+							<Link href="/profile/settings">
+								<HStack alignItems="center" space={24}>
+									<Icon
+										name="Cog"
+										size={24}
+										strokeWidth={2}
+										color="neutral-12"
+									/>
+									<Heading fontWeight="600">Settings</Heading>
+								</HStack>
 							</Link>
 						</VStack>
 
@@ -94,37 +81,25 @@ const DrawerLayout = () => {
 							borderTopWidth={0.5}
 							borderColor="neutral-6"
 						>
-							<TouchableOpacity
-								onPress={() => openURL("https://the-movie-network.vercel.app")}
-							>
+							<Link href={process.env.EXPO_PUBLIC_WEBSITE_URL}>
 								<Title fontWeight="500">About</Title>
-							</TouchableOpacity>
+							</Link>
 
-							<TouchableOpacity
-								onPress={() =>
-									openURL(
-										"https://the-movie-network.vercel.app/terms-of-service"
-									)
-								}
+							<Link
+								href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/terms-of-service"}
 							>
 								<Title fontWeight="500">Terms of Service</Title>
-							</TouchableOpacity>
+							</Link>
 
-							<TouchableOpacity
-								onPress={() =>
-									openURL("https://the-movie-network.vercel.app/private-policy")
-								}
+							<Link
+								href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/privacy-policy"}
 							>
 								<Title fontWeight="500">Privacy Policy</Title>
-							</TouchableOpacity>
+							</Link>
 
-							<TouchableOpacity
-								onPress={() =>
-									openURL("https://the-movie-network.vercel.app/credits")
-								}
-							>
+							<Link href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/credits"}>
 								<Title fontWeight="500">Credits</Title>
-							</TouchableOpacity>
+							</Link>
 						</VStack>
 					</VStack>
 				</DrawerContentScrollView>

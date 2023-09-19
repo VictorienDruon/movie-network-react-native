@@ -1,5 +1,3 @@
-import { TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
 import {
 	Box,
 	Avatar,
@@ -8,6 +6,7 @@ import {
 	BoxProps,
 	Icon,
 	VStack,
+	Link,
 } from "@/components/ui";
 
 export interface Person {
@@ -30,30 +29,27 @@ export const Person = ({ person, ...props }: PersonProps) => {
 					pathname: "/person/[id]",
 					params: { id },
 				}}
-				asChild
 			>
-				<TouchableOpacity>
-					{profile_path ? (
-						<Avatar
-							src={`https://image.tmdb.org/t/p/w185${profile_path}`}
-							size={80}
-							alt={`${name} avatar`}
-						/>
-					) : (
-						<Box
-							justifyContent="center"
-							alignItems="center"
-							width={80}
-							height={80}
-							bg="neutral-3"
-							borderRadius="full"
-							borderWidth={1}
-							borderColor="neutral-6"
-						>
-							<Icon name="User2" size={40} strokeWidth={1} color="neutral-9" />
-						</Box>
-					)}
-				</TouchableOpacity>
+				{profile_path ? (
+					<Avatar
+						src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w185${profile_path}`}
+						size={80}
+						alt={`${name} avatar`}
+					/>
+				) : (
+					<Box
+						justifyContent="center"
+						alignItems="center"
+						width={80}
+						height={80}
+						bg="neutral-3"
+						borderRadius="full"
+						borderWidth={1}
+						borderColor="neutral-6"
+					>
+						<Icon name="User2" size={40} strokeWidth={1} color="neutral-9" />
+					</Box>
+				)}
 			</Link>
 			<Body
 				fontSize={13}

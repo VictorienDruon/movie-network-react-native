@@ -1,10 +1,5 @@
-import {
-	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
-	TouchableOpacity,
-} from "react-native";
-import { Link, router } from "expo-router";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,6 +17,7 @@ import {
 	Title,
 	VStack,
 	Input,
+	Link,
 } from "@/components/ui";
 import PostersLayout from "@/features/poster/components/PostersLayout";
 
@@ -107,26 +103,20 @@ const CreateScreen = () => {
 					<HStack space={32}>
 						<Link
 							href={{
-								pathname: "/(app)/post/create/posters-picker/[type]",
+								pathname: "/post/create/posters-picker/[type]",
 								params: { type: "movie" },
 							}}
-							asChild
 						>
-							<TouchableOpacity>
-								<Icon name="Clapperboard" color="primary-9" size={24} />
-							</TouchableOpacity>
+							<Icon name="Clapperboard" color="primary-9" size={24} />
 						</Link>
 
 						<Link
 							href={{
-								pathname: "/(app)/post/create/posters-picker/[type]",
+								pathname: "/post/create/posters-picker/[type]",
 								params: { type: "tv" },
 							}}
-							asChild
 						>
-							<TouchableOpacity>
-								<Icon name="Tv" color="primary-9" size={24} />
-							</TouchableOpacity>
+							<Icon name="Tv" color="primary-9" size={24} />
 						</Link>
 					</HStack>
 

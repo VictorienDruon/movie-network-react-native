@@ -1,11 +1,19 @@
-import { TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
-import { Body, Metadata, HStack, VStack, Avatar, Title } from "@/components/ui";
+import {
+	Body,
+	Metadata,
+	HStack,
+	VStack,
+	Avatar,
+	Title,
+	Link,
+	RoundButton,
+} from "@/components/ui";
 import { Poster } from "@/features/poster";
 import PostersLayout from "@/features/poster/components/PostersLayout";
-import Actions from "./components/Actions";
+import CommentBar from "./components/CommentBar";
+import LikeButton from "./components/LikeButton";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];
@@ -22,22 +30,19 @@ export const Post = ({ post }: { post: Post }) => {
 			<HStack justifyContent="space-between" space={8}>
 				<Link
 					href={{
-						pathname: "/(app)/profile/[id]/(tabs)",
+						pathname: "/profile/[id]",
 						params: { id: author.id },
 					}}
-					asChild
 				>
-					<TouchableOpacity>
-						<HStack space={8} alignItems="center">
-							<Avatar
-								size={40}
-								src={author.avatar_url}
-								alt={`${author.name} avatar`}
-							/>
+					<HStack space={8} alignItems="center">
+						<Avatar
+							size={40}
+							src={author.avatar_url}
+							alt={`${author.name} avatar`}
+						/>
 
-							<Title>{author.name}</Title>
-						</HStack>
-					</TouchableOpacity>
+						<Title>{author.name}</Title>
+					</HStack>
 				</Link>
 
 				<Metadata>{getRelativeDate(created_at)}</Metadata>
@@ -47,7 +52,21 @@ export const Post = ({ post }: { post: Post }) => {
 
 			<PostersLayout posters={posters} />
 
-			<Actions postId={id} userHasLikedPost={user_has_liked_post} />
+			<HStack space={8}>
+				<CommentBar postId={id} />
+
+				<RoundButton
+					variant="secondary"
+					size="sm"
+					icon="MessageSquare"
+					href={{
+						pathname: "/post/[id]/comments",
+						params: { id },
+					}}
+				/>
+
+				<LikeButton postId={id} userHasLikedPost={user_has_liked_post} />
+			</HStack>
 		</VStack>
 	);
 };

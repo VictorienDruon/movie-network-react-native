@@ -1,5 +1,5 @@
-import { FlatList, TouchableOpacity } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { FlatList } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getFollowing } from "@/libs/supabase/api/follows";
 import { ErrorState, EmptyState } from "@/components/common";
@@ -10,6 +10,7 @@ import {
 	Separator,
 	Skeleton,
 	Title,
+	Link,
 } from "@/components/ui";
 
 type User = {
@@ -49,22 +50,19 @@ const FollowingModal = () => {
 			renderItem={({ item: user }) => (
 				<Link
 					href={{
-						pathname: "/(app)/profile/[id]/(tabs)",
+						pathname: "/profile/[id]",
 						params: { id: user.id },
 					}}
-					asChild
 				>
-					<TouchableOpacity>
-						<HStack space={8} alignItems="center" p={16}>
-							<Avatar
-								size={40}
-								src={user.avatar_url}
-								alt={`${user.name} avatar`}
-							/>
+					<HStack space={8} alignItems="center" p={16}>
+						<Avatar
+							size={40}
+							src={user.avatar_url}
+							alt={`${user.name} avatar`}
+						/>
 
-							<Title>{user.name}</Title>
-						</HStack>
-					</TouchableOpacity>
+						<Title>{user.name}</Title>
+					</HStack>
 				</Link>
 			)}
 			ItemSeparatorComponent={() => <Separator />}
