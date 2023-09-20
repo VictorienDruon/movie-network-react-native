@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByPost } from "@/libs/supabase/api/comments";
 import { useSession } from "@/providers/session";
-import { ErrorState, EmptyState } from "@/components/common";
+import { ErrorState, EmptyState } from "@/components/commons";
 import { Avatar, Box, HStack } from "@/components/ui";
 import { Comment } from "@/features/comment";
 import CommentBar from "@/features/post/components/CommentBar";

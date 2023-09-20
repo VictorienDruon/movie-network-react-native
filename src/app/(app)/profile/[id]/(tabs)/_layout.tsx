@@ -8,7 +8,7 @@ import { NewFollow, toggle } from "@/libs/supabase/api/follows";
 import { Database } from "@/libs/supabase/types/database.types";
 import { getOne } from "@/libs/supabase/api/profiles";
 import { pluralize } from "@/utils/texts";
-import { ErrorState } from "@/components/common";
+import { ErrorState } from "@/components/commons";
 import {
 	VStack,
 	Skeleton,

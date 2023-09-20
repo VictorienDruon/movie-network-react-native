@@ -3,7 +3,7 @@ import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAllByUser } from "@/libs/supabase/api/posts";
 import useFocus from "@/hooks/useFocus";
-import { EmptyState, RefreshControl } from "@/components/common";
+import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeleton from "@/features/post/components/PostSkeleton";

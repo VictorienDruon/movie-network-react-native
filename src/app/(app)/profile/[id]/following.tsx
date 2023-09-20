@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getFollowing } from "@/libs/supabase/api/follows";
-import { ErrorState, EmptyState } from "@/components/common";
+import { ErrorState, EmptyState } from "@/components/commons";
 import {
 	Avatar,
 	Box,

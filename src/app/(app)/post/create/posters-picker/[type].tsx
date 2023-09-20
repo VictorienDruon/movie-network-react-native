@@ -11,7 +11,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { usePosters } from "@/providers/posters";
 import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
 import { searchMovies, searchTv } from "@/libs/axios/api/search";
-import { ErrorState, EmptyState } from "@/components/common";
+import { ErrorState, EmptyState } from "@/components/commons";
 import { Box, Button, HStack, Input, Link, Title } from "@/components/ui";
 import { Poster } from "@/features/poster";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";

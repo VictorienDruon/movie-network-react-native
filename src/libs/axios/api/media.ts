@@ -1,12 +1,12 @@
-import { getYear } from "@/utils/dates";
 import { api } from "..";
-import Details from "../types/Details";
+import Media from "../types/Media";
 
 export async function getMovie(id: string) {
 	const params = new URLSearchParams({
 		language: "en-US",
 		append_to_response: "videos,credits,recommendations,watch/providers",
 	});
+
 	try {
 		const { data } = await api.get(`/movie/${id}`, {
 			params,
@@ -22,17 +22,44 @@ export async function getMovie(id: string) {
 			["Director", "Writer", "Original Music Composer"].includes(member.job)
 		);
 
-		const movie: Details = {
+		const movie: Media = {
 			id: data.id,
 			title: data.title,
 			poster_path: data.poster_path,
 			backdrop_path: data.backdrop_path,
 			overview: data.overview,
-			release_year: getYear(new Date(data.release_date)),
+			release_date: data.release_date,
 			runtime: data.runtime,
-
 			genres: data.genres,
-			collection: data.belongs_to_collection,
+			companies: data.production_companies.flatMap(
+				(company: any) => company.name
+			),
+			countries: data.production_countries.flatMap(
+				(country: any) => country.name
+			),
+			languages: data.spoken_languages.flatMap(
+				(language: any) => language.name
+			),
+			budget: data.budget,
+			revenue: data.revenue,
+
+			collection: data.belongs_to_collection && {
+				tmdb_id: data.belongs_to_collection.id,
+				title: data.belongs_to_collection.name,
+				poster_path: data.belongs_to_collection.poster_path,
+				backdrop_path: data.belongs_to_collection.backdrop_path,
+				type: "collection",
+			},
+
+			recommendations: data.recommendations.results
+				.filter((r: any) => r.poster_path !== null)
+				.map((r: any) => ({
+					tmdb_id: r.id,
+					title: r.title,
+					poster_path: r.poster_path,
+					backdrop_path: r.backdrop_path,
+					type: "movie",
+				})),
 
 			cast:
 				cast.length > 20
@@ -63,30 +90,6 @@ export async function getMovie(id: string) {
 							role: member.job,
 							profile_path: member.profile_path,
 					  })),
-
-			recommendations: data.recommendations.results
-				.filter((movie: any) => movie.poster_path !== null)
-				.map((movie: any) => ({
-					tmdb_id: movie.id,
-					title: movie.title,
-					poster_path: movie.poster_path,
-					type: "movie",
-				})),
-
-			informations: {
-				companies: data.production_companies.flatMap(
-					(company: any) => company.name
-				),
-				countries: data.production_countries.flatMap(
-					(country: any) => country.name
-				),
-				languages: data.spoken_languages.flatMap(
-					(language: any) => language.name
-				),
-				release_date: data.release_date,
-				budget: data.budget,
-				revenue: data.revenue,
-			},
 
 			videoKey: video ? video.key : "",
 
@@ -123,15 +126,26 @@ export async function getTv(id: string) {
 			)
 		);
 
-		const tv: Details = {
+		const tv: Media = {
 			id: data.id,
 			title: data.name,
 			poster_path: data.poster_path,
-			overview: data.overview,
 			backdrop_path: data.backdrop_path,
-			release_year: getYear(new Date(data.first_air_date)),
-			season_number: data.last_episode_to_air.season_number,
+			overview: data.overview,
+			release_date: data.first_air_date,
 			genres: data.genres,
+			created_by: data.created_by.flatMap((creator: any) => creator.name),
+			last_episode_to_air: data.last_episode_to_air,
+			in_production: data.in_production,
+
+			recommendations: data.recommendations.results
+				.filter((tv: any) => tv.poster_path !== null)
+				.map((tv: any) => ({
+					tmdb_id: tv.id,
+					title: tv.name,
+					poster_path: tv.poster_path,
+					type: "tv",
+				})),
 
 			cast:
 				cast.length > 20
@@ -162,22 +176,6 @@ export async function getTv(id: string) {
 							role: member.jobs[0].job,
 							profile_path: member.profile_path,
 					  })),
-
-			recommendations: data.recommendations.results
-				.filter((movie: any) => movie.poster_path !== null)
-				.map((movie: any) => ({
-					tmdb_id: movie.id,
-					title: movie.name,
-					poster_path: movie.poster_path,
-					type: "tv",
-				})),
-
-			informations: {
-				created_by: data.created_by.flatMap((creator: any) => creator.name),
-				release_date: data.first_air_date,
-				last_episode_to_air: data.last_episode_to_air,
-				in_production: data.in_production,
-			},
 
 			videoKey: video ? video.key : "",
 

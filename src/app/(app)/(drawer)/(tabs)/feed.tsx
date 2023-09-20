@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
-import { ErrorState, RefreshControl } from "@/components/common";
+import { ErrorState, RefreshControl } from "@/components/commons";
 import { Box, RoundButton, Separator } from "@/components/ui";
 import { Post } from "@/features/post";
 import PostSkeleton from "@/features/post/components/PostSkeleton";

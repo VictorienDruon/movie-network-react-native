@@ -1,10 +1,10 @@
 import { FlatList } from "react-native";
 import { Stack } from "expo-router";
 import { VStack, Skeleton, HStack, Title, Button, Box } from "@/components/ui";
-import PersonSkeleton from "@/features/persons/components/PersonSkeleton";
+import PersonSkeleton from "@/features/credit-member/components/CreditMemberSkeleton";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
 
-const DetailsSkeleton = () => (
+const MediaSkeleton = () => (
 	<>
 		<Stack.Screen options={{ title: "" }} />
 
@@ -66,4 +66,4 @@ const DetailsSkeleton = () => (
 	</>
 );
 
-export default DetailsSkeleton;
+export default MediaSkeleton;

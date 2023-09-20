@@ -1,4 +1,4 @@
-import { Body, Box, Metadata } from "../../../components/ui";
+import { Body, Box, Metadata } from "../ui";
 
 interface InformationProps {
 	title: string;

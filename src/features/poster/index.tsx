@@ -17,23 +17,30 @@ export type Poster = {
 	tmdb_id: number;
 	title: string;
 	poster_path: string;
-	type: "movie" | "tv";
+	backdrop_path: string;
+	type: "movie" | "tv" | "collection";
 };
 
+type PosterOrientation = "horizontal" | "vertical";
+type PosterAction = "select" | "navigate";
 type PosterSize = "sm" | "md" | "lg";
+type PosterDecoration = "shadow" | "border";
+type PosterTextPosition = "top" | "bottom";
 
 interface PosterProps extends Omit<BoxProps, "id"> {
 	poster: Poster;
-	action?: "select" | "navigate";
+	orientation?: PosterOrientation;
+	action?: PosterAction;
 	size?: PosterSize;
-	decoration?: "shadow" | "border";
-	textPosition?: "top" | "bottom";
+	decoration?: PosterDecoration;
+	textPosition?: PosterTextPosition;
 	rotate?: AnimatableStringValue;
 	gridSpacing?: number;
 }
 
 export const Poster = ({
 	poster,
+	orientation = "vertical",
 	action = "navigate",
 	size = "sm",
 	decoration = "border",
@@ -42,16 +49,23 @@ export const Poster = ({
 	gridSpacing,
 	...props
 }: PosterProps) => {
-	const { tmdb_id, title, poster_path, type } = poster;
+	const { tmdb_id, title, poster_path, backdrop_path, type } = poster;
 	const context = usePosters();
 
 	const handlePress = () => {
 		action === "select"
 			? context.toggle(poster)
-			: router.push({
-					pathname: `/details/[type]/[id]`,
-					params: { type, id: tmdb_id },
-			  });
+			: router.push(
+					type === "collection"
+						? {
+								pathname: `/collection/[id]`,
+								params: { id: tmdb_id },
+						  }
+						: {
+								pathname: `/media/[type]/[id]`,
+								params: { type, id: tmdb_id },
+						  }
+			  );
 	};
 
 	return (
@@ -66,18 +80,20 @@ export const Poster = ({
 				},
 				rotate && { transform: [{ rotate: rotate }] },
 			]}
-			{...boxSizes[size]}
+			{...boxSizes[orientation][size]}
 			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${imagesResolution[size]}${poster_path}`}
+					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${imagesResolution[size]}${
+						orientation === "vertical" ? poster_path : backdrop_path
+					}`}
 					alt={`${title} poster`}
-					aspectRatio={5 / 7}
 					alignItems="center"
 					borderRadius="sm"
-					{...boxSizes[size]}
+					{...boxSizes[orientation][size]}
+					{...boxOrientation[orientation]}
 					{...imageSizes[size]}
 					{...(decoration === "border" && { ...boxBorder })}
 				>
@@ -100,8 +116,8 @@ export const Poster = ({
 						position="absolute"
 						justifyContent="center"
 						alignItems="center"
-						width={100}
-						aspectRatio={5 / 7}
+						{...boxSizes[orientation][size]}
+						{...boxOrientation[orientation]}
 					>
 						<Box
 							width="100%"
@@ -141,28 +157,32 @@ export const Poster = ({
 	);
 };
 
-const boxSizes: { [key in PosterSize]: BoxProps } = {
-	lg: {
-		width: 200,
+const boxSizes: {
+	[key in PosterOrientation]: { [key in PosterSize]: BoxProps };
+} = {
+	horizontal: {
+		lg: { width: 300 },
+		md: { width: 225 },
+		sm: { width: 150 },
 	},
-	md: {
-		width: 150,
-	},
-	sm: {
-		width: 100,
+	vertical: {
+		lg: { width: 200 },
+		md: { width: 150 },
+		sm: { width: 100 },
 	},
 };
 
+const boxOrientation: {
+	[key in PosterOrientation]: BoxProps;
+} = {
+	horizontal: { aspectRatio: 16 / 9 },
+	vertical: { aspectRatio: 5 / 7 },
+};
+
 const imageSizes: { [key in PosterSize]: BoxProps } = {
-	lg: {
-		padding: 8,
-	},
-	md: {
-		padding: 6,
-	},
-	sm: {
-		padding: 4,
-	},
+	lg: { padding: 8 },
+	md: { padding: 6 },
+	sm: { padding: 4 },
 };
 
 const imagesResolution: { [key in PosterSize]: string } = {

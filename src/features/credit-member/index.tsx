@@ -9,18 +9,21 @@ import {
 	Link,
 } from "@/components/ui";
 
-export interface Person {
+export interface CreditMember {
 	id: number;
 	name: string;
 	role: string;
 	profile_path: string;
 }
 
-interface PersonProps extends Omit<BoxProps, "id"> {
-	person: Person;
+interface CreditMemberProps extends Omit<BoxProps, "id"> {
+	member: CreditMember;
 }
 
-export const Person = ({ person, ...props }: PersonProps) => {
+export const CreditMember = ({
+	member: person,
+	...props
+}: CreditMemberProps) => {
 	const { id, name, role, profile_path } = person;
 	return (
 		<VStack alignItems="center" width={96} space={0} {...props}>

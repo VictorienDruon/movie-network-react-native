@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
-import { ErrorState } from "@/components/common";
+import { ErrorState } from "@/components/commons";
 import { Post } from "@/features/post";
 import PostSkeleton from "@/features/post/components/PostSkeleton";
 

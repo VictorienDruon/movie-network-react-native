@@ -23,6 +23,7 @@ export async function discoverMovies(page: number) {
 				tmdb_id: movie.id,
 				title: movie.title,
 				poster_path: movie.poster_path,
+				backdrop_path: movie.backdrop_path,
 				type: "movie",
 			}));
 
@@ -52,11 +53,12 @@ export async function discoverTv(page: number) {
 		});
 
 		const posters: Poster[] = data.results
-			.filter((movie) => movie.poster_path !== null)
+			.filter((tv) => tv.poster_path !== null)
 			.map((tv) => ({
 				tmdb_id: tv.id,
 				title: tv.name,
 				poster_path: tv.poster_path,
+				backdrop_path: tv.backdrop_path,
 				type: "tv",
 			}));
 

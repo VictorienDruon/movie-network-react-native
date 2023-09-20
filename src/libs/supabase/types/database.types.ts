@@ -113,6 +113,7 @@ export interface Database {
       }
       posters: {
         Row: {
+          backdrop_path: string
           created_at: string
           id: string
           poster_path: string
@@ -121,6 +122,7 @@ export interface Database {
           type: string
         }
         Insert: {
+          backdrop_path: string
           created_at?: string
           id?: string
           poster_path: string
@@ -129,6 +131,7 @@ export interface Database {
           type: string
         }
         Update: {
+          backdrop_path?: string
           created_at?: string
           id?: string
           poster_path?: string
