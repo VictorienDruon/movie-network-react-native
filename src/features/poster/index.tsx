@@ -86,7 +86,7 @@ export const Poster = ({
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${
+					src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}${
 						imagesResolution[orientation][size]
 					}${orientation === "vertical" ? poster_path : backdrop_path}`}
 					alt={`${title} poster`}

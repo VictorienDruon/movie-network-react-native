@@ -56,7 +56,7 @@ const MediaScreen = () => {
 			const regions = Object.keys(query.data.providers).map((code) => ({
 				name: getCountry(code),
 				code,
-				flag: `http://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg`,
+				flag: `${process.env.EXPO_PUBLIC_FLAG_IMAGE_URL}${code}.svg`,
 			}));
 			const selectedRegion =
 				regions.find((region) => region.code === userRegion) || regions[0];

@@ -35,7 +35,7 @@ export const CreditMember = ({
 			>
 				{profile_path ? (
 					<Avatar
-						src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w185${profile_path}`}
+						src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w185${profile_path}`}
 						size={80}
 						alt={`${name} avatar`}
 					/>

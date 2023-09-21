@@ -17,7 +17,7 @@ interface ProviderProps {
 export const Provider = ({ link, provider }: ProviderProps) => (
 	<TouchableOpacity onPress={() => openURL(link)}>
 		<Image
-			src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w500${provider.logo_path}`}
+			src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${provider.logo_path}`}
 			alt={provider.provider_name}
 			width={70}
 			height={70}

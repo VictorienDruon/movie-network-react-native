@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getPerson } from "@/libs/axios/api/person";
 import Person from "@/libs/axios/types/Person";
 import { getDateWithYear } from "@/utils/dates";
-import { Body, Heading, VStack } from "@/components/ui";
+import { ErrorState } from "@/components/commons";
 import { Information, Section } from "@/components/layouts";
 import { PersonSkeleton } from "@/components/skeletons";
+import { Body, Heading, VStack } from "@/components/ui";
 import { Poster } from "@/features/poster";
 
 const PersonScreen = () => {
@@ -19,7 +20,7 @@ const PersonScreen = () => {
 
 	if (query.isLoading) return <PersonSkeleton />;
 
-	if (query.isError) return null;
+	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	const {
 		name,

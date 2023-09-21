@@ -4,6 +4,7 @@ import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe";
 import useFocus from "@/hooks/useFocus";
 import { Box } from "./box";
 import { Image } from "./image";
+import { LinearGradient } from "./linear-gradient";
 
 interface VideoProps {
 	videoKey: string;
@@ -32,7 +33,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 				/>
 			)}
 
-			{isLoading && (
+			{true && (
 				<Box
 					position={videoKey ? "absolute" : "relative"}
 					width="100%"
@@ -41,18 +42,22 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 				>
 					{backdropPath ? (
 						<Image
-							src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w780${backdropPath}`}
+							src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w780${backdropPath}`}
 							alt="Backdrop image"
 							width="100%"
 							height={height}
-						/>
+						>
+							<LinearGradient />
+						</Image>
 					) : (
 						<Image
-							src={`${process.env.EXPO_PUBLIC_IMAGE_URL}/w500${posterPath}`}
+							src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${posterPath}`}
 							alt="Backdrop image"
 							contentFit="contain"
 							height={height}
-						/>
+						>
+							<LinearGradient />
+						</Image>
 					)}
 				</Box>
 			)}

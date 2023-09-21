@@ -13,3 +13,4 @@ export * from "./video";
 export * from "./sheet";
 export * from "./link";
 export * from "./round-button";
+export * from "./linear-gradient";
