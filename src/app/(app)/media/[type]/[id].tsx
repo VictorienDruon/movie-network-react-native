@@ -17,16 +17,15 @@ import {
 	Box,
 	Button,
 	HStack,
-	Heading,
 	Metadata,
 	Sheet,
+	SubHeading,
 	Subtitle,
-	Title,
 	VStack,
 	Video,
 } from "@/components/ui";
-import MediaSkeleton from "@/components/skeletons/MediaSkeleton";
-import Information from "@/components/layouts/information";
+import { MediaSkeleton } from "@/components/skeletons";
+import { Information, Section } from "@/components/layouts";
 import { Poster } from "@/features/poster";
 import { CreditMember } from "@/features/credit-member";
 import { Providers } from "@/features/providers";
@@ -107,13 +106,12 @@ const MediaScreen = () => {
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{
-					paddingTop: 20,
-					paddingBottom: 64,
+					paddingTop: 24,
+					paddingBottom: 128,
 				}}
 			>
-				<VStack space={20}>
-					<VStack px={16} space={4}>
-						{title?.length > 0 && <Heading>{title}</Heading>}
+				<VStack space={24}>
+					<Section title={title} size="lg" space={4}>
 						<HStack space={8}>
 							{release_date?.length > 0 && (
 								<Subtitle>{getYear(new Date(release_date))}</Subtitle>
@@ -126,9 +124,9 @@ const MediaScreen = () => {
 										<Subtitle>{`${last_episode_to_air.season_number} seasons`}</Subtitle>
 								  )}
 						</HStack>
-					</VStack>
+					</Section>
 
-					<VStack px={16} space={8}>
+					<Section>
 						<Button
 							variant="primary"
 							leftIcon="Play"
@@ -140,29 +138,34 @@ const MediaScreen = () => {
 						<Button variant="outline" leftIcon="Plus">
 							Add to Watchlist
 						</Button>
-					</VStack>
+					</Section>
 
-					{overview?.length > 0 && <Body px={16}>{overview}</Body>}
+					{overview?.length > 0 && (
+						<Section>
+							<Body>{overview}</Body>
+						</Section>
+					)}
 
 					{genres?.length > 0 && (
-						<HStack px={16} flexWrap="wrap" space={8}>
-							{genres.map((genre) => (
-								<Box
-									key={genre.id}
-									px={8}
-									py={4}
-									bg="neutral-3"
-									borderRadius="lg"
-								>
-									<Metadata>{genre.name}</Metadata>
-								</Box>
-							))}
-						</HStack>
+						<Section>
+							<HStack flexWrap="wrap" space={8}>
+								{genres.map((genre) => (
+									<Box
+										key={genre.id}
+										px={8}
+										py={4}
+										bg="neutral-3"
+										borderRadius="lg"
+									>
+										<Metadata>{genre.name}</Metadata>
+									</Box>
+								))}
+							</HStack>
+						</Section>
 					)}
 
 					{recommendations?.length > 0 && (
-						<VStack space={8}>
-							<Title pl={16}>Recommendations</Title>
+						<Section title="Recommendations" flatlist>
 							<FlatList
 								data={recommendations}
 								keyExtractor={(r) => r.tmdb_id.toString()}
@@ -173,12 +176,11 @@ const MediaScreen = () => {
 								showsHorizontalScrollIndicator={false}
 								horizontal
 							/>
-						</VStack>
+						</Section>
 					)}
 
 					{cast?.length > 0 && (
-						<VStack space={8}>
-							<Title pl={16}>Cast</Title>
+						<Section title="Cast" flatlist>
 							<FlatList
 								data={cast}
 								keyExtractor={(p) => p.id.toString() + p.role}
@@ -189,12 +191,11 @@ const MediaScreen = () => {
 								showsHorizontalScrollIndicator={false}
 								horizontal
 							/>
-						</VStack>
+						</Section>
 					)}
 
 					{crew?.length > 0 && (
-						<VStack space={8}>
-							<Title pl={16}>Crew</Title>
+						<Section title="Crew" flatlist>
 							<FlatList
 								data={crew}
 								keyExtractor={(m) => m.id.toString() + m.role}
@@ -205,15 +206,16 @@ const MediaScreen = () => {
 								showsHorizontalScrollIndicator={false}
 								horizontal
 							/>
-						</VStack>
+						</Section>
 					)}
 
 					{collection && (
-						<Poster poster={collection} orientation="horizontal" />
+						<Section title="Collection">
+							<Poster poster={collection} orientation="horizontal" />
+						</Section>
 					)}
 
-					<VStack px={16} space={4}>
-						<Title>Informations</Title>
+					<Section title="Informations">
 						{companies?.length > 0 && (
 							<Information
 								title={pluralize(companies.length, "Studio")}
@@ -266,14 +268,14 @@ const MediaScreen = () => {
 								content={in_production ? "Yes" : "No"}
 							/>
 						)}
-					</VStack>
+					</Section>
 				</VStack>
 			</ScrollView>
 
 			<Sheet ref={providersRef} snaps={["35%", "70%"]}>
 				{selectedRegion ? (
-					<VStack pt={8} space={24}>
-						<HStack alignItems="center" px={16} space={16}>
+					<VStack space={24}>
+						<HStack alignItems="center" space={16} px={16}>
 							<Avatar
 								src={selectedRegion.flag}
 								size={28}
@@ -281,9 +283,9 @@ const MediaScreen = () => {
 							/>
 
 							<Box flex={1} maxWidth="70%">
-								<Heading fontSize={18} numberOfLines={1} ellipsizeMode="tail">
+								<SubHeading numberOfLines={1} ellipsizeMode="tail">
 									{selectedRegion.name}
-								</Heading>
+								</SubHeading>
 							</Box>
 
 							<Button
@@ -305,9 +307,7 @@ const MediaScreen = () => {
 			{selectedRegion && (
 				<Sheet ref={regionsRef} snaps={["90%"]}>
 					<Box py={8} borderBottomWidth={1} borderColor="neutral-6">
-						<Heading px={16} fontSize={18}>
-							Available Regions
-						</Heading>
+						<SubHeading px={16}>Available Regions</SubHeading>
 					</Box>
 
 					<FlatList
@@ -322,7 +322,7 @@ const MediaScreen = () => {
 						)}
 						contentContainerStyle={{
 							paddingTop: 8,
-							paddingBottom: 64,
+							paddingBottom: 128,
 							paddingHorizontal: 16,
 						}}
 					/>

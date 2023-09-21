@@ -103,9 +103,9 @@ const AttachmentsModal = () => {
 					<Input
 						ref={inputRef}
 						flex={1}
-						placeholder={`Search for a Movie`}
+						placeholder={type === "movie" ? "Search movies" : "Search TV shows"}
 						color="neutral-12"
-						placeholderTextColor="neutral-9"
+						placeholderTextColor="neutral-11"
 						autoCapitalize="none"
 						autoCorrect={false}
 						onChangeText={handleValueChange}

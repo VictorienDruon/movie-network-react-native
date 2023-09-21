@@ -3,44 +3,46 @@ import { Stack } from "expo-router";
 import { VStack, Skeleton, HStack, Title, Button, Box } from "@/components/ui";
 import PersonSkeleton from "@/features/credit-member/components/CreditMemberSkeleton";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import { Section } from "../layouts";
 
-const MediaSkeleton = () => (
+export const MediaSkeleton = () => (
 	<>
 		<Stack.Screen options={{ title: "" }} />
 
-		<VStack space={20}>
+		<VStack space={24}>
 			<Box zIndex={1} bg="neutral-3">
 				<Skeleton width="100%" aspectRatio={16 / 9} />
 			</Box>
 
-			<VStack px={16} space={4}>
+			<Section space={4}>
 				<Skeleton width={256} height={24} borderRadius="md" />
 				<Skeleton width={128} height={18} borderRadius="md" />
-			</VStack>
+			</Section>
 
-			<VStack px={16} space={8}>
+			<Section>
 				<Button variant="primary" leftIcon="Play" fillIcon={true}>
 					Play
 				</Button>
 				<Button variant="outline" leftIcon="Plus">
 					Add to Watchlist
 				</Button>
-			</VStack>
+			</Section>
 
-			<VStack px={16} space={4}>
+			<Section space={4}>
 				<Skeleton width="100%" height={16} borderRadius="md" />
 				<Skeleton width="100%" height={16} borderRadius="md" />
 				<Skeleton width="30%" height={16} borderRadius="md" />
-			</VStack>
+			</Section>
 
-			<HStack px={16} space={8}>
-				<Skeleton width={64} height={20} borderRadius="lg" />
-				<Skeleton width={64} height={20} borderRadius="lg" />
-				<Skeleton width={64} height={20} borderRadius="lg" />
-			</HStack>
+			<Section>
+				<HStack space={8}>
+					<Skeleton width={64} height={20} borderRadius="lg" />
+					<Skeleton width={64} height={20} borderRadius="lg" />
+					<Skeleton width={64} height={20} borderRadius="lg" />
+				</HStack>
+			</Section>
 
-			<VStack space={8}>
-				<Title pl={16}>Recommendations</Title>
+			<Section title="Recommendations" flatlist>
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
@@ -49,10 +51,9 @@ const MediaSkeleton = () => (
 					horizontal={true}
 					scrollEnabled={false}
 				/>
-			</VStack>
+			</Section>
 
-			<VStack space={8}>
-				<Title pl={16}>Cast</Title>
+			<Section title="Cast" flatlist>
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
@@ -61,9 +62,7 @@ const MediaSkeleton = () => (
 					horizontal={true}
 					scrollEnabled={false}
 				/>
-			</VStack>
+			</Section>
 		</VStack>
 	</>
 );
-
-export default MediaSkeleton;

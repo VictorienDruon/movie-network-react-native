@@ -18,7 +18,9 @@ export async function discoverMovies(page: number) {
 		});
 
 		const posters: Poster[] = data.results
-			.filter((movie) => movie.poster_path !== null)
+			.filter(
+				(movie) => movie.poster_path !== null && movie.backdrop_path !== null
+			)
 			.map((movie) => ({
 				tmdb_id: movie.id,
 				title: movie.title,
@@ -53,7 +55,7 @@ export async function discoverTv(page: number) {
 		});
 
 		const posters: Poster[] = data.results
-			.filter((tv) => tv.poster_path !== null)
+			.filter((tv) => tv.poster_path !== null && tv.backdrop_path !== null)
 			.map((tv) => ({
 				tmdb_id: tv.id,
 				title: tv.name,

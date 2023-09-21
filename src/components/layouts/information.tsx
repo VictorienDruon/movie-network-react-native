@@ -1,14 +1,13 @@
-import { Body, Box, Metadata } from "../ui";
+import { Body, Box, Metadata, VStack } from "../ui";
 
 interface InformationProps {
 	title: string;
 	content: string;
 }
 
-const Information = ({ title, content }: InformationProps) => (
-	<Box>
-		<Body fontSize={13}>{title}</Body>
-		<Metadata>{content}</Metadata>
-	</Box>
+export const Information = ({ title, content }: InformationProps) => (
+	<VStack space={2}>
+		<Body>{title}</Body>
+		<Metadata fontSize={12}>{content}</Metadata>
+	</VStack>
 );
-export default Information;

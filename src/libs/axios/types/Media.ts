@@ -4,7 +4,7 @@ import { Providers } from "@/features/providers";
 
 interface Media {
 	id: number;
-	title?: string;
+	title: string;
 	release_date?: string;
 	poster_path?: string;
 	backdrop_path?: string;

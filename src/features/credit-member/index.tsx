@@ -54,16 +54,16 @@ export const CreditMember = ({
 					</Box>
 				)}
 			</Link>
-			<Body
-				fontSize={13}
-				textAlign="center"
-				numberOfLines={1}
-				ellipsizeMode="tail"
-			>
+			<Body textAlign="center" numberOfLines={1} ellipsizeMode="tail">
 				{name}
 			</Body>
 			{role && (
-				<Metadata textAlign="center" numberOfLines={1} ellipsizeMode="tail">
+				<Metadata
+					fontSize={12}
+					textAlign="center"
+					numberOfLines={1}
+					ellipsizeMode="tail"
+				>
 					{role}
 				</Metadata>
 			)}

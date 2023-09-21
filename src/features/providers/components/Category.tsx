@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
-import { VStack, Title } from "@/components/ui";
 import { Provider } from "./Provider";
+import { Section } from "@/components/layouts";
 
 interface Category {
 	title: string;
@@ -9,8 +9,7 @@ interface Category {
 }
 
 const Category = ({ title, link, providers }: Category) => (
-	<VStack space={8}>
-		<Title pl={16}>{title}</Title>
+	<Section title={title} flatlist>
 		<FlatList
 			data={providers}
 			keyExtractor={(p) => p.provider_id.toString()}
@@ -21,7 +20,7 @@ const Category = ({ title, link, providers }: Category) => (
 			showsHorizontalScrollIndicator={false}
 			horizontal
 		/>
-	</VStack>
+	</Section>
 );
 
 export default Category;

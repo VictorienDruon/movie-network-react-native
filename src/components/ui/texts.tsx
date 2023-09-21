@@ -2,11 +2,16 @@ import { TextProps as RNTextProps } from "react-native";
 import { createText } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 
-const RawText = createText<Theme, RNTextProps>();
+export const RawText = createText<Theme, RNTextProps>();
 
 export const Heading = (props: TextProps) => (
 	<RawText variant="header" {...props} />
 );
+
+export const SubHeading = (props: TextProps) => (
+	<RawText variant="subheader" {...props} />
+);
+
 export const Title = (props: TextProps) => (
 	<RawText variant="title" {...props} />
 );

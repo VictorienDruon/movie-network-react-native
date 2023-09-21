@@ -4,10 +4,10 @@ interface Person {
 	id: number;
 	name: string;
 	movies: Poster[];
-	tv: Poster[];
-	directions: Poster[];
-	writings: Poster[];
-	productions: Poster[];
+	shows: Poster[];
+	directed: Poster[];
+	written: Poster[];
+	composed: Poster[];
 	biography: string;
 	place_of_birth: string;
 	birthday: string;

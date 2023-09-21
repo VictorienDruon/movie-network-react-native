@@ -10,10 +10,14 @@ export type RawPost = Database["public"]["Tables"]["posts"]["Row"] & {
 export function formatPost(post: RawPost, userId: string) {
 	const { likes, posts_posters, ...rest } = post;
 
+	const posters =
+		posts_posters.length > 0 ? posts_posters.flatMap((p) => p.posters) : [];
+
+	const user_has_liked_post = likes.some((like) => like.user_id === userId);
+
 	return {
 		...rest,
-		posters:
-			posts_posters.length > 0 ? posts_posters.flatMap((p) => p.posters) : [],
-		user_has_liked_post: likes.some((like) => like.user_id === userId),
+		posters,
+		user_has_liked_post,
 	} as Post;
 }

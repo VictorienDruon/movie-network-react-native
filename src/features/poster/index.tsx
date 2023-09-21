@@ -86,9 +86,9 @@ export const Poster = ({
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${imagesResolution[size]}${
-						orientation === "vertical" ? poster_path : backdrop_path
-					}`}
+					src={`${process.env.EXPO_PUBLIC_IMAGE_URL}${
+						imagesResolution[orientation][size]
+					}${orientation === "vertical" ? poster_path : backdrop_path}`}
 					alt={`${title} poster`}
 					alignItems="center"
 					borderRadius="sm"
@@ -162,8 +162,8 @@ const boxSizes: {
 } = {
 	horizontal: {
 		lg: { width: 300 },
-		md: { width: 225 },
-		sm: { width: 150 },
+		md: { width: 250 },
+		sm: { width: 200 },
 	},
 	vertical: {
 		lg: { width: 200 },
@@ -185,10 +185,11 @@ const imageSizes: { [key in PosterSize]: BoxProps } = {
 	sm: { padding: 4 },
 };
 
-const imagesResolution: { [key in PosterSize]: string } = {
-	lg: "/w780",
-	md: "/w500",
-	sm: "/w342",
+const imagesResolution: {
+	[key in PosterOrientation]: { [key in PosterSize]: string };
+} = {
+	horizontal: { lg: "/w1280", md: "/w1280", sm: "/w780" },
+	vertical: { lg: "/w780", md: "/w500", sm: "/w342" },
 };
 
 const textSizes: { [key in PosterSize]: TextProps } = {

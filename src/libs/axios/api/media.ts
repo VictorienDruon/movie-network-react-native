@@ -52,7 +52,7 @@ export async function getMovie(id: string) {
 			},
 
 			recommendations: data.recommendations.results
-				.filter((r: any) => r.poster_path !== null)
+				.filter((r: any) => r.poster_path !== null && r.backdrop_path !== null)
 				.map((r: any) => ({
 					tmdb_id: r.id,
 					title: r.title,
@@ -139,7 +139,9 @@ export async function getTv(id: string) {
 			in_production: data.in_production,
 
 			recommendations: data.recommendations.results
-				.filter((tv: any) => tv.poster_path !== null)
+				.filter(
+					(tv: any) => tv.poster_path !== null && tv.backdrop_path !== null
+				)
 				.map((tv: any) => ({
 					tmdb_id: tv.id,
 					title: tv.name,

@@ -34,7 +34,7 @@ const PosterSkeleton = ({
 		<Skeleton aspectRatio={5 / 7} borderRadius="sm" {...boxSizes[size]} />
 
 		{textPosition === "bottom" && (
-			<Skeleton width="80%" height={13} borderRadius="md" />
+			<Skeleton width="80%" height={18} borderRadius="md" />
 		)}
 	</VStack>
 );

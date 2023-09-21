@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getPerson } from "@/libs/axios/api/person";
 import Person from "@/libs/axios/types/Person";
 import { getDateWithYear } from "@/utils/dates";
-import { Body, Heading, Title, VStack } from "@/components/ui";
-import Information from "@/components/layouts/information";
+import { Body, Heading, VStack } from "@/components/ui";
+import { Information, Section } from "@/components/layouts";
+import { PersonSkeleton } from "@/components/skeletons";
 import { Poster } from "@/features/poster";
 
 const PersonScreen = () => {
@@ -16,17 +17,17 @@ const PersonScreen = () => {
 		queryFn: () => getPerson(id),
 	});
 
-	if (query.isLoading) return <Stack.Screen options={{ title: "" }} />;
+	if (query.isLoading) return <PersonSkeleton />;
 
 	if (query.isError) return null;
 
 	const {
 		name,
 		movies,
-		tv,
-		directions,
-		writings,
-		productions,
+		shows,
+		directed,
+		written,
+		composed,
 		biography,
 		place_of_birth,
 		birthday,
@@ -41,95 +42,87 @@ const PersonScreen = () => {
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{
-					paddingTop: 20,
-					paddingBottom: 64,
+					paddingTop: 24,
+					paddingBottom: 128,
 				}}
 			>
-				<VStack space={20}>
+				<VStack space={24}>
 					<Heading px={16} fontSize={24} lineHeight={28}>
 						{name}
 					</Heading>
 
-					<VStack space={8}>
-						<Title px={16}>Movies</Title>
-						<FlatList
-							data={movies}
-							keyExtractor={(m) => "movie" + m.tmdb_id.toString()}
-							renderItem={({ item: movie }) => (
-								<Poster poster={movie} orientation="horizontal" mx={8} />
-							)}
-							contentContainerStyle={{ paddingHorizontal: 8 }}
-							showsHorizontalScrollIndicator={false}
-							horizontal
-						/>
-					</VStack>
-
-					<VStack space={8}>
-						<Title px={16}>TV Shows</Title>
-						<FlatList
-							data={tv}
-							keyExtractor={(tv) => "tv" + tv.tmdb_id.toString()}
-							renderItem={({ item: tv }) => (
-								<Poster poster={tv} orientation="horizontal" mx={8} />
-							)}
-							contentContainerStyle={{ paddingHorizontal: 8 }}
-							showsHorizontalScrollIndicator={false}
-							horizontal
-						/>
-					</VStack>
-
-					<VStack space={8}>
-						<Title px={16}>Directing</Title>
-						<FlatList
-							data={directions}
-							keyExtractor={(d) => "direction" + d.tmdb_id.toString()}
-							renderItem={({ item: direction }) => (
-								<Poster poster={direction} orientation="horizontal" mx={8} />
-							)}
-							contentContainerStyle={{ paddingHorizontal: 8 }}
-							showsHorizontalScrollIndicator={false}
-							horizontal
-						/>
-					</VStack>
-
-					<VStack space={8}>
-						<Title px={16}>Writing</Title>
-						<FlatList
-							data={writings}
-							keyExtractor={(w) => "writing" + w.tmdb_id.toString()}
-							renderItem={({ item: writing }) => (
-								<Poster poster={writing} orientation="horizontal" mx={8} />
-							)}
-							contentContainerStyle={{ paddingHorizontal: 8 }}
-							showsHorizontalScrollIndicator={false}
-							horizontal
-						/>
-					</VStack>
-
-					<VStack space={8}>
-						<Title px={16}>Producing</Title>
-						<FlatList
-							data={productions}
-							keyExtractor={(p) => "production" + p.tmdb_id.toString()}
-							renderItem={({ item: production }) => (
-								<Poster poster={production} orientation="horizontal" mx={8} />
-							)}
-							contentContainerStyle={{ paddingHorizontal: 8 }}
-							showsHorizontalScrollIndicator={false}
-							horizontal
-						/>
-					</VStack>
-
-					{biography?.length > 0 && (
-						<VStack px={16} space={8}>
-							<Title>Biography</Title>
-							<Body>{biography}</Body>
-						</VStack>
+					{movies.length > 0 && (
+						<Section title="Movies" size="lg" flatlist>
+							<FlatList
+								data={movies}
+								keyExtractor={(m) => "movie" + m.tmdb_id.toString()}
+								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
 					)}
 
-					<VStack px={16} space={4}>
-						<Title>Informations</Title>
+					{shows.length > 0 && (
+						<Section title="Shows" size="lg" flatlist>
+							<FlatList
+								data={shows}
+								keyExtractor={(show) => "show" + show.tmdb_id.toString()}
+								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
+					)}
 
+					{directed.length > 0 && (
+						<Section title="Director" size="lg" flatlist>
+							<FlatList
+								data={directed}
+								keyExtractor={(d) => "directed" + d.tmdb_id.toString()}
+								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
+					)}
+
+					{written.length > 0 && (
+						<Section title="Writer" size="lg" flatlist>
+							<FlatList
+								data={written}
+								keyExtractor={(w) => "written" + w.tmdb_id.toString()}
+								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
+					)}
+
+					{composed.length > 0 && (
+						<Section title="Music Composer" size="lg" flatlist>
+							<FlatList
+								data={composed}
+								keyExtractor={(c) => "composed" + c.tmdb_id.toString()}
+								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
+					)}
+
+					{biography?.length > 0 && (
+						<Section title="Biography" size="lg">
+							<Body>{biography}</Body>
+						</Section>
+					)}
+
+					<Section title="Informations" size="lg">
 						{department?.length > 0 && (
 							<Information title="Department" content={department} />
 						)}
@@ -151,7 +144,7 @@ const PersonScreen = () => {
 								content={getDateWithYear(new Date(deathday))}
 							/>
 						)}
-					</VStack>
+					</Section>
 				</VStack>
 			</ScrollView>
 		</>

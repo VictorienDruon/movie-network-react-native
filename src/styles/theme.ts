@@ -53,6 +53,12 @@ export const theme = createTheme({
 			lineHeight: 24,
 			color: "neutral-12",
 		},
+		subheader: {
+			fontWeight: "600",
+			fontSize: 18,
+			lineHeight: 22,
+			color: "neutral-12",
+		},
 		title: {
 			fontWeight: "600",
 			fontSize: 16,
