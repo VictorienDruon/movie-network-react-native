@@ -12,9 +12,13 @@ export async function getMovie(id: string) {
 			params,
 		});
 
-		const video = data.videos.results.find(
-			(video: any) => video.type === "Trailer"
-		);
+		const video = data.videos.results
+			.slice()
+			.reverse()
+			.find(
+				(video: any) =>
+					video.type === "Trailer" && video.site === "YouTube" && video.official
+			);
 
 		const cast = data.credits.cast;
 
@@ -114,9 +118,12 @@ export async function getTv(id: string) {
 			params,
 		});
 
-		const video = data.videos.results.find(
-			(video: any) => video.type === "Trailer"
-		);
+		const video = data.videos.results
+			.slice()
+			.reverse()
+			.find(
+				(video: any) => video.type === "Trailer" && video.site === "YouTube"
+			);
 
 		const cast = data["aggregate_credits"].cast;
 

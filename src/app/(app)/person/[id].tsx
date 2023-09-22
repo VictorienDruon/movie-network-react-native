@@ -69,7 +69,7 @@ const PersonScreen = () => {
 						<Section title="Shows" size="lg" flatlist>
 							<FlatList
 								data={shows}
-								keyExtractor={(show) => "show" + show.tmdb_id.toString()}
+								keyExtractor={(s) => "show" + s.tmdb_id.toString()}
 								renderItem={({ item }) => <Poster poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}

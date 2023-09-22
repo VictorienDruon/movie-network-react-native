@@ -5,11 +5,12 @@ import { Poster } from "@/features/poster";
 const MAX_POSTERS = 18;
 const MAX_PAGES = 10;
 
-export async function discoverMovies(page: number) {
+export async function discoverMovies(page: number, with_genres = "") {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
 		page: page.toString(),
+		with_genres,
 	});
 
 	try {
@@ -42,11 +43,12 @@ export async function discoverMovies(page: number) {
 	}
 }
 
-export async function discoverTv(page: number) {
+export async function discoverTv(page: number, with_genres = "") {
 	const params = new URLSearchParams({
 		include_adult: "false",
 		language: "en-US",
 		page: page.toString(),
+		with_genres,
 	});
 
 	try {

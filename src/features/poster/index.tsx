@@ -35,7 +35,6 @@ interface PosterProps extends Omit<BoxProps, "id"> {
 	decoration?: PosterDecoration;
 	textPosition?: PosterTextPosition;
 	rotate?: AnimatableStringValue;
-	gridSpacing?: number;
 }
 
 export const Poster = ({
@@ -46,7 +45,6 @@ export const Poster = ({
 	decoration = "border",
 	textPosition = "bottom",
 	rotate,
-	gridSpacing,
 	...props
 }: PosterProps) => {
 	const { tmdb_id, title, poster_path, backdrop_path, type } = poster;
@@ -73,13 +71,7 @@ export const Poster = ({
 			position="relative"
 			alignItems="center"
 			space={2}
-			style={[
-				gridSpacing && {
-					marginHorizontal: gridSpacing,
-					marginBottom: gridSpacing,
-				},
-				rotate && { transform: [{ rotate: rotate }] },
-			]}
+			style={[rotate && { transform: [{ rotate: rotate }] }]}
 			{...boxSizes[orientation][size]}
 			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}

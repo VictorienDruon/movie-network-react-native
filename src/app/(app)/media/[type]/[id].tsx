@@ -17,6 +17,7 @@ import {
 	Box,
 	Button,
 	HStack,
+	Link,
 	Metadata,
 	Sheet,
 	SubHeading,
@@ -150,15 +151,17 @@ const MediaScreen = () => {
 						<Section>
 							<HStack flexWrap="wrap" space={8}>
 								{genres.map((genre) => (
-									<Box
+									<Link
 										key={genre.id}
-										px={8}
-										py={4}
-										bg="neutral-3"
-										borderRadius="lg"
+										href={{
+											pathname: "/genre/[id]",
+											params: { id: genre.id.toString() },
+										}}
 									>
-										<Metadata>{genre.name}</Metadata>
-									</Box>
+										<Box px={12} py={4} bg="neutral-3" borderRadius="lg">
+											<Body color="neutral-11">{genre.name}</Body>
+										</Box>
+									</Link>
 								))}
 							</HStack>
 						</Section>

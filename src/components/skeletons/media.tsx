@@ -36,9 +36,9 @@ export const MediaSkeleton = () => (
 
 			<Section>
 				<HStack space={8}>
-					<Skeleton width={64} height={20} borderRadius="lg" />
-					<Skeleton width={64} height={20} borderRadius="lg" />
-					<Skeleton width={64} height={20} borderRadius="lg" />
+					<Skeleton width={80} height={26} borderRadius="lg" />
+					<Skeleton width={80} height={26} borderRadius="lg" />
+					<Skeleton width={80} height={26} borderRadius="lg" />
 				</HStack>
 			</Section>
 
