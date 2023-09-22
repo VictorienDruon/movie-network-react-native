@@ -30,7 +30,7 @@ const CollectionScreen = () => {
 				data={parts}
 				keyExtractor={(part) => part.tmdb_id.toString()}
 				ListHeaderComponent={() => (
-					<VStack alignItems="center" space={16} pb={16}>
+					<VStack alignItems="center" space={16}>
 						<Image
 							src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${backdrop_path}`}
 							alt={name}
@@ -40,7 +40,9 @@ const CollectionScreen = () => {
 							<LinearGradient />
 						</Image>
 
-						<Heading px={16}>{name}</Heading>
+						<Heading textAlign="center" px={16}>
+							{name}
+						</Heading>
 
 						{overview?.length > 0 && <Body px={16}>{overview}</Body>}
 					</VStack>
@@ -54,11 +56,12 @@ const CollectionScreen = () => {
 					/>
 				)}
 				numColumns={2}
+				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ paddingBottom: 128 }}
 				columnWrapperStyle={{
 					justifyContent: "space-between",
-					paddingHorizontal: 32,
-					paddingVertical: 16,
+					paddingHorizontal: 24,
+					paddingTop: 24,
 				}}
 			/>
 		</>

@@ -1,18 +1,22 @@
-import { useRef, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
-	Dimensions,
 	FlatList,
-	TextInput,
+	NativeSyntheticEvent,
+	TextInputFocusEventData,
 	TouchableOpacity,
 } from "react-native";
-import { Stack, router, useLocalSearchParams } from "expo-router";
-import debounce from "lodash.debounce";
+import {
+	Stack,
+	router,
+	useLocalSearchParams,
+	useNavigation,
+} from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { usePosters } from "@/providers/posters";
 import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
 import { searchMovies, searchTv } from "@/libs/axios/api/search";
+import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
-import { Box, Button, HStack, Input, Link, Title } from "@/components/ui";
+import { Box, Link, Title } from "@/components/ui";
 import { Poster } from "@/features/poster";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
 
@@ -21,15 +25,13 @@ interface PostersPage {
 	nextCursor: number;
 }
 
-const AttachmentsModal = () => {
+const PostersPicker = () => {
+	const navigation = useNavigation();
 	const { type } = useLocalSearchParams<{
 		type: "movie" | "tv";
 	}>();
+	const [value, setValue] = useState("");
 	const { push } = usePosters();
-	const [value, setValue] = useState<string>("");
-	const inputRef = useRef<TextInput>(null);
-	const { width } = Dimensions.get("screen");
-	const gridSpacing = (width - 332) / 6;
 
 	const discoverFn = type === "movie" ? discoverMovies : discoverTv;
 	const searchFn = type === "movie" ? searchMovies : searchTv;
@@ -47,14 +49,19 @@ const AttachmentsModal = () => {
 		enabled: value.length > 0,
 	});
 
-	const handleValueChange = debounce((newValue: string) => {
-		setValue(newValue.trim());
-	}, 500);
-
-	const handleClearPress = () => {
-		inputRef.current.clear();
-		setValue("");
-	};
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerSearchBarOptions: {
+				placeholder: type === "movie" ? "Search movies" : "Search Shows",
+				onSearchButtonPress: (
+					e: NativeSyntheticEvent<TextInputFocusEventData>
+				) => setValue(e.nativeEvent.text.trim()),
+				onCancelButtonPress: () => setValue(""),
+				hideWhenScrolling: false,
+				hideNavigationBar: false,
+			},
+		});
+	}, [navigation]);
 
 	if (initQuery.isError) return <ErrorState retry={initQuery.refetch} />;
 	if (query.isError) return <ErrorState retry={query.refetch} />;
@@ -68,7 +75,7 @@ const AttachmentsModal = () => {
 		<>
 			<Stack.Screen
 				options={{
-					title: type === "movie" ? "Select Movies" : "Select TV Shows",
+					title: type === "movie" ? "Select Movies" : "Select Shows",
 					headerLeft: () => (
 						<Link href="..">
 							<Title color="primary-9" fontWeight="normal">
@@ -89,78 +96,61 @@ const AttachmentsModal = () => {
 				}}
 			/>
 
-			<Box px={16}>
-				<HStack
-					alignItems="center"
-					height={40}
-					my={8}
-					p={8}
-					pl={16}
-					space={8}
-					bg="neutral-3"
-					borderRadius="xl"
-				>
-					<Input
-						ref={inputRef}
-						flex={1}
-						placeholder={type === "movie" ? "Search movies" : "Search TV shows"}
-						color="neutral-12"
-						placeholderTextColor="neutral-11"
-						autoCapitalize="none"
-						autoCorrect={false}
-						onChangeText={handleValueChange}
-					/>
-
-					<Button
-						rightIcon="X"
-						variant="secondary"
-						onPress={handleClearPress}
-					/>
-				</HStack>
-
-				{isLoading ? (
-					<FlatList
-						data={Array.from({ length: 12 })}
-						keyExtractor={(_, index) => index.toString()}
-						renderItem={() => <PosterSkeleton gridSpacing={gridSpacing} />}
-						numColumns={3}
-						showsVerticalScrollIndicator={false}
-					/>
-				) : (
-					<FlatList
-						data={data.pages.flatMap((page) => page.posters)}
-						keyExtractor={(poster) => poster.tmdb_id.toString()}
-						renderItem={({ item: poster }) => (
-							<Poster
-								poster={poster}
-								action="select"
-								gridSpacing={gridSpacing}
-							/>
-						)}
-						ListEmptyComponent={<EmptyState>No results.</EmptyState>}
-						ListFooterComponent={
-							<Box pb={128}>
-								{hasNextPage && (
-									<FlatList
-										data={Array.from({ length: 3 })}
-										keyExtractor={(_, index) => index.toString()}
-										renderItem={() => (
-											<PosterSkeleton gridSpacing={gridSpacing} />
-										)}
-										numColumns={3}
-										showsVerticalScrollIndicator={false}
-									/>
-								)}
-							</Box>
-						}
-						onEndReached={() => fetchNextPage()}
-						numColumns={3}
-						showsVerticalScrollIndicator={false}
-					/>
-				)}
-			</Box>
+			{isLoading ? (
+				<FlatList
+					data={Array.from({ length: 12 })}
+					keyExtractor={(_, index) => index.toString()}
+					renderItem={() => <PosterSkeleton />}
+					contentContainerStyle={{ paddingTop: 8 }}
+					columnWrapperStyle={{
+						justifyContent: "space-between",
+						paddingHorizontal: 16,
+						paddingVertical: 8,
+					}}
+					numColumns={3}
+					showsVerticalScrollIndicator={false}
+					contentInsetAdjustmentBehavior="automatic"
+				/>
+			) : (
+				<FlatList
+					data={data.pages.flatMap((page) => page.posters)}
+					keyExtractor={(poster) => poster.tmdb_id.toString()}
+					renderItem={({ item: poster }) => (
+						<Poster poster={poster} action="select" />
+					)}
+					ListEmptyComponent={<EmptyState>No results.</EmptyState>}
+					ListFooterComponent={
+						<Box pb={128}>
+							{hasNextPage && (
+								<FlatList
+									data={Array.from({ length: 3 })}
+									keyExtractor={(_, index) => index.toString()}
+									renderItem={() => <PosterSkeleton />}
+									columnWrapperStyle={{
+										justifyContent: "space-between",
+										paddingHorizontal: 16,
+										paddingVertical: 8,
+									}}
+									showsVerticalScrollIndicator={false}
+									numColumns={3}
+								/>
+							)}
+						</Box>
+					}
+					contentContainerStyle={{ paddingTop: 8 }}
+					columnWrapperStyle={{
+						justifyContent: "space-between",
+						paddingHorizontal: 16,
+						paddingVertical: 8,
+					}}
+					showsVerticalScrollIndicator={false}
+					contentInsetAdjustmentBehavior="automatic"
+					numColumns={3}
+					onEndReached={() => fetchNextPage()}
+				/>
+			)}
 		</>
 	);
 };
 
-export default AttachmentsModal;
+export default PostersPicker;

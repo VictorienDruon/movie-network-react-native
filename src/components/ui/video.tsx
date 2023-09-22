@@ -33,7 +33,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 				/>
 			)}
 
-			{true && (
+			{isLoading && (
 				<Box
 					position={videoKey ? "absolute" : "relative"}
 					width="100%"
@@ -46,18 +46,14 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 							alt="Backdrop image"
 							width="100%"
 							height={height}
-						>
-							<LinearGradient />
-						</Image>
+						/>
 					) : (
 						<Image
 							src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${posterPath}`}
 							alt="Backdrop image"
 							contentFit="contain"
 							height={height}
-						>
-							<LinearGradient />
-						</Image>
+						/>
 					)}
 				</Box>
 			)}
