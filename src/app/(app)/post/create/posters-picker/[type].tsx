@@ -120,7 +120,7 @@ const PostersPicker = () => {
 					)}
 					ListEmptyComponent={<EmptyState>No results.</EmptyState>}
 					ListFooterComponent={
-						<Box pb={128}>
+						<Box pb={64}>
 							{hasNextPage && (
 								<FlatList
 									data={Array.from({ length: 3 })}
