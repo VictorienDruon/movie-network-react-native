@@ -36,6 +36,24 @@ const TabsLayout = () => {
 					),
 				}}
 			/>
+
+			<Tabs.Screen
+				name="explore"
+				options={{
+					title: "Explore",
+					tabBarIcon: ({ color }) => (
+						<Icon name="Compass" size={24} customColor={color} />
+					),
+					headerRight: () => (
+						<TouchableOpacity>
+							<Box mx={20}>
+								<Icon name="Search" size={28} color="neutral-9" />
+							</Box>
+						</TouchableOpacity>
+					),
+				}}
+			/>
+
 			<Tabs.Screen
 				name="feed"
 				options={{

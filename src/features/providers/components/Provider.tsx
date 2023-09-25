@@ -19,8 +19,8 @@ export const Provider = ({ link, provider }: ProviderProps) => (
 		<Image
 			src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${provider.logo_path}`}
 			alt={provider.provider_name}
-			width={70}
-			height={70}
+			width={64}
+			height={64}
 			marginHorizontal={8}
 			borderRadius="lg"
 			borderWidth={1}

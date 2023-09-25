@@ -67,7 +67,7 @@ export const genresList: Genre[] = [
 		backdrop_path: "/4HWAQu28e2yaWrtupFPGFkdNU7V.jpg",
 	},
 	{
-		name: "Science Fiction",
+		name: "Sci-Fi",
 		movieId: "878",
 		tvId: "10765",
 		backdrop_path: "/ibNvtkuptjWB2KfE6Odt7wszKSQ.jpg",

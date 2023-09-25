@@ -45,7 +45,7 @@ const GenreScreen = () => {
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{
 					paddingTop: 24,
-					paddingBottom: 128,
+					paddingBottom: 64,
 				}}
 			>
 				<VStack space={24}>

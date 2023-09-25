@@ -18,16 +18,14 @@ interface PostersPage {
 const ProviderScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const { regionCode } = getLocales()[0];
-	const { name, provider_id } = providersList.find(
-		({ provider_id }) => provider_id === id
-	);
+	const { name } = providersList.find((provider) => provider.id === id);
 
 	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
 			discoverMovies(pageParam, {
 				watch_region: regionCode,
-				with_watch_providers: provider_id,
+				with_watch_providers: id,
 			}),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
@@ -37,7 +35,7 @@ const ProviderScreen = () => {
 		queryFn: ({ pageParam = 1 }) =>
 			discoverTv(pageParam, {
 				watch_region: regionCode,
-				with_watch_providers: provider_id,
+				with_watch_providers: id,
 			}),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
@@ -53,7 +51,7 @@ const ProviderScreen = () => {
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{
 					paddingTop: 24,
-					paddingBottom: 128,
+					paddingBottom: 64,
 				}}
 			>
 				<VStack space={24}>

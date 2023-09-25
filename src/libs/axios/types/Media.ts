@@ -1,5 +1,5 @@
 import { Poster } from "@/features/poster";
-import { CreditMember } from "@/features/credit-member";
+import { Person } from "@/features/person";
 import { Providers } from "@/features/providers";
 
 interface Media {
@@ -28,8 +28,8 @@ interface Media {
 		name: string;
 	};
 	in_production?: boolean;
-	cast?: CreditMember[];
-	crew?: CreditMember[];
+	cast?: Person[];
+	crew?: Person[];
 	recommendations?: Poster[];
 	videoKey?: string;
 	providers?: {

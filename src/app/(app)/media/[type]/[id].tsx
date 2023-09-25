@@ -18,7 +18,6 @@ import {
 	Button,
 	HStack,
 	Link,
-	Metadata,
 	Sheet,
 	SubHeading,
 	Subtitle,
@@ -28,7 +27,7 @@ import {
 import { MediaSkeleton } from "@/components/skeletons";
 import { Information, Section } from "@/components/layouts";
 import { Poster } from "@/features/poster";
-import { CreditMember } from "@/features/credit-member";
+import { Person } from "@/features/person";
 import { Providers } from "@/features/providers";
 import { Region } from "@/features/region";
 
@@ -187,8 +186,8 @@ const MediaScreen = () => {
 							<FlatList
 								data={cast}
 								keyExtractor={(p) => p.id.toString() + p.role}
-								renderItem={({ item: member }) => (
-									<CreditMember member={member} mx={4} />
+								renderItem={({ item: person }) => (
+									<Person person={person} mx={4} />
 								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								showsHorizontalScrollIndicator={false}
@@ -202,8 +201,8 @@ const MediaScreen = () => {
 							<FlatList
 								data={crew}
 								keyExtractor={(m) => m.id.toString() + m.role}
-								renderItem={({ item: member }) => (
-									<CreditMember member={member} mx={4} />
+								renderItem={({ item: person }) => (
+									<Person person={person} mx={4} />
 								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								showsHorizontalScrollIndicator={false}

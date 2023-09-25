@@ -14,20 +14,13 @@ const PosterSkeleton = ({
 	size = "sm",
 	textPosition = "bottom",
 	rotate,
-	gridSpacing,
 	...props
 }: PosterSkeletonProps) => (
 	<VStack
 		position="relative"
 		alignItems="center"
 		space={2}
-		style={[
-			gridSpacing && {
-				marginHorizontal: gridSpacing,
-				marginBottom: gridSpacing,
-			},
-			rotate && { transform: [{ rotate: rotate }] },
-		]}
+		style={[rotate && { transform: [{ rotate: rotate }] }]}
 		{...boxSizes[size]}
 		{...props}
 	>

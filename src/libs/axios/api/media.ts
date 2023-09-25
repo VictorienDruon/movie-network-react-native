@@ -14,8 +14,7 @@ export async function getMovie(id: string) {
 
 		const video = data.videos.results
 			.slice()
-			.reverse()
-			.find(
+			.findLast(
 				(video: any) =>
 					video.type === "Trailer" && video.site === "YouTube" && video.official
 			);
@@ -120,8 +119,7 @@ export async function getTv(id: string) {
 
 		const video = data.videos.results
 			.slice()
-			.reverse()
-			.find(
+			.findLast(
 				(video: any) => video.type === "Trailer" && video.site === "YouTube"
 			);
 
