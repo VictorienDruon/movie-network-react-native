@@ -2,15 +2,28 @@ import { api } from "..";
 import { Pagination } from "../types/Pagination";
 import { Poster } from "@/features/poster";
 
+type Options = {
+	include_adult?: string;
+	language?: string;
+	watch_region?: string;
+	with_genres?: string;
+	with_watch_providers?: string;
+};
+
 const MAX_POSTERS = 18;
 const MAX_PAGES = 10;
+const DEFAULT_OPTIONS: Options = {
+	include_adult: "false",
+	language: "en-US",
+	watch_region: "",
+	with_genres: "",
+	with_watch_providers: "",
+};
 
-export async function discoverMovies(page: number, with_genres = "") {
+export async function discoverMovies(page: number, options = DEFAULT_OPTIONS) {
 	const params = new URLSearchParams({
-		include_adult: "false",
-		language: "en-US",
 		page: page.toString(),
-		with_genres,
+		...options,
 	});
 
 	try {
@@ -43,12 +56,10 @@ export async function discoverMovies(page: number, with_genres = "") {
 	}
 }
 
-export async function discoverTv(page: number, with_genres = "") {
+export async function discoverTv(page: number, options = DEFAULT_OPTIONS) {
 	const params = new URLSearchParams({
-		include_adult: "false",
-		language: "en-US",
 		page: page.toString(),
-		with_genres,
+		...options,
 	});
 
 	try {

@@ -1,10 +1,11 @@
 import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { getLocales } from "expo-localization";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { genresList } from "@/utils/genresList";
+import { providersList } from "@/utils/providersList";
 import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
-import { Section } from "@/components/layouts";
 import { ErrorState } from "@/components/commons";
+import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
 import { Poster } from "@/features/poster";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
@@ -14,23 +15,30 @@ interface PostersPage {
 	nextCursor: number;
 }
 
-const GenreScreen = () => {
+const ProviderScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { name, movieId, tvId } = genresList.find(
-		(genre) => genre.movieId === id || genre.tvId === id
+	const { regionCode } = getLocales()[0];
+	const { name, provider_id } = providersList.find(
+		({ provider_id }) => provider_id === id
 	);
 
 	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverMovies(pageParam, { with_genres: movieId }),
+			discoverMovies(pageParam, {
+				watch_region: regionCode,
+				with_watch_providers: provider_id,
+			}),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
 	const showsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverTv(pageParam, { with_genres: tvId }),
+			discoverTv(pageParam, {
+				watch_region: regionCode,
+				with_watch_providers: provider_id,
+			}),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
@@ -114,4 +122,4 @@ const GenreScreen = () => {
 	);
 };
 
-export default GenreScreen;
+export default ProviderScreen;
