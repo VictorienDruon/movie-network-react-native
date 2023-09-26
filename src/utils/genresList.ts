@@ -22,13 +22,13 @@ export const genresList: Genre[] = [
 		name: "Animation",
 		movieId: "16",
 		tvId: "16",
-		backdrop_path: "/3Rfvhy1Nl6sSGJwyjb0QiZzZYlB.jpg",
+		backdrop_path: "/hGGC9gKo7CFE3fW07RA587e5kol.jpg",
 	},
 	{
 		name: "Comedy",
 		movieId: "35",
 		tvId: "35",
-		backdrop_path: "/5BMwFwNzSidVYArn561acqtktxv.jpg",
+		backdrop_path: "/cPItMV5Y7e5Vev0ggtyI1XnLnep.jpg",
 	},
 	{
 		name: "Crime",

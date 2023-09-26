@@ -18,7 +18,6 @@ export const PersonSkeleton = () => (
 					renderItem={() => <PosterSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
-					scrollEnabled={false}
 				/>
 			</Section>
 
@@ -29,7 +28,6 @@ export const PersonSkeleton = () => (
 					renderItem={() => <PosterSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
-					scrollEnabled={false}
 				/>
 			</Section>
 
@@ -40,7 +38,6 @@ export const PersonSkeleton = () => (
 					renderItem={() => <PosterSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
-					scrollEnabled={false}
 				/>
 			</Section>
 		</VStack>

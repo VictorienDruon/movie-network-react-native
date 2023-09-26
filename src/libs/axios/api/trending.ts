@@ -81,14 +81,11 @@ export async function getPeopleTrending(page: number) {
 		});
 
 		const people: Person[] = data.results
-			.filter(
-				(media: any) =>
-					media.poster_path !== null && media.backdrop_path !== null
-			)
-			.map((media: any) => ({
-				id: media.id,
-				name: media.name,
-				profile_path: media.profile_path,
+			.filter((person: any) => person.profile_path !== null)
+			.map((person: any) => ({
+				id: person.id,
+				name: person.name,
+				profile_path: person.profile_path,
 			}));
 
 		return {

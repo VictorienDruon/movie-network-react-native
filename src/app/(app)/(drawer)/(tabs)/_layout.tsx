@@ -2,7 +2,7 @@ import { TouchableOpacity } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { Tabs, useNavigation } from "expo-router";
 import { useSession } from "@/providers/session";
-import { Avatar, Box, Icon, Skeleton } from "@/components/ui";
+import { Avatar, Box, Icon, Skeleton, Link } from "@/components/ui";
 
 const TabsLayout = () => {
 	const navigation = useNavigation();
@@ -45,11 +45,11 @@ const TabsLayout = () => {
 						<Icon name="Compass" size={24} customColor={color} />
 					),
 					headerRight: () => (
-						<TouchableOpacity>
+						<Link href="/search">
 							<Box mx={20}>
 								<Icon name="Search" size={28} color="neutral-9" />
 							</Box>
-						</TouchableOpacity>
+						</Link>
 					),
 				}}
 			/>

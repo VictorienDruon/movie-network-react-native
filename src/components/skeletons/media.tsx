@@ -49,7 +49,6 @@ export const MediaSkeleton = () => (
 					renderItem={() => <PosterSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
-					scrollEnabled={false}
 				/>
 			</Section>
 
@@ -60,7 +59,6 @@ export const MediaSkeleton = () => (
 					renderItem={() => <PersonSkeleton mx={4} />}
 					contentContainerStyle={{ paddingHorizontal: 12 }}
 					horizontal={true}
-					scrollEnabled={false}
 				/>
 			</Section>
 		</VStack>

@@ -29,37 +29,37 @@ const ExploreScreen = () => {
 	const { width } = Dimensions.get("screen");
 	const trendingSpacing = (width - 150) / 32;
 
-	const dayTrendsQuery = useQuery<Poster[], Error>({
+	const daylyTrendsQuery = useQuery<Poster[], Error>({
 		queryKey: ["trending", "all"],
 		queryFn: getDayTrending,
 	});
 
-	const moviesWeekTrendsQuery = useInfiniteQuery<PostersPage, Error>({
+	const moviesTrendsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["trending", "movie"],
 		queryFn: ({ pageParam = 1 }) => getMediaTrending(pageParam, "movie"),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const tvWeekTrendsQuery = useInfiniteQuery<PostersPage, Error>({
+	const tvTrendsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["trending", "tv"],
 		queryFn: ({ pageParam = 1 }) => getMediaTrending(pageParam, "tv"),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const peopleWeekTrendsQuery = useInfiniteQuery<PeoplePage, Error>({
+	const peopleTrendsQuery = useInfiniteQuery<PeoplePage, Error>({
 		queryKey: ["trending", "person"],
 		queryFn: ({ pageParam = 1 }) => getPeopleTrending(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (dayTrendsQuery.isError)
-		return <ErrorState retry={dayTrendsQuery.refetch} />;
-	if (moviesWeekTrendsQuery.isError)
-		return <ErrorState retry={moviesWeekTrendsQuery.refetch} />;
-	if (tvWeekTrendsQuery.isError)
-		return <ErrorState retry={tvWeekTrendsQuery.refetch} />;
-	if (peopleWeekTrendsQuery.isError)
-		return <ErrorState retry={peopleWeekTrendsQuery.refetch} />;
+	if (daylyTrendsQuery.isError)
+		return <ErrorState retry={daylyTrendsQuery.refetch} />;
+	if (moviesTrendsQuery.isError)
+		return <ErrorState retry={moviesTrendsQuery.refetch} />;
+	if (tvTrendsQuery.isError)
+		return <ErrorState retry={tvTrendsQuery.refetch} />;
+	if (peopleTrendsQuery.isError)
+		return <ErrorState retry={peopleTrendsQuery.refetch} />;
 
 	return (
 		<ScrollView
@@ -68,7 +68,7 @@ const ExploreScreen = () => {
 				paddingBottom: 64,
 			}}
 		>
-			{dayTrendsQuery.isLoading ? (
+			{daylyTrendsQuery.isLoading ? (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
@@ -84,12 +84,11 @@ const ExploreScreen = () => {
 						paddingVertical: 24,
 					}}
 					showsHorizontalScrollIndicator={false}
-					scrollEnabled={false}
 					horizontal
 				/>
 			) : (
 				<FlatList
-					data={dayTrendsQuery.data}
+					data={daylyTrendsQuery.data}
 					keyExtractor={(p) => p.tmdb_id.toString()}
 					renderItem={({ item: poster }) => (
 						<Poster
@@ -147,18 +146,17 @@ const ExploreScreen = () => {
 				/>
 
 				<Section title="Movies" size="lg" flatlist>
-					{moviesWeekTrendsQuery.isLoading ? (
+					{moviesTrendsQuery.isLoading ? (
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
 							renderItem={() => <PosterSkeleton mx={8} />}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							horizontal={true}
-							scrollEnabled={false}
 						/>
 					) : (
 						<FlatList
-							data={moviesWeekTrendsQuery.data.pages.flatMap(
+							data={moviesTrendsQuery.data.pages.flatMap(
 								(page) => page.posters
 							)}
 							keyExtractor={(p) => p.tmdb_id.toString()}
@@ -170,31 +168,28 @@ const ExploreScreen = () => {
 								/>
 							)}
 							ListFooterComponent={() =>
-								moviesWeekTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
+								moviesTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => moviesWeekTrendsQuery.fetchNextPage()}
+							onEndReached={() => moviesTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}
 				</Section>
 
 				<Section title="Shows" size="lg" flatlist>
-					{tvWeekTrendsQuery.isLoading ? (
+					{tvTrendsQuery.isLoading ? (
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
 							renderItem={() => <PosterSkeleton mx={8} />}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							horizontal={true}
-							scrollEnabled={false}
 						/>
 					) : (
 						<FlatList
-							data={tvWeekTrendsQuery.data.pages.flatMap(
-								(page) => page.posters
-							)}
+							data={tvTrendsQuery.data.pages.flatMap((page) => page.posters)}
 							keyExtractor={(p) => p.tmdb_id.toString()}
 							renderItem={({ item: poster }) => (
 								<Poster
@@ -204,43 +199,40 @@ const ExploreScreen = () => {
 								/>
 							)}
 							ListFooterComponent={() =>
-								tvWeekTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
+								tvTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => tvWeekTrendsQuery.fetchNextPage()}
+							onEndReached={() => tvTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}
 				</Section>
 
 				<Section title="People" size="lg" flatlist>
-					{peopleWeekTrendsQuery.isLoading ? (
+					{peopleTrendsQuery.isLoading ? (
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
 							renderItem={() => <PersonSkeleton withRole={false} mx={4} />}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							horizontal={true}
-							scrollEnabled={false}
 						/>
 					) : (
 						<FlatList
-							data={peopleWeekTrendsQuery.data.pages.flatMap(
-								(page) => page.people
-							)}
+							data={peopleTrendsQuery.data.pages.flatMap((page) => page.people)}
 							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: person }) => (
 								<Person person={person} mx={8} />
 							)}
 							ListFooterComponent={() =>
-								peopleWeekTrendsQuery.hasNextPage && (
+								peopleTrendsQuery.hasNextPage && (
 									<PersonSkeleton withRole={false} mx={8} />
 								)
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => peopleWeekTrendsQuery.fetchNextPage()}
+							onEndReached={() => peopleTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}

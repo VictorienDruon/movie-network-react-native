@@ -33,7 +33,6 @@ const CommentsModal = () => {
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
 					renderItem={() => <CommentSkeleton />}
-					scrollEnabled={false}
 				/>
 			) : (
 				<FlatList

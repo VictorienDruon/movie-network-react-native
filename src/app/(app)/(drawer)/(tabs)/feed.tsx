@@ -25,7 +25,6 @@ const FeedScreen = () => {
 				keyExtractor={(item) => item.toString()}
 				renderItem={() => <PostSkeleton />}
 				ItemSeparatorComponent={() => <Separator />}
-				scrollEnabled={false}
 			/>
 		);
 

@@ -1,3 +1,4 @@
+import { Person } from "@/features/person";
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
 import { Poster } from "@/features/poster";
@@ -69,6 +70,36 @@ export async function searchTv(query: string, page: number) {
 		return {
 			posters:
 				posters.length > MAX_POSTERS ? posters.slice(0, MAX_POSTERS) : posters,
+			nextCursor:
+				data.page < data.total_pages && data.page < MAX_PAGES
+					? data.page + 1
+					: undefined,
+		};
+	} catch (error) {
+		throw error;
+	}
+}
+
+export async function searchPeople(query: string, page: number) {
+	const params = new URLSearchParams({
+		query,
+		include_adult: "false",
+		language: "en-US",
+		page: page.toString(),
+	});
+
+	try {
+		const { data } = await api.get<Pagination>("search/person", { params });
+
+		const people: Person[] = data.results.map((person: any) => ({
+			id: person.id,
+			name: person.name,
+			profile_path: person.profile_path,
+		}));
+
+		return {
+			people:
+				people.length > MAX_POSTERS ? people.slice(0, MAX_POSTERS) : people,
 			nextCursor:
 				data.page < data.total_pages && data.page < MAX_PAGES
 					? data.page + 1

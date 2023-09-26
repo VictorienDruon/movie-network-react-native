@@ -27,6 +27,8 @@ const AppLayout = () => (
 					presentation: "modal",
 				}}
 			/>
+
+			<Stack.Screen name="search/index" options={{ title: "Search" }} />
 		</Stack>
 	</QueryClientProvider>
 );
