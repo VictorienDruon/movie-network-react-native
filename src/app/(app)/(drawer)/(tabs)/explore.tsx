@@ -11,9 +11,10 @@ import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Box, Image, Link, SubHeading, VStack } from "@/components/ui";
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
+import { PersonCard } from "@/features/person-card";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
-import PersonSkeleton from "@/features/person/components/PersonSkeleton";
+import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
+import Person from "@/features/person-card/types/Person";
 
 interface PostersPage {
 	posters: Poster[];
@@ -214,7 +215,7 @@ const ExploreScreen = () => {
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
-							renderItem={() => <PersonSkeleton withRole={false} mx={4} />}
+							renderItem={() => <PersonCardSkeleton withRole={false} mx={4} />}
 							contentContainerStyle={{ paddingHorizontal: 12 }}
 							horizontal={true}
 						/>
@@ -223,11 +224,11 @@ const ExploreScreen = () => {
 							data={peopleTrendsQuery.data.pages.flatMap((page) => page.people)}
 							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: person }) => (
-								<Person person={person} mx={8} />
+								<PersonCard person={person} mx={8} />
 							)}
 							ListFooterComponent={() =>
 								peopleTrendsQuery.hasNextPage && (
-									<PersonSkeleton withRole={false} mx={8} />
+									<PersonCardSkeleton withRole={false} mx={8} />
 								)
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}

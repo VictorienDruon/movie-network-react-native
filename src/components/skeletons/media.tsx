@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
 import { Stack } from "expo-router";
 import { VStack, Skeleton, HStack, Title, Button, Box } from "@/components/ui";
-import PersonSkeleton from "@/features/person/components/PersonSkeleton";
+import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
 import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
 import { Section } from "../layouts";
 
@@ -56,7 +56,7 @@ export const MediaSkeleton = () => (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
-					renderItem={() => <PersonSkeleton mx={4} />}
+					renderItem={() => <PersonCardSkeleton mx={4} />}
 					contentContainerStyle={{ paddingHorizontal: 12 }}
 					horizontal={true}
 				/>

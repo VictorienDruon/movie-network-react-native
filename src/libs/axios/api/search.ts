@@ -1,4 +1,4 @@
-import { Person } from "@/features/person";
+import Person from "@/features/person-card/types/Person";
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
 import { Poster } from "@/features/poster";

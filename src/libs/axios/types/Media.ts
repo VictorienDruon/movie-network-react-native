@@ -1,5 +1,5 @@
+import Person from "@/features/person-card/types/Person";
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
 import { Providers } from "@/features/providers";
 
 interface Media {

@@ -8,19 +8,13 @@ import {
 	VStack,
 	Link,
 } from "@/components/ui";
+import Person from "./types/Person";
 
-export interface Person {
-	id: number;
-	name: string;
-	role?: string;
-	profile_path: string;
-}
-
-interface PersonProps extends Omit<BoxProps, "id"> {
+interface PersonCardProps extends Omit<BoxProps, "id"> {
 	person: Person;
 }
 
-export const Person = ({ person, ...props }: PersonProps) => {
+export const PersonCard = ({ person, ...props }: PersonCardProps) => {
 	const { id, name, role, profile_path } = person;
 	return (
 		<VStack alignItems="center" width={96} space={0} {...props}>

@@ -27,7 +27,7 @@ import {
 import { MediaSkeleton } from "@/components/skeletons";
 import { Information, Section } from "@/components/layouts";
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
+import { PersonCard } from "@/features/person-card";
 import { Providers } from "@/features/providers";
 import { Region } from "@/features/region";
 
@@ -187,7 +187,7 @@ const MediaScreen = () => {
 								data={cast}
 								keyExtractor={(p) => p.id.toString() + p.role}
 								renderItem={({ item: person }) => (
-									<Person person={person} mx={4} />
+									<PersonCard person={person} mx={4} />
 								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								showsHorizontalScrollIndicator={false}
@@ -202,7 +202,7 @@ const MediaScreen = () => {
 								data={crew}
 								keyExtractor={(m) => m.id.toString() + m.role}
 								renderItem={({ item: person }) => (
-									<Person person={person} mx={4} />
+									<PersonCard person={person} mx={4} />
 								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								showsHorizontalScrollIndicator={false}

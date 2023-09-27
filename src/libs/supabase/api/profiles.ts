@@ -1,4 +1,3 @@
-import { Person } from "@/features/person";
 import { supabase } from "..";
 
 const MAX_PROFILES = 10;

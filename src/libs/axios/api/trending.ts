@@ -1,7 +1,7 @@
 import { Poster } from "@/features/poster";
-import { Person } from "@/features/person";
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
+import Person from "@/features/person-card/types/Person";
 
 const MAX_ITEMS = 18;
 const MAX_PAGES = 10;

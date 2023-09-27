@@ -1,10 +1,10 @@
 import { BoxProps, Skeleton, VStack } from "@/components/ui";
 
-interface PersonSkeletonProps extends BoxProps {
+interface PersonCardSkeletonProps extends BoxProps {
 	withRole?: boolean;
 }
 
-const PersonSkeleton = ({ withRole = true, ...props }: PersonSkeletonProps) => (
+const PersonCardSkeleton = ({ withRole = true, ...props }: PersonCardSkeletonProps) => (
 	<VStack alignItems="center" width={96} space={2} {...props}>
 		<Skeleton width={80} height={80} borderRadius="full" />
 
@@ -14,4 +14,4 @@ const PersonSkeleton = ({ withRole = true, ...props }: PersonSkeletonProps) => (
 	</VStack>
 );
 
-export default PersonSkeleton;
+export default PersonCardSkeleton;
