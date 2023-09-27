@@ -1,14 +1,10 @@
 import { TouchableOpacity } from "react-native";
 import { router, useSegments } from "expo-router";
-import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
+import Comment from "./types/Comment";
 import { VStack, HStack, Title, Body, Avatar, Metadata } from "@/components/ui";
 
-export type Comment = Database["public"]["Tables"]["comments"]["Row"] & {
-	author: Database["public"]["Tables"]["profiles"]["Row"];
-};
-
-export const Comment = ({ comment }: { comment: Comment }) => {
+const CommentCard = ({ comment }: { comment: Comment }) => {
 	const { created_at, content, author } = comment;
 	const segments = useSegments();
 
@@ -58,3 +54,5 @@ export const Comment = ({ comment }: { comment: Comment }) => {
 		</HStack>
 	);
 };
+
+export default CommentCard;

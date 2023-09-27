@@ -6,7 +6,7 @@ import Collection from "@/libs/axios/types/Collection";
 import { ErrorState } from "@/components/commons";
 import { CollectionSkeleton } from "@/components/skeletons";
 import { Body, Heading, Image, VStack, LinearGradient } from "@/components/ui";
-import { PosterCard } from "@/features/poster-card";
+import PosterCard from "@/features/poster-card";
 
 const CollectionScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();

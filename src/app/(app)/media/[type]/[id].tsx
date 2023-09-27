@@ -26,8 +26,8 @@ import {
 } from "@/components/ui";
 import { MediaSkeleton } from "@/components/skeletons";
 import { Information, Section } from "@/components/layouts";
-import { PosterCard } from "@/features/poster-card";
-import { PersonCard } from "@/features/person-card";
+import PosterCard from "@/features/poster-card";
+import PersonCard from "@/features/person-card";
 import { Providers } from "@/features/providers";
 import { Region } from "@/features/region";
 

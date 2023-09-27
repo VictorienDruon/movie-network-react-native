@@ -1,6 +1,6 @@
 import { VStack, HStack, Skeleton } from "@/components/ui";
 
-const CommentSkeleton = () => (
+const CommentCardSkeleton = () => (
 	<HStack space={8} p={16}>
 		<Skeleton width={28} height={28} borderRadius="full" />
 
@@ -16,4 +16,4 @@ const CommentSkeleton = () => (
 	</HStack>
 );
 
-export default CommentSkeleton;
+export default CommentCardSkeleton;

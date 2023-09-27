@@ -7,7 +7,7 @@ import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
-import { PosterCard } from "@/features/poster-card";
+import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import Poster from "@/features/poster-card/types/Poster";
 

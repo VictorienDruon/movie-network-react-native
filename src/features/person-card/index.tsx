@@ -14,7 +14,7 @@ interface PersonCardProps extends Omit<BoxProps, "id"> {
 	person: Person;
 }
 
-export const PersonCard = ({ person, ...props }: PersonCardProps) => {
+const PersonCard = ({ person, ...props }: PersonCardProps) => {
 	const { id, name, role, profile_path } = person;
 	return (
 		<VStack alignItems="center" width={96} space={0} {...props}>
@@ -63,3 +63,5 @@ export const PersonCard = ({ person, ...props }: PersonCardProps) => {
 		</VStack>
 	);
 };
+
+export default PersonCard;

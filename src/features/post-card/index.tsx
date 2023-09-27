@@ -1,4 +1,3 @@
-import { Database } from "@/libs/supabase/types/database.types";
 import { getRelativeDate } from "@/utils/dates";
 import {
 	Body,
@@ -11,17 +10,11 @@ import {
 	RoundButton,
 } from "@/components/ui";
 import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
+import Post from "./types/Post"
 import CommentBar from "./components/CommentBar";
 import LikeButton from "./components/LikeButton";
-import Poster from "../poster-card/types/Poster";
 
-export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
-	author: Database["public"]["Tables"]["profiles"]["Row"];
-	posters: Poster[];
-	user_has_liked_post: boolean;
-};
-
-export const Post = ({ post }: { post: Post }) => {
+const PostCard = ({ post }: { post: Post }) => {
 	const { id, content, created_at, author, posters, user_has_liked_post } =
 		post;
 
@@ -70,3 +63,5 @@ export const Post = ({ post }: { post: Post }) => {
 		</VStack>
 	);
 };
+
+export default PostCard;

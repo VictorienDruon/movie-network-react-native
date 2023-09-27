@@ -1,7 +1,7 @@
 import { VStack, HStack, Skeleton, Box } from "@/components/ui";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 
-const PostSkeleton = () => (
+const PostCardSkeleton = () => (
 	<VStack space={20} p={16}>
 		<HStack justifyContent="space-between" space={8}>
 			<HStack space={8} alignItems="center">
@@ -35,4 +35,4 @@ const PostSkeleton = () => (
 	</VStack>
 );
 
-export default PostSkeleton;
+export default PostCardSkeleton;

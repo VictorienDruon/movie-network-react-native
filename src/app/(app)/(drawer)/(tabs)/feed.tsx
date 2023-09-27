@@ -3,8 +3,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAll } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/commons";
 import { Box, RoundButton, Separator } from "@/components/ui";
-import { Post } from "@/features/post";
-import PostSkeleton from "@/features/post/components/PostSkeleton";
+import PostCard from "@/features/post-card";
+import Post from "@/features/post-card/types/Post";
+import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
 
 interface PostsPage {
 	posts: Post[];
@@ -23,7 +24,7 @@ const FeedScreen = () => {
 			<FlatList
 				data={Array.from({ length: 2 }, (_, i) => i)}
 				keyExtractor={(item) => item.toString()}
-				renderItem={() => <PostSkeleton />}
+				renderItem={() => <PostCardSkeleton />}
 				ItemSeparatorComponent={() => <Separator />}
 			/>
 		);
@@ -35,10 +36,10 @@ const FeedScreen = () => {
 			<FlatList
 				data={query.data.pages.flatMap((page) => page.posts)}
 				keyExtractor={(post) => post.id}
-				renderItem={({ item: post }) => <Post post={post} />}
+				renderItem={({ item: post }) => <PostCard post={post} />}
 				ItemSeparatorComponent={() => <Separator />}
 				ListFooterComponent={
-					<Box pb={64}>{query.hasNextPage && <PostSkeleton />}</Box>
+					<Box pb={64}>{query.hasNextPage && <PostCardSkeleton />}</Box>
 				}
 				refreshControl={<RefreshControl refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}

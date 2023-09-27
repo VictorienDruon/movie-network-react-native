@@ -1,5 +1,5 @@
 import { Database } from "@/libs/supabase/types/database.types";
-import { Post } from "@/features/post";
+import Post from "@/features/post-card/types/Post";
 
 export type RawPost = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];

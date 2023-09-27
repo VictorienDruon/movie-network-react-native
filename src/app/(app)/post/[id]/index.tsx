@@ -3,8 +3,9 @@ import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getOne } from "@/libs/supabase/api/posts";
 import { ErrorState } from "@/components/commons";
-import { Post } from "@/features/post";
-import PostSkeleton from "@/features/post/components/PostSkeleton";
+import PostCard from "@/features/post-card";
+import Post from "@/features/post-card/types/Post";
+import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
 
 const PostScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -14,13 +15,13 @@ const PostScreen = () => {
 		queryFn: () => getOne(id),
 	});
 
-	if (query.isLoading) return <PostSkeleton />;
+	if (query.isLoading) return <PostCardSkeleton />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
 		<ScrollView>
-			<Post post={query.data} />
+			<PostCard post={query.data} />
 		</ScrollView>
 	);
 };

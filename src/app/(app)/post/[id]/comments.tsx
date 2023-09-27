@@ -5,9 +5,10 @@ import { getAllByPost } from "@/libs/supabase/api/comments";
 import { useSession } from "@/providers/session";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Avatar, Box, HStack } from "@/components/ui";
-import { Comment } from "@/features/comment";
-import CommentBar from "@/features/post/components/CommentBar";
-import CommentSkeleton from "@/features/comment/components/CommentSkeleton";
+import CommentCard from "@/features/comment-card";
+import Comment from "@/features/comment-card/types/Comment";
+import CommentBar from "@/features/post-card/components/CommentBar";
+import CommentCardSkeleton from "@/features/comment-card/components/CommentCardSkeleton";
 
 interface CommentsPage {
 	comments: Comment[];
@@ -32,18 +33,18 @@ const CommentsModal = () => {
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
-					renderItem={() => <CommentSkeleton />}
+					renderItem={() => <CommentCardSkeleton />}
 				/>
 			) : (
 				<FlatList
 					data={query.data.pages.flatMap((page) => page.comments)}
 					keyExtractor={(comment) => comment.id}
-					renderItem={({ item: comment }) => <Comment comment={comment} />}
+					renderItem={({ item: comment }) => <CommentCard comment={comment} />}
 					ListEmptyComponent={
 						<EmptyState>There are no comments yet.</EmptyState>
 					}
 					ListFooterComponent={
-						<Box pb={64}>{query.hasNextPage && <CommentSkeleton />}</Box>
+						<Box pb={64}>{query.hasNextPage && <CommentCardSkeleton />}</Box>
 					}
 					onEndReached={() => query.fetchNextPage()}
 					showsVerticalScrollIndicator={false}

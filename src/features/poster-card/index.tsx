@@ -30,7 +30,7 @@ interface PosterCardProps extends Omit<BoxProps, "id"> {
 	rotate?: AnimatableStringValue;
 }
 
-export const PosterCard = ({
+const PosterCard = ({
 	poster,
 	orientation = "vertical",
 	action = "navigate",
@@ -208,3 +208,5 @@ const boxShadow: BoxProps = {
 	shadowRadius: 15,
 	elevation: 5,
 };
+
+export default PosterCard;

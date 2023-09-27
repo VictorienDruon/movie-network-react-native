@@ -17,7 +17,7 @@ import { searchMovies, searchTv } from "@/libs/axios/api/search";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Box, Link, Title } from "@/components/ui";
-import { PosterCard } from "@/features/poster-card";
+import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import Poster from "@/features/poster-card/types/Poster";
 

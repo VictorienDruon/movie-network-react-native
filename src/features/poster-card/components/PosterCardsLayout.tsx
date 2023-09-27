@@ -1,5 +1,5 @@
 import { Box } from "@/components/ui";
-import { PosterCard } from "..";
+import PosterCard from "..";
 import Poster from "../types/Poster";
 
 const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {

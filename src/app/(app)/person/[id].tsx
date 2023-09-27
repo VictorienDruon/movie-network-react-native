@@ -8,7 +8,7 @@ import { ErrorState } from "@/components/commons";
 import { Information, Section } from "@/components/layouts";
 import { PersonSkeleton } from "@/components/skeletons";
 import { Body, Heading, VStack } from "@/components/ui";
-import { PosterCard } from "@/features/poster-card";
+import PosterCard from "@/features/poster-card";
 
 const PersonScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
