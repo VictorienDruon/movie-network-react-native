@@ -10,11 +10,12 @@ import { providersList } from "@/utils/providersList";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Box, Image, Link, SubHeading, VStack } from "@/components/ui";
-import { Poster } from "@/features/poster";
+import { PosterCard } from "@/features/poster-card";
 import { PersonCard } from "@/features/person-card";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
 import Person from "@/features/person-card/types/Person";
+import Poster from "@/features/poster-card/types/Poster";
 
 interface PostersPage {
 	posters: Poster[];
@@ -74,7 +75,7 @@ const ExploreScreen = () => {
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
 					renderItem={() => (
-						<PosterSkeleton
+						<PosterCardSkeleton
 							size="md"
 							textPosition="top"
 							style={{ marginHorizontal: trendingSpacing }}
@@ -92,7 +93,7 @@ const ExploreScreen = () => {
 					data={daylyTrendsQuery.data}
 					keyExtractor={(p) => p.id.toString()}
 					renderItem={({ item: poster }) => (
-						<Poster
+						<PosterCard
 							poster={poster}
 							size="md"
 							textPosition="top"
@@ -151,7 +152,7 @@ const ExploreScreen = () => {
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
-							renderItem={() => <PosterSkeleton mx={8} />}
+							renderItem={() => <PosterCardSkeleton mx={8} />}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							horizontal={true}
 						/>
@@ -162,14 +163,14 @@ const ExploreScreen = () => {
 							)}
 							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: poster }) => (
-								<Poster
+								<PosterCard
 									poster={poster}
 									size="sm"
 									style={{ marginHorizontal: 8 }}
 								/>
 							)}
 							ListFooterComponent={() =>
-								moviesTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
+								moviesTrendsQuery.hasNextPage && <PosterCardSkeleton mx={8} />
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
@@ -184,7 +185,7 @@ const ExploreScreen = () => {
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
-							renderItem={() => <PosterSkeleton mx={8} />}
+							renderItem={() => <PosterCardSkeleton mx={8} />}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							horizontal={true}
 						/>
@@ -193,14 +194,14 @@ const ExploreScreen = () => {
 							data={tvTrendsQuery.data.pages.flatMap((page) => page.posters)}
 							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: poster }) => (
-								<Poster
+								<PosterCard
 									poster={poster}
 									size="sm"
 									style={{ marginHorizontal: 8 }}
 								/>
 							)}
 							ListFooterComponent={() =>
-								tvTrendsQuery.hasNextPage && <PosterSkeleton mx={8} />
+								tvTrendsQuery.hasNextPage && <PosterCardSkeleton mx={8} />
 							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}

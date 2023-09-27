@@ -26,7 +26,7 @@ import {
 } from "@/components/ui";
 import { MediaSkeleton } from "@/components/skeletons";
 import { Information, Section } from "@/components/layouts";
-import { Poster } from "@/features/poster";
+import { PosterCard } from "@/features/poster-card";
 import { PersonCard } from "@/features/person-card";
 import { Providers } from "@/features/providers";
 import { Region } from "@/features/region";
@@ -172,7 +172,7 @@ const MediaScreen = () => {
 								data={recommendations}
 								keyExtractor={(r) => r.id.toString()}
 								renderItem={({ item: recommendation }) => (
-									<Poster poster={recommendation} mx={8} />
+									<PosterCard poster={recommendation} mx={8} />
 								)}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -213,7 +213,7 @@ const MediaScreen = () => {
 
 					{collection && (
 						<Section title="Collection">
-							<Poster poster={collection} orientation="horizontal" />
+							<PosterCard poster={collection} orientation="horizontal" />
 						</Section>
 					)}
 

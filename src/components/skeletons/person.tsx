@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { Stack } from "expo-router";
 import { Skeleton, VStack } from "../ui";
 import { Section } from "../layouts";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 
 export const PersonSkeleton = () => (
 	<>
@@ -15,7 +15,7 @@ export const PersonSkeleton = () => (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
-					renderItem={() => <PosterSkeleton mx={8} />}
+					renderItem={() => <PosterCardSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
 				/>
@@ -25,7 +25,7 @@ export const PersonSkeleton = () => (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
-					renderItem={() => <PosterSkeleton mx={8} />}
+					renderItem={() => <PosterCardSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
 				/>
@@ -35,7 +35,7 @@ export const PersonSkeleton = () => (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
-					renderItem={() => <PosterSkeleton mx={8} />}
+					renderItem={() => <PosterCardSkeleton mx={8} />}
 					contentContainerStyle={{ paddingHorizontal: 8 }}
 					horizontal={true}
 				/>

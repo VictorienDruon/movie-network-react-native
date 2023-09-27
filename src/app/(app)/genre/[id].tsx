@@ -6,8 +6,9 @@ import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
 import { Section } from "@/components/layouts";
 import { ErrorState } from "@/components/commons";
 import { Heading, VStack } from "@/components/ui";
-import { Poster } from "@/features/poster";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import { PosterCard } from "@/features/poster-card";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
+import Poster from "@/features/poster-card/types/Poster";
 
 interface PostersPage {
 	posters: Poster[];
@@ -58,7 +59,7 @@ const GenreScreen = () => {
 							<FlatList
 								data={[...Array(3).keys()]}
 								keyExtractor={(i) => "movie" + i.toString()}
-								renderItem={() => <PosterSkeleton size="md" mx={8} />}
+								renderItem={() => <PosterCardSkeleton size="md" mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -68,10 +69,10 @@ const GenreScreen = () => {
 								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
 								keyExtractor={(m) => "movie" + m.id.toString()}
 								renderItem={({ item }) => (
-									<Poster poster={item} size="md" mx={8} />
+									<PosterCard poster={item} size="md" mx={8} />
 								)}
 								ListFooterComponent={() =>
-									moviesQuery.hasNextPage && <PosterSkeleton size="md" mx={8} />
+									moviesQuery.hasNextPage && <PosterCardSkeleton size="md" mx={8} />
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -86,7 +87,7 @@ const GenreScreen = () => {
 							<FlatList
 								data={[...Array(3).keys()]}
 								keyExtractor={(i) => "movie" + i.toString()}
-								renderItem={() => <PosterSkeleton size="md" mx={8} />}
+								renderItem={() => <PosterCardSkeleton size="md" mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -96,10 +97,10 @@ const GenreScreen = () => {
 								data={showsQuery.data.pages.flatMap((page) => page.posters)}
 								keyExtractor={(s) => "show" + s.id.toString()}
 								renderItem={({ item }) => (
-									<Poster poster={item} size="md" mx={8} />
+									<PosterCard poster={item} size="md" mx={8} />
 								)}
 								ListFooterComponent={() =>
-									showsQuery.hasNextPage && <PosterSkeleton size="md" mx={8} />
+									showsQuery.hasNextPage && <PosterCardSkeleton size="md" mx={8} />
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}

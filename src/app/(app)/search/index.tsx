@@ -12,11 +12,12 @@ import { searchProfiles } from "@/libs/supabase/api/profiles";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Avatar, Body, Link, VStack } from "@/components/ui";
-import { Poster } from "@/features/poster";
+import { PosterCard } from "@/features/poster-card";
 import { PersonCard } from "@/features/person-card";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
 import Person from "@/features/person-card/types/Person";
+import Poster from "@/features/poster-card/types/Poster";
 
 const SearchScreen = () => {
 	const navigation = useNavigation();
@@ -98,7 +99,7 @@ const SearchScreen = () => {
 							<FlatList
 								data={Array.from({ length: 4 }, (_, i) => i)}
 								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PosterSkeleton mx={8} />}
+								renderItem={() => <PosterCardSkeleton mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								horizontal={true}
 							/>
@@ -107,14 +108,14 @@ const SearchScreen = () => {
 								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
 								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
-									<Poster
+									<PosterCard
 										poster={poster}
 										size="sm"
 										style={{ marginHorizontal: 8 }}
 									/>
 								)}
 								ListFooterComponent={() =>
-									moviesQuery.hasNextPage && <PosterSkeleton mx={8} />
+									moviesQuery.hasNextPage && <PosterCardSkeleton mx={8} />
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -131,7 +132,7 @@ const SearchScreen = () => {
 							<FlatList
 								data={Array.from({ length: 4 }, (_, i) => i)}
 								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PosterSkeleton mx={8} />}
+								renderItem={() => <PosterCardSkeleton mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								horizontal={true}
 							/>
@@ -140,14 +141,14 @@ const SearchScreen = () => {
 								data={tvQuery.data.pages.flatMap((page) => page.posters)}
 								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
-									<Poster
+									<PosterCard
 										poster={poster}
 										size="sm"
 										style={{ marginHorizontal: 8 }}
 									/>
 								)}
 								ListFooterComponent={() =>
-									tvQuery.hasNextPage && <PosterSkeleton mx={8} />
+									tvQuery.hasNextPage && <PosterCardSkeleton mx={8} />
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}

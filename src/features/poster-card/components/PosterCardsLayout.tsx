@@ -1,12 +1,13 @@
 import { Box } from "@/components/ui";
-import { Poster } from "..";
+import { PosterCard } from "..";
+import Poster from "../types/Poster";
 
-const PostersLayout = ({ posters }: { posters: Poster[] }) => {
+const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 	switch (posters.length) {
 		case 1:
 			return (
 				<Box position="relative" alignItems="center" maxHeight={280}>
-					<Poster
+					<PosterCard
 						poster={posters[0]}
 						size="lg"
 						decoration="shadow"
@@ -17,7 +18,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 		case 2:
 			return (
 				<Box position="relative" alignItems="center" maxHeight={280}>
-					<Poster
+					<PosterCard
 						poster={posters[0]}
 						size="md"
 						decoration="shadow"
@@ -25,7 +26,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 						right={50}
 						rotate="-3deg"
 					/>
-					<Poster
+					<PosterCard
 						poster={posters[1]}
 						size="md"
 						decoration="shadow"
@@ -39,7 +40,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 		case 3:
 			return (
 				<Box position="relative" alignItems="center" maxHeight={280}>
-					<Poster
+					<PosterCard
 						poster={posters[0]}
 						size="sm"
 						decoration="shadow"
@@ -47,7 +48,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 						right={60}
 						rotate="-4deg"
 					/>
-					<Poster
+					<PosterCard
 						poster={posters[1]}
 						size="sm"
 						decoration="shadow"
@@ -56,7 +57,7 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 						left={60}
 						rotate="4deg"
 					/>
-					<Poster
+					<PosterCard
 						poster={posters[2]}
 						size="sm"
 						decoration="shadow"
@@ -71,4 +72,4 @@ const PostersLayout = ({ posters }: { posters: Poster[] }) => {
 	}
 };
 
-export default PostersLayout;
+export default PosterCardsLayout;

@@ -1,4 +1,5 @@
-import { Poster } from "@/features/poster";
+import Poster from "@/features/poster-card/types/Poster";
+
 
 interface Collection {
 	id: number;

@@ -10,10 +10,10 @@ import {
 	Link,
 	RoundButton,
 } from "@/components/ui";
-import { Poster } from "@/features/poster";
-import PostersLayout from "@/features/poster/components/PostersLayout";
+import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
 import CommentBar from "./components/CommentBar";
 import LikeButton from "./components/LikeButton";
+import Poster from "../poster-card/types/Poster";
 
 export type Post = Database["public"]["Tables"]["posts"]["Row"] & {
 	author: Database["public"]["Tables"]["profiles"]["Row"];
@@ -50,7 +50,7 @@ export const Post = ({ post }: { post: Post }) => {
 
 			<Body>{content}</Body>
 
-			<PostersLayout posters={posters} />
+			<PosterCardsLayout posters={posters} />
 
 			<HStack space={8}>
 				<CommentBar postId={id} />

@@ -19,7 +19,7 @@ import {
 	Input,
 	Link,
 } from "@/components/ui";
-import PostersLayout from "@/features/poster/components/PostersLayout";
+import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
 
 const CreateScreen = () => {
 	const queryClient = useQueryClient();
@@ -83,7 +83,7 @@ const CreateScreen = () => {
 						)}
 					/>
 
-					<PostersLayout posters={posters} />
+					<PosterCardsLayout posters={posters} />
 				</VStack>
 			</ScrollView>
 

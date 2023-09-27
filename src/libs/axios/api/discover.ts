@@ -1,6 +1,7 @@
+import Poster from "@/features/poster-card/types/Poster";
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
-import { Poster } from "@/features/poster";
+
 
 type Options = {
 	include_adult?: string;

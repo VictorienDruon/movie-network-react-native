@@ -1,21 +1,21 @@
 import { AnimatableStringValue } from "react-native";
 import { BoxProps, Skeleton, VStack } from "@/components/ui";
 
-type PosterSize = "sm" | "md" | "lg";
+type PosterCardSize = "sm" | "md" | "lg";
 
-interface PosterSkeletonProps extends BoxProps {
-	size?: PosterSize;
+interface PosterCardSkeletonProps extends BoxProps {
+	size?: PosterCardSize;
 	textPosition?: "top" | "bottom";
 	rotate?: AnimatableStringValue;
 	gridSpacing?: number;
 }
 
-const PosterSkeleton = ({
+const PosterCardSkeleton = ({
 	size = "sm",
 	textPosition = "bottom",
 	rotate,
 	...props
-}: PosterSkeletonProps) => (
+}: PosterCardSkeletonProps) => (
 	<VStack
 		position="relative"
 		alignItems="center"
@@ -32,7 +32,7 @@ const PosterSkeleton = ({
 	</VStack>
 );
 
-const boxSizes: { [key in PosterSize]: BoxProps } = {
+const boxSizes: { [key in PosterCardSize]: BoxProps } = {
 	lg: {
 		width: 200,
 	},
@@ -44,4 +44,4 @@ const boxSizes: { [key in PosterSize]: BoxProps } = {
 	},
 };
 
-export default PosterSkeleton;
+export default PosterCardSkeleton;

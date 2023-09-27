@@ -1,4 +1,4 @@
-import { Poster } from "@/features/poster";
+import Poster from "@/features/poster-card/types/Poster";
 import { api } from "..";
 import Collection from "../types/Collection";
 

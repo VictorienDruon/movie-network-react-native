@@ -1,4 +1,5 @@
-import { Poster } from "@/features/poster";
+
+import Poster from "@/features/poster-card/types/Poster";
 import { api } from "..";
 import { Pagination } from "../types/Pagination";
 import Person from "@/features/person-card/types/Person";

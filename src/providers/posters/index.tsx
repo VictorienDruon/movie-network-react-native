@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSegments } from "expo-router";
-import { Poster } from "@/features/poster";
+import Poster from "@/features/poster-card/types/Poster";
 
 const MAX_POSTERS = 3;
 

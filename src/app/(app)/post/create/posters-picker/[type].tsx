@@ -17,8 +17,9 @@ import { searchMovies, searchTv } from "@/libs/axios/api/search";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Box, Link, Title } from "@/components/ui";
-import { Poster } from "@/features/poster";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import { PosterCard } from "@/features/poster-card";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
+import Poster from "@/features/poster-card/types/Poster";
 
 interface PostersPage {
 	posters: Poster[];
@@ -100,7 +101,7 @@ const PostersPicker = () => {
 				<FlatList
 					data={Array.from({ length: 12 })}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={() => <PosterSkeleton />}
+					renderItem={() => <PosterCardSkeleton />}
 					contentContainerStyle={{ paddingTop: 8 }}
 					columnWrapperStyle={{
 						justifyContent: "space-between",
@@ -116,7 +117,7 @@ const PostersPicker = () => {
 					data={data.pages.flatMap((page) => page.posters)}
 					keyExtractor={(poster) => poster.id.toString()}
 					renderItem={({ item: poster }) => (
-						<Poster poster={poster} action="select" />
+						<PosterCard poster={poster} action="select" />
 					)}
 					ListEmptyComponent={<EmptyState>No results.</EmptyState>}
 					ListFooterComponent={
@@ -125,7 +126,7 @@ const PostersPicker = () => {
 								<FlatList
 									data={Array.from({ length: 3 })}
 									keyExtractor={(_, index) => index.toString()}
-									renderItem={() => <PosterSkeleton />}
+									renderItem={() => <PosterCardSkeleton />}
 									columnWrapperStyle={{
 										justifyContent: "space-between",
 										paddingHorizontal: 16,

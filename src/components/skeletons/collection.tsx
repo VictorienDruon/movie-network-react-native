@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { Skeleton, VStack } from "../ui";
 import { FlatList } from "react-native";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 
 export const CollectionSkeleton = () => (
 	<>
@@ -23,7 +23,7 @@ export const CollectionSkeleton = () => (
 					</VStack>
 				</VStack>
 			)}
-			renderItem={() => <PosterSkeleton size="md" textPosition="top" />}
+			renderItem={() => <PosterCardSkeleton size="md" textPosition="top" />}
 			numColumns={2}
 			contentContainerStyle={{ paddingBottom: 128 }}
 			columnWrapperStyle={{

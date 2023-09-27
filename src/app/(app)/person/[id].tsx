@@ -8,7 +8,7 @@ import { ErrorState } from "@/components/commons";
 import { Information, Section } from "@/components/layouts";
 import { PersonSkeleton } from "@/components/skeletons";
 import { Body, Heading, VStack } from "@/components/ui";
-import { Poster } from "@/features/poster";
+import { PosterCard } from "@/features/poster-card";
 
 const PersonScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -57,7 +57,7 @@ const PersonScreen = () => {
 							<FlatList
 								data={movies}
 								keyExtractor={(m) => "movie" + m.id.toString()}
-								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -70,7 +70,7 @@ const PersonScreen = () => {
 							<FlatList
 								data={shows}
 								keyExtractor={(s) => "show" + s.id.toString()}
-								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -83,7 +83,7 @@ const PersonScreen = () => {
 							<FlatList
 								data={directed}
 								keyExtractor={(d) => "directed" + d.id.toString()}
-								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -96,7 +96,7 @@ const PersonScreen = () => {
 							<FlatList
 								data={written}
 								keyExtractor={(w) => "written" + w.id.toString()}
-								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal
@@ -109,7 +109,7 @@ const PersonScreen = () => {
 							<FlatList
 								data={composed}
 								keyExtractor={(c) => "composed" + c.id.toString()}
-								renderItem={({ item }) => <Poster poster={item} mx={8} />}
+								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
 								horizontal

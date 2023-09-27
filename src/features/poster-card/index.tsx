@@ -12,32 +12,25 @@ import {
 	Title,
 	TextProps,
 } from "@/components/ui";
+import Poster from "./types/Poster";
 
-export type Poster = {
-	id: number;
-	title: string;
-	poster_path: string;
-	backdrop_path: string;
-	type: "movie" | "tv" | "collection";
-};
+type PosterCardOrientation = "horizontal" | "vertical";
+type PosterCardAction = "select" | "navigate";
+type PosterCardSize = "sm" | "md" | "lg";
+type PosterCardDecoration = "shadow" | "border";
+type PosterCardTextPosition = "top" | "bottom";
 
-type PosterOrientation = "horizontal" | "vertical";
-type PosterAction = "select" | "navigate";
-type PosterSize = "sm" | "md" | "lg";
-type PosterDecoration = "shadow" | "border";
-type PosterTextPosition = "top" | "bottom";
-
-interface PosterProps extends Omit<BoxProps, "id"> {
+interface PosterCardProps extends Omit<BoxProps, "id"> {
 	poster: Poster;
-	orientation?: PosterOrientation;
-	action?: PosterAction;
-	size?: PosterSize;
-	decoration?: PosterDecoration;
-	textPosition?: PosterTextPosition;
+	orientation?: PosterCardOrientation;
+	action?: PosterCardAction;
+	size?: PosterCardSize;
+	decoration?: PosterCardDecoration;
+	textPosition?: PosterCardTextPosition;
 	rotate?: AnimatableStringValue;
 }
 
-export const Poster = ({
+export const PosterCard = ({
 	poster,
 	orientation = "vertical",
 	action = "navigate",
@@ -46,7 +39,7 @@ export const Poster = ({
 	textPosition = "bottom",
 	rotate,
 	...props
-}: PosterProps) => {
+}: PosterCardProps) => {
 	const { id, title, poster_path, backdrop_path, type } = poster;
 	const context = usePosters();
 
@@ -150,7 +143,7 @@ export const Poster = ({
 };
 
 const boxSizes: {
-	[key in PosterOrientation]: { [key in PosterSize]: BoxProps };
+	[key in PosterCardOrientation]: { [key in PosterCardSize]: BoxProps };
 } = {
 	horizontal: {
 		lg: { width: 300 },
@@ -165,26 +158,26 @@ const boxSizes: {
 };
 
 const boxOrientation: {
-	[key in PosterOrientation]: BoxProps;
+	[key in PosterCardOrientation]: BoxProps;
 } = {
 	horizontal: { aspectRatio: 16 / 9 },
 	vertical: { aspectRatio: 5 / 7 },
 };
 
-const imageSizes: { [key in PosterSize]: BoxProps } = {
+const imageSizes: { [key in PosterCardSize]: BoxProps } = {
 	lg: { padding: 8 },
 	md: { padding: 6 },
 	sm: { padding: 4 },
 };
 
 const imagesResolution: {
-	[key in PosterOrientation]: { [key in PosterSize]: string };
+	[key in PosterCardOrientation]: { [key in PosterCardSize]: string };
 } = {
 	horizontal: { lg: "/w1280", md: "/w1280", sm: "/w780" },
 	vertical: { lg: "/w780", md: "/w500", sm: "/w342" },
 };
 
-const textSizes: { [key in PosterSize]: TextProps } = {
+const textSizes: { [key in PosterCardSize]: TextProps } = {
 	lg: {
 		px: 10,
 		py: 4,

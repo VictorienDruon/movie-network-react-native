@@ -1,5 +1,5 @@
 import { VStack, HStack, Skeleton, Box } from "@/components/ui";
-import PosterSkeleton from "@/features/poster/components/PosterSkeleton";
+import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 
 const PostSkeleton = () => (
 	<VStack space={20} p={16}>
@@ -17,8 +17,8 @@ const PostSkeleton = () => (
 		</VStack>
 
 		<Box position="relative" alignItems="center" maxHeight={280}>
-			<PosterSkeleton size="md" textPosition="top" right={50} rotate="-3deg" />
-			<PosterSkeleton
+			<PosterCardSkeleton size="md" textPosition="top" right={50} rotate="-3deg" />
+			<PosterCardSkeleton
 				size="md"
 				textPosition="top"
 				top={-140}
