@@ -26,7 +26,7 @@ export async function getPerson(id: string) {
 		for (const media of data.combined_credits.cast) {
 			if (media.poster_path !== null && media.backdrop_path !== null) {
 				const poster = {
-					tmdb_id: media.id,
+					id: media.id,
 					title: media.media_type === "movie" ? media.title : media.name,
 					poster_path: media.poster_path,
 					backdrop_path: media.backdrop_path,
@@ -53,7 +53,7 @@ export async function getPerson(id: string) {
 		for (const media of data.combined_credits.crew) {
 			if (media.poster_path !== null && media.backdrop_path !== null) {
 				const poster = {
-					tmdb_id: media.id,
+					id: media.id,
 					title: media.media_type === "movie" ? media.title : media.name,
 					poster_path: media.poster_path,
 					backdrop_path: media.backdrop_path,

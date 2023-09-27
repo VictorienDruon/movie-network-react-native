@@ -28,7 +28,7 @@ const CollectionScreen = () => {
 
 			<FlatList
 				data={parts}
-				keyExtractor={(part) => part.tmdb_id.toString()}
+				keyExtractor={(part) => part.id.toString()}
 				ListHeaderComponent={() => (
 					<VStack alignItems="center" space={16}>
 						<Image

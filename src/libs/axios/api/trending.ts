@@ -16,7 +16,7 @@ export async function getDayTrending() {
 					media.poster_path !== null && media.backdrop_path !== null
 			)
 			.map((media: any) => ({
-				tmdb_id: media.id,
+				id: media.id,
 				title: media.title || media.name,
 				poster_path: media.poster_path,
 				backdrop_path: media.backdrop_path,
@@ -49,7 +49,7 @@ export async function getMediaTrending(
 					media.poster_path !== null && media.backdrop_path !== null
 			)
 			.map((media: any) => ({
-				tmdb_id: media.id,
+				id: media.id,
 				title: media.title || media.name,
 				poster_path: media.poster_path,
 				backdrop_path: media.backdrop_path,

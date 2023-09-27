@@ -89,7 +89,7 @@ const ExploreScreen = () => {
 			) : (
 				<FlatList
 					data={daylyTrendsQuery.data}
-					keyExtractor={(p) => p.tmdb_id.toString()}
+					keyExtractor={(p) => p.id.toString()}
 					renderItem={({ item: poster }) => (
 						<Poster
 							poster={poster}
@@ -159,7 +159,7 @@ const ExploreScreen = () => {
 							data={moviesTrendsQuery.data.pages.flatMap(
 								(page) => page.posters
 							)}
-							keyExtractor={(p) => p.tmdb_id.toString()}
+							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: poster }) => (
 								<Poster
 									poster={poster}
@@ -190,7 +190,7 @@ const ExploreScreen = () => {
 					) : (
 						<FlatList
 							data={tvTrendsQuery.data.pages.flatMap((page) => page.posters)}
-							keyExtractor={(p) => p.tmdb_id.toString()}
+							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: poster }) => (
 								<Poster
 									poster={poster}

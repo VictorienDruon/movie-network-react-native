@@ -72,7 +72,7 @@ const ProviderScreen = () => {
 						) : (
 							<FlatList
 								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
-								keyExtractor={(m) => "movie" + m.tmdb_id.toString()}
+								keyExtractor={(m) => "movie" + m.id.toString()}
 								renderItem={({ item }) => (
 									<Poster poster={item} size="md" mx={8} />
 								)}
@@ -100,7 +100,7 @@ const ProviderScreen = () => {
 						) : (
 							<FlatList
 								data={showsQuery.data.pages.flatMap((page) => page.posters)}
-								keyExtractor={(s) => "show" + s.tmdb_id.toString()}
+								keyExtractor={(s) => "show" + s.id.toString()}
 								renderItem={({ item }) => (
 									<Poster poster={item} size="md" mx={8} />
 								)}

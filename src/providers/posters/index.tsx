@@ -6,7 +6,7 @@ const MAX_POSTERS = 3;
 
 interface PostersContext {
 	posters: Poster[];
-	isSelected: (tmdb_id: number, type: string) => boolean;
+	isSelected: (id: number, type: string) => boolean;
 	toggle: (attachment: Poster) => void;
 	push: () => void;
 }
@@ -31,24 +31,24 @@ export const PostersProvider = ({
 		setDraftPostersId(postersId);
 	}, [segments]);
 
-	const isSelected = (tmdb_id: number, type: string) =>
-		draftPostersId.has(tmdb_id + type);
+	const isSelected = (id: number, type: string) =>
+		draftPostersId.has(id + type);
 
 	const toggle = (attachment: Poster) => {
-		if (isSelected(attachment.tmdb_id, attachment.type)) {
+		if (isSelected(attachment.id, attachment.type)) {
 			setDraftPosters((prev) =>
-				prev.filter((item) => item.tmdb_id !== attachment.tmdb_id)
+				prev.filter((item) => item.id !== attachment.id)
 			);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
-				newSet.delete(attachment.tmdb_id + attachment.type);
+				newSet.delete(attachment.id + attachment.type);
 				return newSet;
 			});
 		} else if (draftPosters.length < MAX_POSTERS) {
 			setDraftPosters((prev) => [...prev, attachment]);
 			setDraftPostersId((prev) => {
 				const newSet = new Set(prev);
-				newSet.add(attachment.tmdb_id + attachment.type);
+				newSet.add(attachment.id + attachment.type);
 				return newSet;
 			});
 		} else {

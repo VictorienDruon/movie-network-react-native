@@ -104,7 +104,7 @@ const SearchScreen = () => {
 						) : (
 							<FlatList
 								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
-								keyExtractor={(p) => p.tmdb_id.toString()}
+								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
 									<Poster
 										poster={poster}
@@ -137,7 +137,7 @@ const SearchScreen = () => {
 						) : (
 							<FlatList
 								data={tvQuery.data.pages.flatMap((page) => page.posters)}
-								keyExtractor={(p) => p.tmdb_id.toString()}
+								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
 									<Poster
 										poster={poster}

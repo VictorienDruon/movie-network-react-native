@@ -170,7 +170,7 @@ const MediaScreen = () => {
 						<Section title="Recommendations" flatlist>
 							<FlatList
 								data={recommendations}
-								keyExtractor={(r) => r.tmdb_id.toString()}
+								keyExtractor={(r) => r.id.toString()}
 								renderItem={({ item: recommendation }) => (
 									<Poster poster={recommendation} mx={8} />
 								)}

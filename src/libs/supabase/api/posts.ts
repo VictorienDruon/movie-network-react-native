@@ -104,7 +104,7 @@ export async function create(newPost: NewPost) {
 
 	const postsPosters = posters.map((poster) => ({
 		post_id: post.id,
-		poster_id: poster.id,
+		poster_id: poster.uuid,
 	}));
 
 	const { error: postsPostersError } = await supabase

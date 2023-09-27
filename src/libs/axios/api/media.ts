@@ -47,7 +47,7 @@ export async function getMovie(id: string) {
 			revenue: data.revenue,
 
 			collection: data.belongs_to_collection && {
-				tmdb_id: data.belongs_to_collection.id,
+				id: data.belongs_to_collection.id,
 				title: data.belongs_to_collection.name,
 				poster_path: data.belongs_to_collection.poster_path,
 				backdrop_path: data.belongs_to_collection.backdrop_path,
@@ -57,7 +57,7 @@ export async function getMovie(id: string) {
 			recommendations: data.recommendations.results
 				.filter((r: any) => r.poster_path !== null && r.backdrop_path !== null)
 				.map((r: any) => ({
-					tmdb_id: r.id,
+					id: r.id,
 					title: r.title,
 					poster_path: r.poster_path,
 					backdrop_path: r.backdrop_path,
@@ -148,7 +148,7 @@ export async function getTv(id: string) {
 					(tv: any) => tv.poster_path !== null && tv.backdrop_path !== null
 				)
 				.map((tv: any) => ({
-					tmdb_id: tv.id,
+					id: tv.id,
 					title: tv.name,
 					poster_path: tv.poster_path,
 					type: "tv",

@@ -115,29 +115,29 @@ export interface Database {
         Row: {
           backdrop_path: string
           created_at: string
-          id: string
+          id: number
           poster_path: string
           title: string
-          tmdb_id: number
           type: string
+          uuid: string
         }
         Insert: {
           backdrop_path: string
           created_at?: string
-          id?: string
+          id: number
           poster_path: string
           title: string
-          tmdb_id: number
           type: string
+          uuid?: string
         }
         Update: {
           backdrop_path?: string
           created_at?: string
-          id?: string
+          id?: number
           poster_path?: string
           title?: string
-          tmdb_id?: number
           type?: string
+          uuid?: string
         }
         Relationships: []
       }
@@ -193,7 +193,7 @@ export interface Database {
             foreignKeyName: "posts_posters_poster_id_fkey"
             columns: ["poster_id"]
             referencedRelation: "posters"
-            referencedColumns: ["id"]
+            referencedColumns: ["uuid"]
           }
         ]
       }

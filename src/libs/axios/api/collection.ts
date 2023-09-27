@@ -15,7 +15,7 @@ export async function getCollection(id: string) {
 				(part: any) => part.poster_path !== null && part.backdrop_path !== null
 			)
 			.map((part: any) => ({
-				tmdb_id: part.id,
+				id: part.id,
 				title: part.title,
 				poster_path: part.poster_path,
 				backdrop_path: part.backdrop_path,

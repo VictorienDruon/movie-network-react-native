@@ -24,7 +24,7 @@ export async function searchMovies(query: string, page: number) {
 				(movie) => movie.poster_path !== null && movie.backdrop_path !== null
 			)
 			.map((movie) => ({
-				tmdb_id: movie.id,
+				id: movie.id,
 				title: movie.title,
 				poster_path: movie.poster_path,
 				backdrop_path: movie.backdrop_path,
@@ -60,7 +60,7 @@ export async function searchTv(query: string, page: number) {
 		const posters: Poster[] = data.results
 			.filter((tv) => tv.poster_path !== null && tv.backdrop_path !== null)
 			.map((tv) => ({
-				tmdb_id: tv.id,
+				id: tv.id,
 				title: tv.name,
 				poster_path: tv.poster_path,
 				backdrop_path: tv.backdrop_path,

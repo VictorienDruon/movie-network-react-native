@@ -114,7 +114,7 @@ const PostersPicker = () => {
 			) : (
 				<FlatList
 					data={data.pages.flatMap((page) => page.posters)}
-					keyExtractor={(poster) => poster.tmdb_id.toString()}
+					keyExtractor={(poster) => poster.id.toString()}
 					renderItem={({ item: poster }) => (
 						<Poster poster={poster} action="select" />
 					)}

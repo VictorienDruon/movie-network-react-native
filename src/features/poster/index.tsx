@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 
 export type Poster = {
-	tmdb_id: number;
+	id: number;
 	title: string;
 	poster_path: string;
 	backdrop_path: string;
@@ -47,7 +47,7 @@ export const Poster = ({
 	rotate,
 	...props
 }: PosterProps) => {
-	const { tmdb_id, title, poster_path, backdrop_path, type } = poster;
+	const { id, title, poster_path, backdrop_path, type } = poster;
 	const context = usePosters();
 
 	const handlePress = () => {
@@ -57,11 +57,11 @@ export const Poster = ({
 					type === "collection"
 						? {
 								pathname: `/collection/[id]`,
-								params: { id: tmdb_id },
+								params: { id: id },
 						  }
 						: {
 								pathname: `/media/[type]/[id]`,
-								params: { type, id: tmdb_id },
+								params: { type, id: id },
 						  }
 			  );
 	};
@@ -103,7 +103,7 @@ export const Poster = ({
 					)}
 				</Image>
 
-				{action === "select" && context.isSelected(tmdb_id, type) && (
+				{action === "select" && context.isSelected(id, type) && (
 					<Box
 						position="absolute"
 						justifyContent="center"
