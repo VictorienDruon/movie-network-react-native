@@ -26,6 +26,7 @@ const GenreScreen = () => {
 		queryFn: ({ pageParam = 1 }) =>
 			discoverMovies(pageParam, { with_genres: movieId }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: movieId ? true : false,
 	});
 
 	const showsQuery = useInfiniteQuery<PostersPage, Error>({
@@ -33,6 +34,7 @@ const GenreScreen = () => {
 		queryFn: ({ pageParam = 1 }) =>
 			discoverTv(pageParam, { with_genres: tvId }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: tvId ? true : false,
 	});
 
 	if (moviesQuery.isError) return <ErrorState retry={moviesQuery.refetch} />;
@@ -54,7 +56,7 @@ const GenreScreen = () => {
 						{name}
 					</Heading>
 
-					<Section title="Movies" size="lg" flatlist>
+					{movieId && <Section title="Movies" size="lg" flatlist>
 						{moviesQuery.isLoading ? (
 							<FlatList
 								data={[...Array(3).keys()]}
@@ -80,9 +82,9 @@ const GenreScreen = () => {
 								horizontal
 							/>
 						)}
-					</Section>
+					</Section>}
 
-					<Section title="Shows" size="lg" flatlist>
+					{tvId && <Section title="Shows" size="lg" flatlist>
 						{showsQuery.isLoading ? (
 							<FlatList
 								data={[...Array(3).keys()]}
@@ -108,7 +110,7 @@ const GenreScreen = () => {
 								horizontal
 							/>
 						)}
-					</Section>
+					</Section>}
 				</VStack>
 			</ScrollView>
 		</>

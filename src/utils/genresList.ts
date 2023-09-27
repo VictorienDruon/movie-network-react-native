@@ -28,7 +28,7 @@ export const genresList: Genre[] = [
 		name: "Comedy",
 		movieId: "35",
 		tvId: "35",
-		backdrop_path: "/cPItMV5Y7e5Vev0ggtyI1XnLnep.jpg",
+		backdrop_path: "/o8ZS811VjYbBi4pRYwILLdWCVey.jpg",
 	},
 	{
 		name: "Crime",
@@ -46,7 +46,7 @@ export const genresList: Genre[] = [
 		name: "Drama",
 		movieId: "18",
 		tvId: "18",
-		backdrop_path: "/4PCO7tewIGnE6ySjVf2DbJ3pjqq.jpg",
+		backdrop_path: "/hO7KbdvGOtDdeg0W4Y5nKEHeDDh.jpg",
 	},
 	{
 		name: "Family",
@@ -83,12 +83,12 @@ export const genresList: Genre[] = [
 		name: "Western",
 		movieId: "37",
 		tvId: "37",
-		backdrop_path: "/5Lbm0gpFDRAPIV1Cth6ln9iL1ou.jpg",
+		backdrop_path: "/rZTj8AVUD8IKlsVF0XFoZzPG2dv.jpg",
 	},
 	{
 		name: "Thriller",
 		movieId: "53",
-		backdrop_path: "/yY76zq9XSuJ4nWyPDuwkdV7Wt0c.jpg",
+		backdrop_path: "/9b3uxqcjkmay20EBZZj1KVow0r5.jpg",
 	},
 	{
 		name: "History",
@@ -108,6 +108,6 @@ export const genresList: Genre[] = [
 	{
 		name: "Kids",
 		tvId: "10762",
-		backdrop_path: "/aasp5EmwclAQbwfGABWLTNLhjwB.jpg",
+		backdrop_path: "/9531Jp42H0ppRXjkxxgCulnQNZp.jpg",
 	},
 ];
