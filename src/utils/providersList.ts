@@ -17,7 +17,7 @@ export const providersList: Provider[] = [
 	},
 	{
 		name: "Amazon Prime Video",
-		id: "9",
+		id: "119",
 		logo_path: "/emthp39XA2YScoYL1p0sdbAH2WA.jpg",
 	},
 	{
@@ -35,11 +35,6 @@ export const providersList: Provider[] = [
 		name: "Canal+",
 		id: "381",
 		logo_path: "/jHLq7Nu0cUQYshXuBNhzvrln1vL.jpg",
-	},
-	{
-		name: "Arte",
-		id: "234",
-		logo_path: "/8T2jS3TdKCAsCrH0Kvl2NCwQ0ym.jpg",
 	},
 	{
 		name: "Crunchyroll",
