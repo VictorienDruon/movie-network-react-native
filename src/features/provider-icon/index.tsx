@@ -1,20 +1,14 @@
 import { TouchableOpacity } from "react-native";
 import { openURL } from "expo-linking";
 import { Image } from "@/components/ui";
+import Provider from "./types/Provider";
 
-export interface Provider {
-	display_priority: number;
-	logo_path: string;
-	provider_id: number;
-	provider_name: string;
-}
-
-interface ProviderProps {
+interface ProviderIconProps {
 	link: string;
 	provider: Provider;
 }
 
-export const Provider = ({ link, provider }: ProviderProps) => (
+const ProviderIcon = ({ link, provider }: ProviderIconProps) => (
 	<TouchableOpacity onPress={() => openURL(link)}>
 		<Image
 			src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${provider.logo_path}`}
@@ -28,3 +22,5 @@ export const Provider = ({ link, provider }: ProviderProps) => (
 		/>
 	</TouchableOpacity>
 );
+
+export default ProviderIcon;

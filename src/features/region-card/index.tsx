@@ -1,19 +1,14 @@
 import { TouchableOpacity } from "react-native";
 import { HStack, Avatar, Title, Subtitle, Box } from "@/components/ui";
+import Region from "./types/Region";
 
-export interface Region {
-	name: string;
-	code: string;
-	flag: string;
-}
-
-interface RegionProps {
+interface RegionCardProps {
 	region: Region;
 	isSelected: boolean;
 	onPress: () => void;
 }
 
-export const Region = ({ region, isSelected, onPress }: RegionProps) => (
+const RegionCard = ({ region, isSelected, onPress }: RegionCardProps) => (
 	<TouchableOpacity onPress={onPress}>
 		<HStack
 			alignItems="center"
@@ -38,3 +33,5 @@ export const Region = ({ region, isSelected, onPress }: RegionProps) => (
 		</HStack>
 	</TouchableOpacity>
 );
+
+export default RegionCard;

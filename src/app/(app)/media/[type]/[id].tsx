@@ -28,8 +28,9 @@ import { MediaSkeleton } from "@/components/skeletons";
 import { Information, Section } from "@/components/layouts";
 import PosterCard from "@/features/poster-card";
 import PersonCard from "@/features/person-card";
-import { Providers } from "@/features/providers";
-import { Region } from "@/features/region";
+import RegionCard from "@/features/region-card";
+import Region from "@/features/region-card/types/Region";
+import ProviderIcon from "@/features/provider-icon";
 
 const MediaScreen = () => {
 	const { type, id } = useLocalSearchParams<{
@@ -121,8 +122,8 @@ const MediaScreen = () => {
 							{type === "movie"
 								? runtime > 0 && <Subtitle>{formatDuration(runtime)}</Subtitle>
 								: last_episode_to_air && (
-										<Subtitle>{`${last_episode_to_air.season_number} seasons`}</Subtitle>
-								  )}
+									<Subtitle>{`${last_episode_to_air.season_number} seasons`}</Subtitle>
+								)}
 						</HStack>
 					</Section>
 
@@ -299,7 +300,45 @@ const MediaScreen = () => {
 							</Button>
 						</HStack>
 
-						<Providers providers={providers[selectedRegion.code]} />
+
+						<VStack space={16}><Section title="Streaming" flatlist>
+							<FlatList
+								data={providers[selectedRegion.code].flatrate}
+								keyExtractor={(p) => p.provider_id.toString()}
+								renderItem={({ item: provider }) => (
+									<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
+								)}
+								contentContainerStyle={{ paddingHorizontal: 8 }}
+								showsHorizontalScrollIndicator={false}
+								horizontal
+							/>
+						</Section>
+
+							<Section title="Buy" flatlist>
+								<FlatList
+									data={providers[selectedRegion.code].buy}
+									keyExtractor={(p) => p.provider_id.toString()}
+									renderItem={({ item: provider }) => (
+										<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
+									)}
+									contentContainerStyle={{ paddingHorizontal: 8 }}
+									showsHorizontalScrollIndicator={false}
+									horizontal
+								/>
+							</Section>
+
+							<Section title="Rent" flatlist>
+								<FlatList
+									data={providers[selectedRegion.code].rent}
+									keyExtractor={(p) => p.provider_id.toString()}
+									renderItem={({ item: provider }) => (
+										<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
+									)}
+									contentContainerStyle={{ paddingHorizontal: 8 }}
+									showsHorizontalScrollIndicator={false}
+									horizontal
+								/>
+							</Section></VStack>
 					</VStack>
 				) : (
 					<EmptyState>No providers were found.</EmptyState>
@@ -316,7 +355,7 @@ const MediaScreen = () => {
 						data={regions}
 						keyExtractor={(r) => r.code}
 						renderItem={({ item: region }) => (
-							<Region
+							<RegionCard
 								region={region}
 								isSelected={region === selectedRegion}
 								onPress={() => setSelectedRegion(region)}

@@ -1,6 +1,6 @@
 import Person from "@/features/person-card/types/Person";
 import Poster from "@/features/poster-card/types/Poster";
-import { Providers } from "@/features/providers";
+import Provider from "@/features/provider-icon/types/Provider";
 
 interface Media {
 	id: number;
@@ -33,7 +33,12 @@ interface Media {
 	recommendations?: Poster[];
 	videoKey?: string;
 	providers?: {
-		[key: string]: Providers;
+		[key: string]: {
+			link: string;
+			flatrate: Provider[];
+			buy: Provider[];
+			rent: Provider[];
+		};
 	};
 }
 
