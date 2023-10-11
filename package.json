@@ -27,7 +27,7 @@
 		"expo-blur": "^12.4.1",
 		"expo-constants": "~14.4.2",
 		"expo-crypto": "~12.4.1",
-		"expo-image": "~1.3.3",
+		"expo-image": "~1.3.4",
 		"expo-linear-gradient": "~12.3.0",
 		"expo-linking": "~5.0.2",
 		"expo-localization": "^14.3.0",

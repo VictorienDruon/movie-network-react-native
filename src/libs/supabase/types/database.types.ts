@@ -227,7 +227,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      read_secret: {
+        Args: {
+          secret_name: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
