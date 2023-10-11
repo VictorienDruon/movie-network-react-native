@@ -1,4 +1,4 @@
-import { RawPost, formatPost } from "@/utils/objects";
+import { RawPost, formatPost } from "@/libs/supabase/utils/map";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 

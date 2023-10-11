@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { providersList } from "@/utils/providersList";
-import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
+import { discoverMovies, discoverShows } from "@/libs/tmdb/api/discover";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
@@ -24,7 +24,8 @@ const ProviderScreen = () => {
 	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverMovies(pageParam, {
+			discoverMovies({
+				page: pageParam,
 				watch_region: regionCode,
 				with_watch_providers: id,
 			}),
@@ -34,7 +35,8 @@ const ProviderScreen = () => {
 	const showsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverTv(pageParam, {
+			discoverShows({
+				page: pageParam,
 				watch_region: regionCode,
 				with_watch_providers: id,
 			}),
@@ -78,7 +80,9 @@ const ProviderScreen = () => {
 									<PosterCard poster={item} size="md" mx={8} />
 								)}
 								ListFooterComponent={() =>
-									moviesQuery.hasNextPage && <PosterCardSkeleton size="md" mx={8} />
+									moviesQuery.hasNextPage && (
+										<PosterCardSkeleton size="md" mx={8} />
+									)
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -106,7 +110,9 @@ const ProviderScreen = () => {
 									<PosterCard poster={item} size="md" mx={8} />
 								)}
 								ListFooterComponent={() =>
-									showsQuery.hasNextPage && <PosterCardSkeleton size="md" mx={8} />
+									showsQuery.hasNextPage && (
+										<PosterCardSkeleton size="md" mx={8} />
+									)
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}

@@ -12,7 +12,7 @@ import {
 	useNavigation,
 } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { discoverMovies, discoverTv } from "@/libs/axios/api/discover";
+import { discoverMovies, discoverShows } from "@/libs/tmdb/api/discover";
 import { searchMovies, searchTv } from "@/libs/axios/api/search";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
@@ -34,12 +34,12 @@ const PostersPicker = () => {
 	const [value, setValue] = useState("");
 	const { push } = usePosters();
 
-	const discoverFn = type === "movie" ? discoverMovies : discoverTv;
+	const discoverFn = type === "movie" ? discoverMovies : discoverShows;
 	const searchFn = type === "movie" ? searchMovies : searchTv;
 
 	const initQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["discover", type],
-		queryFn: ({ pageParam = 1 }) => discoverFn(pageParam),
+		queryFn: ({ pageParam = 1 }) => discoverFn({ page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 

@@ -3,7 +3,7 @@ import { getSecret } from "@/libs/supabase/api/vault";
 
 let tmdb: TMDB | null = null;
 
-export async function getTMDBClient() {
+export async function getTmdbClient() {
 	if (!tmdb) {
 		const { data: token, error } = await getSecret("tmdb_access_token");
 
