@@ -2,7 +2,7 @@ import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { genresList } from "@/utils/genresList";
-import { discoverMovies, discoverShows } from "@/libs/tmdb/api/discover";
+import { discover } from "@/libs/tmdb/api/discover";
 import { Section } from "@/components/layouts";
 import { ErrorState } from "@/components/commons";
 import { Heading, VStack } from "@/components/ui";
@@ -24,7 +24,7 @@ const GenreScreen = () => {
 	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverMovies({ page: pageParam, with_genres: movieId }),
+			discover("movie", { page: pageParam, with_genres: movieId }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: movieId ? true : false,
 	});
@@ -32,7 +32,7 @@ const GenreScreen = () => {
 	const showsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverShows({ page: pageParam, with_genres: tvId }),
+			discover("tvShow", { page: pageParam, with_genres: tvId }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: tvId ? true : false,
 	});

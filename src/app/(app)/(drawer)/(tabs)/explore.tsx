@@ -1,10 +1,7 @@
 import { Dimensions, FlatList, ScrollView } from "react-native";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import {
-	getDayTrending,
-	getMediaTrending,
-	getPeopleTrending,
-} from "@/libs/axios/api/trending";
+import { TrendingPage, trending } from "@/libs/tmdb/api/trending";
+import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { genresList } from "@/utils/genresList";
 import { providersList } from "@/utils/providersList";
 import { ErrorState } from "@/components/commons";
@@ -14,48 +11,35 @@ import PosterCard from "@/features/poster-card";
 import PersonCard from "@/features/person-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
-import Person from "@/features/person-card/types/Person";
-import Poster from "@/features/poster-card/types/Poster";
-
-interface PostersPage {
-	posters: Poster[];
-	nextCursor: number;
-}
-
-interface PeoplePage {
-	people: Person[];
-	nextCursor: number;
-}
 
 const ExploreScreen = () => {
 	const { width } = Dimensions.get("screen");
 	const trendingSpacing = (width - 150) / 32;
 
-	const daylyTrendsQuery = useQuery<Poster[], Error>({
+	const dailyTrendsQuery = useQuery<TrendingPage<"all">, Error>({
 		queryKey: ["trending", "all"],
-		queryFn: getDayTrending,
+		queryFn: () => trending("all", "day"),
 	});
 
-	const moviesTrendsQuery = useInfiniteQuery<PostersPage, Error>({
+	const moviesTrendsQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["trending", "movie"],
-		queryFn: ({ pageParam = 1 }) => getMediaTrending(pageParam, "movie"),
+		queryFn: ({ pageParam = 1 }) => discover("movie", { page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const tvTrendsQuery = useInfiniteQuery<PostersPage, Error>({
+	const tvTrendsQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["trending", "tv"],
-		queryFn: ({ pageParam = 1 }) => getMediaTrending(pageParam, "tv"),
+		queryFn: ({ pageParam = 1 }) => discover("tvShow", { page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const peopleTrendsQuery = useInfiniteQuery<PeoplePage, Error>({
+	const peopleTrendsQuery = useQuery<TrendingPage<"person">, Error>({
 		queryKey: ["trending", "person"],
-		queryFn: ({ pageParam = 1 }) => getPeopleTrending(pageParam),
-		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		queryFn: () => trending("person", "week"),
 	});
 
-	if (daylyTrendsQuery.isError)
-		return <ErrorState retry={daylyTrendsQuery.refetch} />;
+	if (dailyTrendsQuery.isError)
+		return <ErrorState retry={dailyTrendsQuery.refetch} />;
 	if (moviesTrendsQuery.isError)
 		return <ErrorState retry={moviesTrendsQuery.refetch} />;
 	if (tvTrendsQuery.isError)
@@ -70,7 +54,7 @@ const ExploreScreen = () => {
 				paddingBottom: 64,
 			}}
 		>
-			{daylyTrendsQuery.isLoading ? (
+			{dailyTrendsQuery.isLoading ? (
 				<FlatList
 					data={Array.from({ length: 4 }, (_, i) => i)}
 					keyExtractor={(item) => item.toString()}
@@ -90,7 +74,7 @@ const ExploreScreen = () => {
 				/>
 			) : (
 				<FlatList
-					data={daylyTrendsQuery.data}
+					data={dailyTrendsQuery.data.trending}
 					keyExtractor={(p) => p.id.toString()}
 					renderItem={({ item: poster }) => (
 						<PosterCard
@@ -222,19 +206,13 @@ const ExploreScreen = () => {
 						/>
 					) : (
 						<FlatList
-							data={peopleTrendsQuery.data.pages.flatMap((page) => page.people)}
+							data={peopleTrendsQuery.data.trending}
 							keyExtractor={(p) => p.id.toString()}
 							renderItem={({ item: person }) => (
 								<PersonCard person={person} mx={8} />
 							)}
-							ListFooterComponent={() =>
-								peopleTrendsQuery.hasNextPage && (
-									<PersonCardSkeleton withRole={false} mx={8} />
-								)
-							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => peopleTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}

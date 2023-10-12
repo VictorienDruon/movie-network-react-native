@@ -113,7 +113,7 @@ const CreateScreen = () => {
 						<Link
 							href={{
 								pathname: "/post/create/posters-picker/[type]",
-								params: { type: "tv" },
+								params: { type: "tvShow" },
 							}}
 						>
 							<Icon name="Tv" color="primary-9" size={24} />

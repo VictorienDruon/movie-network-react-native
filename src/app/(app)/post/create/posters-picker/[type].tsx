@@ -12,38 +12,31 @@ import {
 	useNavigation,
 } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { discoverMovies, discoverShows } from "@/libs/tmdb/api/discover";
+import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { searchMovies, searchTv } from "@/libs/axios/api/search";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Box, Link, Title } from "@/components/ui";
 import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
-import Poster from "@/features/poster-card/types/Poster";
-
-interface PostersPage {
-	posters: Poster[];
-	nextCursor: number;
-}
 
 const PostersPicker = () => {
 	const navigation = useNavigation();
 	const { type } = useLocalSearchParams<{
-		type: "movie" | "tv";
+		type: "movie" | "tvShow";
 	}>();
 	const [value, setValue] = useState("");
 	const { push } = usePosters();
 
-	const discoverFn = type === "movie" ? discoverMovies : discoverShows;
 	const searchFn = type === "movie" ? searchMovies : searchTv;
 
-	const initQuery = useInfiniteQuery<PostersPage, Error>({
+	const initQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["discover", type],
-		queryFn: ({ pageParam = 1 }) => discoverFn({ page: pageParam }),
+		queryFn: ({ pageParam = 1 }) => discover(type, { page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const query = useInfiniteQuery<PostersPage, Error>({
+	const query = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["search", type, value],
 		queryFn: ({ pageParam = 1 }) => searchFn(value, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,

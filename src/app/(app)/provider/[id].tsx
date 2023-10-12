@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { providersList } from "@/utils/providersList";
-import { discoverMovies, discoverShows } from "@/libs/tmdb/api/discover";
+import { discover } from "@/libs/tmdb/api/discover";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
@@ -24,7 +24,7 @@ const ProviderScreen = () => {
 	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverMovies({
+			discover("movie", {
 				page: pageParam,
 				watch_region: regionCode,
 				with_watch_providers: id,
@@ -35,7 +35,7 @@ const ProviderScreen = () => {
 	const showsQuery = useInfiniteQuery<PostersPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
-			discoverShows({
+			discover("tvShow", {
 				page: pageParam,
 				watch_region: regionCode,
 				with_watch_providers: id,
