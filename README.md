@@ -4,7 +4,7 @@ The Movie Network is a dynamic application that empowers users to explore, share
 
 ## Introduction
 
-The Movie Network is an innovative platform that allows users to:
+The Movie Network is an application that allows users to:
 
 - Discover a vast library of movies and TV shows.
 - Share their favorite content with friends.
@@ -20,7 +20,6 @@ The application is built with a focus on user engagement and a seamless experien
 - **Social Features**: Share your favorite movies and TV shows with friends and fellow movie enthusiasts.
 
 - **Save for Later**: Save movies and TV shows to your personal collection for easy access later.
-
 
 ## Technical Stack
 
