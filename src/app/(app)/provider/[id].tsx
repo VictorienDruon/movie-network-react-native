@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { providersList } from "@/utils/providersList";
-import { discover } from "@/libs/tmdb/api/discover";
+import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
@@ -21,7 +21,7 @@ const ProviderScreen = () => {
 	const { regionCode } = getLocales()[0];
 	const { name } = providersList.find((provider) => provider.id === id);
 
-	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
+	const moviesQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
 			discover("movie", {
@@ -32,7 +32,7 @@ const ProviderScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const showsQuery = useInfiniteQuery<PostersPage, Error>({
+	const showsQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
 			discover("tvShow", {
@@ -74,7 +74,7 @@ const ProviderScreen = () => {
 							/>
 						) : (
 							<FlatList
-								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
+								data={moviesQuery.data.pages.flatMap((page) => page.results)}
 								keyExtractor={(m) => "movie" + m.id.toString()}
 								renderItem={({ item }) => (
 									<PosterCard poster={item} size="md" mx={8} />
@@ -104,7 +104,7 @@ const ProviderScreen = () => {
 							/>
 						) : (
 							<FlatList
-								data={showsQuery.data.pages.flatMap((page) => page.posters)}
+								data={showsQuery.data.pages.flatMap((page) => page.results)}
 								keyExtractor={(s) => "show" + s.id.toString()}
 								renderItem={({ item }) => (
 									<PosterCard poster={item} size="md" mx={8} />

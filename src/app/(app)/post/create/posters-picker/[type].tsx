@@ -13,22 +13,22 @@ import {
 } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
-import { searchMovies, searchTv } from "@/libs/axios/api/search";
+import { SearchPage, search } from "@/libs/tmdb/api/search";
 import { usePosters } from "@/providers/posters";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Box, Link, Title } from "@/components/ui";
 import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 
+type Type = "movie" | "tvShow";
+type PluralType = "movies" | "tvShows";
+
 const PostersPicker = () => {
 	const navigation = useNavigation();
-	const { type } = useLocalSearchParams<{
-		type: "movie" | "tvShow";
-	}>();
+	const { type } = useLocalSearchParams<{ type: Type }>();
+	const pluralType: PluralType = `${type}s`;
 	const [value, setValue] = useState("");
 	const { push } = usePosters();
-
-	const searchFn = type === "movie" ? searchMovies : searchTv;
 
 	const initQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["discover", type],
@@ -36,9 +36,10 @@ const PostersPicker = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const query = useInfiniteQuery<DiscoverPage, Error>({
+	const query = useInfiniteQuery<SearchPage<PluralType>, Error>({
 		queryKey: ["search", type, value],
-		queryFn: ({ pageParam = 1 }) => searchFn(value, pageParam),
+		queryFn: ({ pageParam = 1 }) =>
+			search(pluralType, { query: value, page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
@@ -107,7 +108,7 @@ const PostersPicker = () => {
 				/>
 			) : (
 				<FlatList
-					data={data.pages.flatMap((page) => page.posters)}
+					data={data.pages.flatMap((page) => page.results)}
 					keyExtractor={(poster) => poster.id.toString()}
 					renderItem={({ item: poster }) => (
 						<PosterCard poster={poster} action="select" />

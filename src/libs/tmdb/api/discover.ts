@@ -5,18 +5,14 @@ import { isValidPoster } from "../utils/filter";
 import { formatPoster } from "../utils/map";
 import { getNextCursor } from "../utils/pagination";
 
-type Options<T extends keyof DiscoverEndpoint> = Parameters<
-	DiscoverEndpoint[T]
->[0];
-
 export interface DiscoverPage {
-	posters: Poster[];
-	nextCursor: number;
+	results: Poster[];
+	nextCursor?: number;
 }
 
 export async function discover<T extends keyof DiscoverEndpoint>(
 	endpoint: T,
-	options?: Options<T>
+	options?: Parameters<DiscoverEndpoint[T]>[0]
 ): Promise<DiscoverPage> {
 	try {
 		const tmdb = await getTmdbClient();
@@ -25,11 +21,11 @@ export async function discover<T extends keyof DiscoverEndpoint>(
 			options
 		);
 
-		const posters = results.filter(isValidPoster).map(formatPoster);
+		const formattedResults = results.filter(isValidPoster).map(formatPoster);
 
 		const nextCursor = getNextCursor(page, total_pages);
 
-		return { posters, nextCursor };
+		return { results: formattedResults, nextCursor };
 	} catch (error) {
 		throw error;
 	}

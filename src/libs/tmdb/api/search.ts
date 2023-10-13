@@ -1,34 +1,31 @@
-import { TimeWindow, TrendingMediaType } from "tmdb-ts";
+import { SearchEndpoint } from "tmdb-ts/dist/endpoints";
 import Poster from "@/features/poster-card/types/Poster";
 import Person from "@/features/person-card/types/Person";
 import { getTmdbClient } from "..";
-import { getNextCursor } from "../utils/pagination";
 import { isValidPerson, isValidPoster } from "../utils/filter";
 import { formatPerson, formatPoster } from "../utils/map";
+import { getNextCursor } from "../utils/pagination";
 
-type Results<T extends TrendingMediaType> = T extends "person"
+type Results<T extends keyof SearchEndpoint> = T extends "people"
 	? Person[]
 	: Poster[];
 
-export type TrendingPage<T extends TrendingMediaType> = {
+export type SearchPage<T extends keyof SearchEndpoint> = {
 	results: Results<T>;
 	nextCursor: number;
 };
 
-export async function trending<T extends TrendingMediaType>(
-	mediaType: TrendingMediaType,
-	timeWindow: TimeWindow
-): Promise<TrendingPage<T>> {
+export async function search<T extends keyof SearchEndpoint>(
+	endpoint: T,
+	options: Parameters<SearchEndpoint[T]>[0]
+): Promise<SearchPage<T>> {
 	try {
-		const tmdb = await getTmdbClient();
+		const tdmb = await getTmdbClient();
 
-		const { results, page, total_pages } = await tmdb.trending.trending(
-			mediaType,
-			timeWindow
-		);
+		const { results, page, total_pages } = await tdmb.search[endpoint](options);
 
 		const formattedResults = (
-			mediaType === "person"
+			endpoint === "people"
 				? results.filter(isValidPerson).map(formatPerson)
 				: results.filter(isValidPoster).map(formatPoster)
 		) as Results<T>;

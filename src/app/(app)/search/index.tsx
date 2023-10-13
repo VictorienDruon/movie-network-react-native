@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { useNavigation } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { searchMovies, searchPeople, searchTv } from "@/libs/axios/api/search";
+import { SearchPage, search as searchTmdb } from "@/libs/tmdb/api/search";
 import { searchProfiles } from "@/libs/supabase/api/profiles";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
@@ -17,39 +17,36 @@ import PersonCard from "@/features/person-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
 import Person from "@/features/person-card/types/Person";
-import Poster from "@/features/poster-card/types/Poster";
 
 const SearchScreen = () => {
 	const navigation = useNavigation();
 	const [value, setValue] = useState("");
-
-	interface PostersPage {
-		posters: Poster[];
-		nextCursor: number;
-	}
 
 	interface PeoplePage {
 		people: Person[];
 		nextCursor: number;
 	}
 
-	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
+	const moviesQuery = useInfiniteQuery<SearchPage<"movies">, Error>({
 		queryKey: ["search", "movies", value],
-		queryFn: ({ pageParam = 1 }) => searchMovies(value, pageParam),
+		queryFn: ({ pageParam = 1 }) =>
+			searchTmdb("movies", { query: value, page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
 
-	const tvQuery = useInfiniteQuery<PostersPage, Error>({
+	const tvQuery = useInfiniteQuery<SearchPage<"tvShows">, Error>({
 		queryKey: ["search", "tv", value],
-		queryFn: ({ pageParam = 1 }) => searchTv(value, pageParam),
+		queryFn: ({ pageParam = 1 }) =>
+			searchTmdb("tvShows", { query: value, page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
 
-	const peopleQuery = useInfiniteQuery<PeoplePage, Error>({
+	const peopleQuery = useInfiniteQuery<SearchPage<"people">, Error>({
 		queryKey: ["search", "people", value],
-		queryFn: ({ pageParam = 1 }) => searchPeople(value, pageParam),
+		queryFn: ({ pageParam = 1 }) =>
+			searchTmdb("people", { query: value, page: pageParam }),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
@@ -93,7 +90,7 @@ const SearchScreen = () => {
 		>
 			<VStack space={24}>
 				{(moviesQuery.isLoading ||
-					moviesQuery.data.pages[0].posters.length > 0) && (
+					moviesQuery.data.pages[0].results.length > 0) && (
 					<Section title="Movies" size="lg" flatlist>
 						{moviesQuery.isLoading ? (
 							<FlatList
@@ -105,7 +102,7 @@ const SearchScreen = () => {
 							/>
 						) : (
 							<FlatList
-								data={moviesQuery.data.pages.flatMap((page) => page.posters)}
+								data={moviesQuery.data.pages.flatMap((page) => page.results)}
 								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
 									<PosterCard
@@ -126,7 +123,7 @@ const SearchScreen = () => {
 					</Section>
 				)}
 
-				{(tvQuery.isLoading || tvQuery.data.pages[0].posters.length > 0) && (
+				{(tvQuery.isLoading || tvQuery.data.pages[0].results.length > 0) && (
 					<Section title="Shows" size="lg" flatlist>
 						{tvQuery.isLoading ? (
 							<FlatList
@@ -138,7 +135,7 @@ const SearchScreen = () => {
 							/>
 						) : (
 							<FlatList
-								data={tvQuery.data.pages.flatMap((page) => page.posters)}
+								data={tvQuery.data.pages.flatMap((page) => page.results)}
 								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: poster }) => (
 									<PosterCard
@@ -160,19 +157,21 @@ const SearchScreen = () => {
 				)}
 
 				{(peopleQuery.isLoading ||
-					peopleQuery.data.pages[0].people.length > 0) && (
+					peopleQuery.data.pages[0].results.length > 0) && (
 					<Section title="People" size="lg" flatlist>
 						{peopleQuery.isLoading ? (
 							<FlatList
 								data={Array.from({ length: 4 }, (_, i) => i)}
 								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PersonCardSkeleton withRole={false} mx={4} />}
+								renderItem={() => (
+									<PersonCardSkeleton withRole={false} mx={4} />
+								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								horizontal={true}
 							/>
 						) : (
 							<FlatList
-								data={peopleQuery.data.pages.flatMap((page) => page.people)}
+								data={peopleQuery.data.pages.flatMap((page) => page.results)}
 								keyExtractor={(p) => p.id.toString()}
 								renderItem={({ item: person }) => (
 									<PersonCard person={person} mx={8} />
@@ -198,7 +197,9 @@ const SearchScreen = () => {
 							<FlatList
 								data={Array.from({ length: 4 }, (_, i) => i)}
 								keyExtractor={(item) => item.toString()}
-								renderItem={() => <PersonCardSkeleton withRole={false} mx={4} />}
+								renderItem={() => (
+									<PersonCardSkeleton withRole={false} mx={4} />
+								)}
 								contentContainerStyle={{ paddingHorizontal: 12 }}
 								horizontal={true}
 							/>

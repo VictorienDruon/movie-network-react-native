@@ -2,18 +2,12 @@ import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { genresList } from "@/utils/genresList";
-import { discover } from "@/libs/tmdb/api/discover";
+import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { Section } from "@/components/layouts";
 import { ErrorState } from "@/components/commons";
 import { Heading, VStack } from "@/components/ui";
 import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
-import Poster from "@/features/poster-card/types/Poster";
-
-interface PostersPage {
-	posters: Poster[];
-	nextCursor: number;
-}
 
 const GenreScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -21,7 +15,7 @@ const GenreScreen = () => {
 		(genre) => genre.movieId === id || genre.tvId === id
 	);
 
-	const moviesQuery = useInfiniteQuery<PostersPage, Error>({
+	const moviesQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["genre", "movies", id],
 		queryFn: ({ pageParam = 1 }) =>
 			discover("movie", { page: pageParam, with_genres: movieId }),
@@ -29,7 +23,7 @@ const GenreScreen = () => {
 		enabled: movieId ? true : false,
 	});
 
-	const showsQuery = useInfiniteQuery<PostersPage, Error>({
+	const showsQuery = useInfiniteQuery<DiscoverPage, Error>({
 		queryKey: ["genre", "shows", id],
 		queryFn: ({ pageParam = 1 }) =>
 			discover("tvShow", { page: pageParam, with_genres: tvId }),
@@ -69,7 +63,7 @@ const GenreScreen = () => {
 								/>
 							) : (
 								<FlatList
-									data={moviesQuery.data.pages.flatMap((page) => page.posters)}
+									data={moviesQuery.data.pages.flatMap((page) => page.results)}
 									keyExtractor={(m) => "movie" + m.id.toString()}
 									renderItem={({ item }) => (
 										<PosterCard poster={item} size="md" mx={8} />
@@ -101,7 +95,7 @@ const GenreScreen = () => {
 								/>
 							) : (
 								<FlatList
-									data={showsQuery.data.pages.flatMap((page) => page.posters)}
+									data={showsQuery.data.pages.flatMap((page) => page.results)}
 									keyExtractor={(s) => "show" + s.id.toString()}
 									renderItem={({ item }) => (
 										<PosterCard poster={item} size="md" mx={8} />

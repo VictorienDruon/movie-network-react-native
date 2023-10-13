@@ -11,5 +11,13 @@ export function isValidPoster(poster: Movie | TV, index: number) {
 }
 
 export function isValidPerson(person: Person, index: number) {
-	return index < MAX_POSTERS && person.profile_path !== null;
+	const minimumPopularity = 10;
+	const relevantDepartment = ["Acting", "Directing", "Writing"];
+
+	return (
+		index < MAX_POSTERS &&
+		person.profile_path !== null &&
+		relevantDepartment.includes(person.known_for_department) &&
+		person.popularity > minimumPopularity
+	);
 }

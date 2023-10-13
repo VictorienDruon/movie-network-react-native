@@ -13,7 +13,10 @@ export interface Collection {
 	parts: Poster[];
 }
 
-export async function collection(id: string, options?: LanguageOption) {
+export async function collection(
+	id: string,
+	options?: LanguageOption
+): Promise<Collection> {
 	try {
 		const tmdb = await getTmdbClient();
 
