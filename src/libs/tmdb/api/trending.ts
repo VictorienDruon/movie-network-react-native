@@ -1,10 +1,10 @@
 import { TimeWindow, TrendingMediaType } from "tmdb-ts";
+import Poster from "@/features/poster-card/types/Poster";
+import Person from "@/features/person-card/types/Person";
 import { getTmdbClient } from "..";
 import { getNextCursor } from "../utils/pagination";
 import { isValidPerson, isValidPoster } from "../utils/filter";
 import { formatPerson, formatPoster } from "../utils/map";
-import Poster from "@/features/poster-card/types/Poster";
-import Person from "@/features/person-card/types/Person";
 
 type Trending<T extends TrendingMediaType> = T extends "person"
 	? Person[]

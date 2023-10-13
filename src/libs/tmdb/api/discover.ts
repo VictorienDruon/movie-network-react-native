@@ -1,9 +1,9 @@
 import { DiscoverEndpoint } from "tmdb-ts/dist/endpoints";
+import Poster from "@/features/poster-card/types/Poster";
 import { getTmdbClient } from "..";
 import { isValidPoster } from "../utils/filter";
 import { formatPoster } from "../utils/map";
 import { getNextCursor } from "../utils/pagination";
-import Poster from "@/features/poster-card/types/Poster";
 
 type Options<T extends keyof DiscoverEndpoint> = Parameters<
 	DiscoverEndpoint[T]
