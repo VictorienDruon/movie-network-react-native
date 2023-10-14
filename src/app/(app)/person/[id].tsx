@@ -1,8 +1,7 @@
 import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPerson } from "@/libs/axios/api/person";
-import Person from "@/libs/axios/types/Person";
+import { PersonDetails, getPerson } from "@/libs/tmdb/api/person";
 import { getDateWithYear } from "@/utils/dates";
 import { ErrorState } from "@/components/commons";
 import { Information, Section } from "@/components/layouts";
@@ -13,7 +12,7 @@ import PosterCard from "@/features/poster-card";
 const PersonScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<Person, Error>({
+	const query = useQuery<PersonDetails, Error>({
 		queryKey: ["person", id],
 		queryFn: () => getPerson(id),
 	});
@@ -24,16 +23,16 @@ const PersonScreen = () => {
 
 	const {
 		name,
+		department,
+		birthday,
+		deathday,
+		placeOfBirth: placeOfBitrh,
+		biography,
 		movies,
 		shows,
 		directed,
 		written,
 		composed,
-		biography,
-		place_of_birth,
-		birthday,
-		deathday,
-		department,
 	} = query.data;
 
 	return (
@@ -105,7 +104,7 @@ const PersonScreen = () => {
 					)}
 
 					{composed.length > 0 && (
-						<Section title="Music" size="lg" flatlist>
+						<Section title="Music Composer" size="lg" flatlist>
 							<FlatList
 								data={composed}
 								keyExtractor={(c) => "composed" + c.id.toString()}
@@ -128,8 +127,8 @@ const PersonScreen = () => {
 							<Information title="Department" content={department} />
 						)}
 
-						{place_of_birth?.length > 0 && (
-							<Information title="Place of Birth" content={place_of_birth} />
+						{placeOfBitrh?.length > 0 && (
+							<Information title="Place of Birth" content={placeOfBitrh} />
 						)}
 
 						{birthday?.length > 0 && (

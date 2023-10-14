@@ -59,53 +59,52 @@ export async function getMovie(id: string): Promise<Media> {
 	try {
 		const tmdb = await getTmdbClient();
 
-		const result = await tmdb.movies.details(parseInt(id), appendToResponse);
+		const movie = await tmdb.movies.details(parseInt(id), appendToResponse);
 
-		const video = result.videos.results.findLast(isValidVideo);
+		const video = movie.videos.results.findLast(isValidVideo);
 
-		const recommendations = result.recommendations.results
+		const recommendations = movie.recommendations.results
 			.filter(isValidPoster)
 			.map(formatPoster);
 
-		const cast = result.credits.cast.filter(isValidPerson).map(formatPerson);
+		const cast = movie.credits.cast.filter(isValidPerson).map(formatPerson);
 
-		const crew = result.credits.crew.filter(isValidPerson).map(formatPerson);
+		const crew = movie.credits.crew.filter(isValidPerson).map(formatPerson);
 
-		const providers = result["watch/providers"].results;
+		const providers = movie["watch/providers"].results;
 
 		const regions = Object.keys(providers).map(formatRegion);
 
 		const collection =
-			result.belongs_to_collection &&
-			formatPoster(result.belongs_to_collection);
+			movie.belongs_to_collection && formatPoster(movie.belongs_to_collection);
 
-		const companiesNames = result.production_companies.flatMap(extractName);
+		const companiesNames = movie.production_companies.flatMap(extractName);
 
-		const countriesNames = result.production_countries.flatMap(extractName);
+		const countriesNames = movie.production_countries.flatMap(extractName);
 
-		const languagesNames = result.spoken_languages.flatMap(extractName);
+		const languagesNames = movie.spoken_languages.flatMap(extractName);
 
 		return {
-			id: result.id,
-			title: result.title,
-			date: result.release_date,
-			overview: result.overview,
-			posterPath: result.poster_path,
-			backdropPath: result.backdrop_path,
+			id: movie.id,
+			title: movie.title,
+			date: movie.release_date,
+			overview: movie.overview,
+			posterPath: movie.poster_path,
+			backdropPath: movie.backdrop_path,
 			videoKey: video && video.key,
-			genres: result.genres,
+			genres: movie.genres,
 			recommendations,
 			cast,
 			crew,
 			providers,
 			regions,
-			runtime: result.runtime,
+			runtime: movie.runtime,
 			collection,
 			companiesNames,
 			countriesNames,
 			languagesNames,
-			budget: result.budget,
-			revenue: result.revenue,
+			budget: movie.budget,
+			revenue: movie.revenue,
 		};
 	} catch (error) {
 		throw error;
@@ -123,43 +122,43 @@ export async function getShow(id: string): Promise<Media> {
 	try {
 		const tmdb = await getTmdbClient();
 
-		const result = await tmdb.tvShows.details(parseInt(id), appendToResponse);
+		const show = await tmdb.tvShows.details(parseInt(id), appendToResponse);
 
-		const video = result.videos.results.findLast(isValidVideo);
+		const video = show.videos.results.findLast(isValidVideo);
 
-		const recommendations = result.recommendations.results
+		const recommendations = show.recommendations.results
 			.filter(isValidPoster)
 			.map(formatPoster);
 
-		const cast = result.aggregate_credits.cast
+		const cast = show.aggregate_credits.cast
 			.filter(isValidPerson)
 			.map(formatPerson);
 
-		const crew = result.aggregate_credits.crew
+		const crew = show.aggregate_credits.crew
 			.filter(isValidPerson)
 			.map(formatPerson);
 
-		const providers = result["watch/providers"].results;
+		const providers = show["watch/providers"].results;
 
 		const regions = Object.keys(providers).map(formatRegion);
 
-		const createdBy = result.created_by.map(extractName);
+		const createdBy = show.created_by.map(extractName);
 
 		const lastEpisodeToAir = {
-			seasonNumber: result.last_episode_to_air.season_number,
-			episodeNumber: result.last_episode_to_air.episode_number,
-			name: result.last_episode_to_air.name,
+			seasonNumber: show.last_episode_to_air.season_number,
+			episodeNumber: show.last_episode_to_air.episode_number,
+			name: show.last_episode_to_air.name,
 		};
 
 		return {
-			id: result.id,
-			title: result.name,
-			date: result.first_air_date,
-			overview: result.overview,
-			posterPath: result.poster_path,
-			backdropPath: result.backdrop_path,
+			id: show.id,
+			title: show.name,
+			date: show.first_air_date,
+			overview: show.overview,
+			posterPath: show.poster_path,
+			backdropPath: show.backdrop_path,
 			videoKey: video && video.key,
-			genres: result.genres,
+			genres: show.genres,
 			recommendations,
 			cast,
 			crew,
@@ -167,7 +166,7 @@ export async function getShow(id: string): Promise<Media> {
 			regions,
 			createdBy,
 			lastEpisodeToAir,
-			inProduction: result.in_production,
+			inProduction: show.in_production,
 		};
 	} catch (error) {
 		throw error;

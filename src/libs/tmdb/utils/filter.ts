@@ -4,7 +4,7 @@ const MAX_ITEMS = 18;
 
 export function isValidPoster(
 	poster: Movie | TV | Recommendation,
-	index: number
+	index: number = 0
 ) {
 	return (
 		index < MAX_ITEMS &&
