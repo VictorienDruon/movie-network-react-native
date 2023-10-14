@@ -1,5 +1,6 @@
 import { AnimatableStringValue, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
+import { tmdbConfig } from "@/libs/tmdb";
 import { usePosters } from "@/providers/posters";
 import {
 	VStack,
@@ -71,7 +72,7 @@ const PosterCard = ({
 		>
 			<TouchableOpacity onPress={handlePress}>
 				<Image
-					src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}${
+					src={`${tmdbConfig.links.image}${
 						imagesResolution[orientation][size]
 					}${orientation === "vertical" ? poster_path : backdrop_path}`}
 					alt={`${title} poster`}

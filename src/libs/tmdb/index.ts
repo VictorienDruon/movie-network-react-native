@@ -14,3 +14,12 @@ export async function getTmdbClient() {
 
 	return tmdb;
 }
+
+export const tmdbConfig = {
+	links: {
+		site: "https://www.themoviedb.org",
+		image: "http://image.tmdb.org/t/p/",
+	},
+};
+
+export type TmdbConfig = typeof tmdbConfig;

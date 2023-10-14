@@ -1,5 +1,6 @@
 import { Dimensions, FlatList, ScrollView } from "react-native";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { tmdbConfig } from "@/libs/tmdb";
 import { TrendsPage, getTrends } from "@/libs/tmdb/api/trending";
 import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { genresList } from "@/utils/genresList";
@@ -106,7 +107,7 @@ const ExploreScreen = () => {
 							}}
 						>
 							<Image
-								src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w780/${genre.backdrop_path}`}
+								src={`${tmdbConfig.links.image}/w780/${genre.backdrop_path}`}
 								alt={genre.name}
 								width={140}
 								aspectRatio={16 / 9}
@@ -230,7 +231,7 @@ const ExploreScreen = () => {
 								}}
 							>
 								<Image
-									src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500/${provider.logo_path}`}
+									src={`${tmdbConfig.links.image}/w500/${provider.logo_path}`}
 									alt={provider.name}
 									width={64}
 									height={64}

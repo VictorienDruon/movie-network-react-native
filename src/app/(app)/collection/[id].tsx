@@ -1,6 +1,7 @@
 import { FlatList } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
+import { tmdbConfig } from "@/libs/tmdb";
 import { Collection, getCollection } from "@/libs/tmdb/api/collection";
 import { ErrorState } from "@/components/commons";
 import { CollectionSkeleton } from "@/components/skeletons";
@@ -31,7 +32,7 @@ const CollectionScreen = () => {
 				ListHeaderComponent={() => (
 					<VStack alignItems="center" space={16}>
 						<Image
-							src={`${process.env.EXPO_PUBLIC_TMDB_IMAGE_URL}/w500${backdrop_path}`}
+							src={`${tmdbConfig.links.image}/w500${backdrop_path}`}
 							alt={name}
 							width="100%"
 							aspectRatio={16 / 9}

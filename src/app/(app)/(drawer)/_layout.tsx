@@ -1,5 +1,6 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Drawer } from "expo-router/drawer";
+import { appConfig } from "@/config/app";
 import { useSession } from "@/providers/session";
 import {
 	Avatar,
@@ -81,23 +82,19 @@ const DrawerLayout = () => {
 							borderTopWidth={0.5}
 							borderColor="neutral-6"
 						>
-							<Link href={process.env.EXPO_PUBLIC_WEBSITE_URL}>
+							<Link href={appConfig.links.site}>
 								<Title fontWeight="500">About</Title>
 							</Link>
 
-							<Link
-								href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/terms-of-service"}
-							>
+							<Link href={appConfig.links.site + "/terms-of-service"}>
 								<Title fontWeight="500">Terms of Service</Title>
 							</Link>
 
-							<Link
-								href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/privacy-policy"}
-							>
+							<Link href={appConfig.links.site + "/privacy-policy"}>
 								<Title fontWeight="500">Privacy Policy</Title>
 							</Link>
 
-							<Link href={process.env.EXPO_PUBLIC_WEBSITE_URL + "/credits"}>
+							<Link href={appConfig.links.site + "/credits"}>
 								<Title fontWeight="500">Credits</Title>
 							</Link>
 						</VStack>
