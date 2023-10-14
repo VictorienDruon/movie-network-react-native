@@ -4,7 +4,6 @@ import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe";
 import useFocus from "@/hooks/useFocus";
 import { Box } from "./box";
 import { Image } from "./image";
-import { LinearGradient } from "./linear-gradient";
 
 interface VideoProps {
 	videoKey: string;
@@ -24,7 +23,7 @@ export const Video = ({ videoKey, backdropPath, posterPath }: VideoProps) => {
 
 	return (
 		<Box zIndex={1}>
-			{videoKey.length > 0 && (
+			{videoKey && (
 				<YoutubePlayer
 					videoId={videoKey}
 					play={isFocused}

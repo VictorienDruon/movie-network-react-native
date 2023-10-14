@@ -1,7 +1,7 @@
 interface Region {
 	name: string;
 	code: string;
-	flag: string;
+	flagUrl: string;
 }
 
 export default Region;

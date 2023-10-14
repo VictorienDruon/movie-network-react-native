@@ -3,10 +3,8 @@ import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
 import { useQuery } from "@tanstack/react-query";
-import { getCountry } from "iso-3166-1-alpha-2";
 import { formatDuration } from "@/utils/time";
-import { getMovie, getTv } from "@/libs/axios/api/media";
-import Media from "@/libs/axios/types/Media";
+import { Media, getMovie, getShow } from "@/libs/tmdb/api/media";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { pluralize } from "@/utils/texts";
 import { formatMoney } from "@/utils/numbers";
@@ -41,57 +39,52 @@ const MediaScreen = () => {
 	const providersRef = useRef(null);
 	const regionsRef = useRef(null);
 
-	const [regions, setRegions] = useState<Region[]>(null);
 	const [selectedRegion, setSelectedRegion] = useState<Region>(null);
-	const { regionCode: userRegion } = getLocales()[0];
+	const { regionCode } = getLocales()[0];
 
-	const getMedia = type === "movie" ? getMovie : getTv;
+	const media = type === "movie" ? getMovie : getShow;
 
 	const query = useQuery<Media, Error>({
 		queryKey: ["media", type, id],
-		queryFn: () => getMedia(id),
+		queryFn: () => media(id),
 	});
 
 	useEffect(() => {
-		if (query.isFetched) {
-			const regions = Object.keys(query.data.providers).map((code) => ({
-				name: getCountry(code),
-				code,
-				flag: `${process.env.EXPO_PUBLIC_FLAG_IMAGE_URL}${code}.svg`,
-			}));
+		if (query.data) {
 			const selectedRegion =
-				regions.find((region) => region.code === userRegion) || regions[0];
-			setRegions(regions);
+				query.data.regions.find((region) => region.code === regionCode) ||
+				query.data.regions[0];
 			setSelectedRegion(selectedRegion);
 		}
-	}, [query.isFetched]);
+	}, [query.data]);
 
-	if (query.isLoading || selectedRegion === null) return <MediaSkeleton />;
+	if (query.isLoading) return <MediaSkeleton />;
 
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	const {
 		title,
-		poster_path,
-		backdrop_path,
+		date,
 		overview,
-		release_date,
-		runtime,
+		posterPath,
+		backdropPath,
+		videoKey,
 		genres,
-		companies,
-		countries,
-		languages,
-		created_by,
-		budget,
-		revenue,
-		in_production,
-		last_episode_to_air,
-		collection,
+		recommendations,
 		cast,
 		crew,
-		recommendations,
-		videoKey,
 		providers,
+		regions,
+		runtime,
+		collection,
+		companiesNames,
+		countriesNames,
+		languagesNames,
+		budget,
+		revenue,
+		createdBy,
+		lastEpisodeToAir,
+		inProduction,
 	} = query.data;
 
 	return (
@@ -100,8 +93,8 @@ const MediaScreen = () => {
 
 			<Video
 				videoKey={videoKey}
-				backdropPath={backdrop_path}
-				posterPath={poster_path}
+				backdropPath={backdropPath}
+				posterPath={posterPath}
 			/>
 
 			<ScrollView
@@ -114,16 +107,17 @@ const MediaScreen = () => {
 				<VStack space={24}>
 					<Section title={title} size="lg" space={4}>
 						<HStack space={8}>
-							{release_date?.length > 0 && (
-								<Subtitle>{getYear(new Date(release_date))}</Subtitle>
+							{date?.length > 0 && (
+								<Subtitle>{getYear(new Date(date))}</Subtitle>
 							)}
-							{release_date?.length > 0 &&
-								(runtime > 0 || last_episode_to_air) && <Subtitle>•</Subtitle>}
+							{date?.length > 0 && (runtime > 0 || lastEpisodeToAir) && (
+								<Subtitle>•</Subtitle>
+							)}
 							{type === "movie"
 								? runtime > 0 && <Subtitle>{formatDuration(runtime)}</Subtitle>
-								: last_episode_to_air && (
-									<Subtitle>{`${last_episode_to_air.season_number} seasons`}</Subtitle>
-								)}
+								: lastEpisodeToAir && (
+										<Subtitle>{`${lastEpisodeToAir.seasonNumber} seasons`}</Subtitle>
+								  )}
 						</HStack>
 					</Section>
 
@@ -219,35 +213,35 @@ const MediaScreen = () => {
 					)}
 
 					<Section title="Informations">
-						{companies?.length > 0 && (
+						{companiesNames?.length > 0 && (
 							<Information
-								title={pluralize(companies.length, "Studio")}
-								content={companies.join(", ")}
+								title={pluralize(companiesNames.length, "Studio")}
+								content={companiesNames.join(", ")}
 							/>
 						)}
 
-						{countries?.length > 0 && (
+						{countriesNames?.length > 0 && (
 							<Information
-								title={pluralize(countries.length, "Region")}
-								content={countries.join(", ")}
+								title={pluralize(countriesNames.length, "Region")}
+								content={countriesNames.join(", ")}
 							/>
 						)}
 
-						{created_by?.length > 0 && (
-							<Information title="Created By" content={created_by.join(", ")} />
+						{createdBy?.length > 0 && (
+							<Information title="Created By" content={createdBy.join(", ")} />
 						)}
 
-						{release_date?.length > 0 && (
+						{date?.length > 0 && (
 							<Information
 								title={type === "movie" ? "Release Date" : "First Air Date"}
-								content={getDateWithYear(new Date(release_date))}
+								content={getDateWithYear(new Date(date))}
 							/>
 						)}
 
-						{languages?.length > 0 && (
+						{languagesNames?.length > 0 && (
 							<Information
-								title={pluralize(languages.length, "Language")}
-								content={languages.join(", ")}
+								title={pluralize(languagesNames.length, "Language")}
+								content={languagesNames.join(", ")}
 							/>
 						)}
 
@@ -258,17 +252,17 @@ const MediaScreen = () => {
 							<Information title="Revenue" content={formatMoney(revenue)} />
 						)}
 
-						{last_episode_to_air && (
+						{lastEpisodeToAir && (
 							<Information
 								title="Last Episode to Air"
-								content={`S${last_episode_to_air.season_number}E${last_episode_to_air.episode_number} - ${last_episode_to_air.name}`}
+								content={`S${lastEpisodeToAir.seasonNumber}E${lastEpisodeToAir.episodeNumber} - ${lastEpisodeToAir.name}`}
 							/>
 						)}
 
 						{type === "tv" && (
 							<Information
 								title="In Production"
-								content={in_production ? "Yes" : "No"}
+								content={inProduction ? "Yes" : "No"}
 							/>
 						)}
 					</Section>
@@ -280,7 +274,7 @@ const MediaScreen = () => {
 					<VStack space={24}>
 						<HStack alignItems="center" space={16} px={16}>
 							<Avatar
-								src={selectedRegion.flag}
+								src={selectedRegion.flagUrl}
 								size={28}
 								alt={selectedRegion.name}
 							/>
@@ -300,26 +294,32 @@ const MediaScreen = () => {
 							</Button>
 						</HStack>
 
-
-						<VStack space={16}><Section title="Streaming" flatlist>
-							<FlatList
-								data={providers[selectedRegion.code].flatrate}
-								keyExtractor={(p) => p.provider_id.toString()}
-								renderItem={({ item: provider }) => (
-									<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
-								)}
-								contentContainerStyle={{ paddingHorizontal: 8 }}
-								showsHorizontalScrollIndicator={false}
-								horizontal
-							/>
-						</Section>
+						<VStack space={16}>
+							<Section title="Streaming" flatlist>
+								<FlatList
+									data={providers[selectedRegion.code].flatrate}
+									keyExtractor={(p) => p.provider_id.toString()}
+									renderItem={({ item: provider }) => (
+										<ProviderIcon
+											link={providers[selectedRegion.code].link}
+											provider={provider}
+										/>
+									)}
+									contentContainerStyle={{ paddingHorizontal: 8 }}
+									showsHorizontalScrollIndicator={false}
+									horizontal
+								/>
+							</Section>
 
 							<Section title="Buy" flatlist>
 								<FlatList
 									data={providers[selectedRegion.code].buy}
 									keyExtractor={(p) => p.provider_id.toString()}
 									renderItem={({ item: provider }) => (
-										<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
+										<ProviderIcon
+											link={providers[selectedRegion.code].link}
+											provider={provider}
+										/>
 									)}
 									contentContainerStyle={{ paddingHorizontal: 8 }}
 									showsHorizontalScrollIndicator={false}
@@ -332,13 +332,17 @@ const MediaScreen = () => {
 									data={providers[selectedRegion.code].rent}
 									keyExtractor={(p) => p.provider_id.toString()}
 									renderItem={({ item: provider }) => (
-										<ProviderIcon link={providers[selectedRegion.code].link} provider={provider} />
+										<ProviderIcon
+											link={providers[selectedRegion.code].link}
+											provider={provider}
+										/>
 									)}
 									contentContainerStyle={{ paddingHorizontal: 8 }}
 									showsHorizontalScrollIndicator={false}
 									horizontal
 								/>
-							</Section></VStack>
+							</Section>
+						</VStack>
 					</VStack>
 				) : (
 					<EmptyState>No providers were found.</EmptyState>

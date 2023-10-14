@@ -21,7 +21,7 @@ const RegionCard = ({ region, isSelected, onPress }: RegionCardProps) => (
 			borderWidth={1}
 			borderColor={isSelected ? "primary-6" : "neutral-6"}
 		>
-			<Avatar src={region.flag} size={40} alt={region.name} />
+			<Avatar src={region.flagUrl} size={40} alt={region.name} />
 
 			<Box flex={1} maxWidth="70%">
 				<Title numberOfLines={1} ellipsizeMode="tail">

@@ -1,6 +1,6 @@
 import { Dimensions, FlatList, ScrollView } from "react-native";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { TrendingPage, trending } from "@/libs/tmdb/api/trending";
+import { TrendsPage, getTrends } from "@/libs/tmdb/api/trending";
 import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { genresList } from "@/utils/genresList";
 import { providersList } from "@/utils/providersList";
@@ -16,9 +16,9 @@ const ExploreScreen = () => {
 	const { width } = Dimensions.get("screen");
 	const trendingSpacing = (width - 150) / 32;
 
-	const dailyTrendsQuery = useQuery<TrendingPage<"all">, Error>({
+	const dailyTrendsQuery = useQuery<TrendsPage<"all">, Error>({
 		queryKey: ["trending", "all"],
-		queryFn: () => trending("all", "day"),
+		queryFn: () => getTrends("all", "day"),
 	});
 
 	const moviesTrendsQuery = useInfiniteQuery<DiscoverPage, Error>({
@@ -33,9 +33,9 @@ const ExploreScreen = () => {
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	const peopleTrendsQuery = useQuery<TrendingPage<"person">, Error>({
+	const peopleTrendsQuery = useQuery<TrendsPage<"person">, Error>({
 		queryKey: ["trending", "person"],
-		queryFn: () => trending("person", "week"),
+		queryFn: () => getTrends("person", "week"),
 	});
 
 	if (dailyTrendsQuery.isError)

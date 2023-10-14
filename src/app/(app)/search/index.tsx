@@ -16,16 +16,10 @@ import PosterCard from "@/features/poster-card";
 import PersonCard from "@/features/person-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
-import Person from "@/features/person-card/types/Person";
 
 const SearchScreen = () => {
 	const navigation = useNavigation();
 	const [value, setValue] = useState("");
-
-	interface PeoplePage {
-		people: Person[];
-		nextCursor: number;
-	}
 
 	const moviesQuery = useInfiniteQuery<SearchPage<"movies">, Error>({
 		queryKey: ["search", "movies", value],

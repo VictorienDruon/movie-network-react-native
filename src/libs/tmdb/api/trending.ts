@@ -1,4 +1,10 @@
-import { TimeWindow, TrendingMediaType } from "tmdb-ts";
+import {
+	TimeWindow,
+	TrendingMediaType,
+	Person as TmdbPerson,
+	Movie,
+	TV,
+} from "tmdb-ts";
 import Poster from "@/features/poster-card/types/Poster";
 import Person from "@/features/person-card/types/Person";
 import { getTmdbClient } from "..";
@@ -10,15 +16,15 @@ type Results<T extends TrendingMediaType> = T extends "person"
 	? Person[]
 	: Poster[];
 
-export type TrendingPage<T extends TrendingMediaType> = {
+export type TrendsPage<T extends TrendingMediaType> = {
 	results: Results<T>;
 	nextCursor: number;
 };
 
-export async function trending<T extends TrendingMediaType>(
+export async function getTrends<T extends TrendingMediaType>(
 	mediaType: TrendingMediaType,
 	timeWindow: TimeWindow
-): Promise<TrendingPage<T>> {
+): Promise<TrendsPage<T>> {
 	try {
 		const tmdb = await getTmdbClient();
 
@@ -27,11 +33,19 @@ export async function trending<T extends TrendingMediaType>(
 			timeWindow
 		);
 
-		const formattedResults = (
-			mediaType === "person"
-				? results.filter(isValidPerson).map(formatPerson)
-				: results.filter(isValidPoster).map(formatPoster)
-		) as Results<T>;
+		let formattedResults: Results<T>;
+
+		if (mediaType === "person") {
+			const people = results as TmdbPerson[];
+			formattedResults = people
+				.filter(isValidPerson)
+				.map(formatPerson) as Results<T>;
+		} else {
+			const posters = results as (Movie | TV)[];
+			formattedResults = posters
+				.filter(isValidPoster)
+				.map(formatPoster) as Results<T>;
+		}
 
 		const nextCursor = getNextCursor(page, total_pages);
 

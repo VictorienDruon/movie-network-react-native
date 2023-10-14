@@ -105,7 +105,7 @@ const PersonScreen = () => {
 					)}
 
 					{composed.length > 0 && (
-						<Section title="Music Composer" size="lg" flatlist>
+						<Section title="Music" size="lg" flatlist>
 							<FlatList
 								data={composed}
 								keyExtractor={(c) => "composed" + c.id.toString()}

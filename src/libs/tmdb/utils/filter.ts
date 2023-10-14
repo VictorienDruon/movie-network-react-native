@@ -1,23 +1,22 @@
-import { Movie, Person, TV } from "tmdb-ts";
+import { Cast, Crew, Movie, Person, Recommendation, TV, Video } from "tmdb-ts";
 
-const MAX_POSTERS = 18;
+const MAX_ITEMS = 18;
 
-export function isValidPoster(poster: Movie | TV, index: number) {
+export function isValidPoster(
+	poster: Movie | TV | Recommendation,
+	index: number
+) {
 	return (
-		index < MAX_POSTERS &&
+		index < MAX_ITEMS &&
 		poster.poster_path !== null &&
 		poster.backdrop_path !== null
 	);
 }
 
-export function isValidPerson(person: Person, index: number) {
-	const minimumPopularity = 10;
-	const relevantDepartment = ["Acting", "Directing", "Writing"];
+export function isValidPerson(person: Person | Cast | Crew, index: number) {
+	return index < MAX_ITEMS && person.profile_path !== null;
+}
 
-	return (
-		index < MAX_POSTERS &&
-		person.profile_path !== null &&
-		relevantDepartment.includes(person.known_for_department) &&
-		person.popularity > minimumPopularity
-	);
+export function isValidVideo(video: Video) {
+	return video.type === "Trailer" && video.site === "YouTube";
 }

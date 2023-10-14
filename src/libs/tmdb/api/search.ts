@@ -1,3 +1,4 @@
+import { Movie, TV, Person as TmdbPerson } from "tmdb-ts";
 import { SearchEndpoint } from "tmdb-ts/dist/endpoints";
 import Poster from "@/features/poster-card/types/Poster";
 import Person from "@/features/person-card/types/Person";
@@ -24,11 +25,19 @@ export async function search<T extends keyof SearchEndpoint>(
 
 		const { results, page, total_pages } = await tdmb.search[endpoint](options);
 
-		const formattedResults = (
-			endpoint === "people"
-				? results.filter(isValidPerson).map(formatPerson)
-				: results.filter(isValidPoster).map(formatPoster)
-		) as Results<T>;
+		let formattedResults: Results<T>;
+
+		if (endpoint === "people") {
+			const people = results as TmdbPerson[];
+			formattedResults = people
+				.filter(isValidPerson)
+				.map(formatPerson) as Results<T>;
+		} else {
+			const posters = results as (Movie | TV)[];
+			formattedResults = posters
+				.filter(isValidPoster)
+				.map(formatPoster) as Results<T>;
+		}
 
 		const nextCursor = getNextCursor(page, total_pages);
 

@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { Collection, collection } from "@/libs/tmdb/api/collection";
+import { Collection, getCollection } from "@/libs/tmdb/api/collection";
 import { ErrorState } from "@/components/commons";
 import { CollectionSkeleton } from "@/components/skeletons";
 import { Body, Heading, Image, VStack, LinearGradient } from "@/components/ui";
@@ -12,7 +12,7 @@ const CollectionScreen = () => {
 
 	const query = useQuery<Collection, Error>({
 		queryKey: ["collection", id],
-		queryFn: () => collection(id),
+		queryFn: () => getCollection(id),
 	});
 
 	if (query.isLoading) return <CollectionSkeleton />;

@@ -13,7 +13,7 @@ export interface Collection {
 	parts: Poster[];
 }
 
-export async function collection(
+export async function getCollection(
 	id: string,
 	options?: LanguageOption
 ): Promise<Collection> {
@@ -31,7 +31,7 @@ export async function collection(
 			poster_path: result.poster_path,
 			backdrop_path: result.backdrop_path,
 			parts,
-		} as Collection;
+		};
 	} catch (error) {
 		throw error;
 	}
