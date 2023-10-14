@@ -10,13 +10,12 @@ import {
 	RoundButton,
 } from "@/components/ui";
 import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
-import Post from "./types/Post"
+import Post from "./types/Post";
 import CommentBar from "./components/CommentBar";
 import LikeButton from "./components/LikeButton";
 
 const PostCard = ({ post }: { post: Post }) => {
-	const { id, content, created_at, author, posters, user_has_liked_post } =
-		post;
+	const { id, content, createdAt, author, posters, userHasLikedPost } = post;
 
 	return (
 		<VStack space={20} p={16}>
@@ -30,7 +29,7 @@ const PostCard = ({ post }: { post: Post }) => {
 					<HStack space={8} alignItems="center">
 						<Avatar
 							size={40}
-							src={author.avatar_url}
+							src={author.avatarUrl}
 							alt={`${author.name} avatar`}
 						/>
 
@@ -38,7 +37,7 @@ const PostCard = ({ post }: { post: Post }) => {
 					</HStack>
 				</Link>
 
-				<Metadata>{getRelativeDate(created_at)}</Metadata>
+				<Metadata>{getRelativeDate(createdAt)}</Metadata>
 			</HStack>
 
 			<Body>{content}</Body>
@@ -58,7 +57,7 @@ const PostCard = ({ post }: { post: Post }) => {
 					}}
 				/>
 
-				<LikeButton postId={id} userHasLikedPost={user_has_liked_post} />
+				<LikeButton postId={id} userHasLikedPost={userHasLikedPost} />
 			</HStack>
 		</VStack>
 	);

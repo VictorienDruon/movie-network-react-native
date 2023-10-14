@@ -1,7 +1,7 @@
 import { Animated } from "react-native";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getAll } from "@/libs/supabase/api/likes";
+import { getLikes } from "@/libs/supabase/api/likes";
 import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box, Separator } from "@/components/ui";
@@ -20,9 +20,9 @@ const LikesTab = () => {
 	const isFocused = useFocus();
 	const props = useScrollProps();
 
-	const query = useInfiniteQuery<PostsPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["likes", userId],
-		queryFn: ({ pageParam = 0 }) => getAll(userId, pageParam),
+		queryFn: ({ pageParam = 0 }) => getLikes(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: isFocused,
 	});
@@ -33,7 +33,7 @@ const LikesTab = () => {
 
 	return (
 		<Animated.FlatList
-			data={query.data.pages.flatMap((page) => page.posts)}
+			data={query.data.pages.flatMap((page) => page.results)}
 			keyExtractor={(post) => post.id}
 			renderItem={({ item: post }) => <PostCard post={post} />}
 			ItemSeparatorComponent={() => <Separator />}

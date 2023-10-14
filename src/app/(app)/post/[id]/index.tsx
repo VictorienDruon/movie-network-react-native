@@ -1,18 +1,17 @@
 import { ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getOne } from "@/libs/supabase/api/posts";
+import { getPost } from "@/libs/supabase/api/posts";
 import { ErrorState } from "@/components/commons";
 import PostCard from "@/features/post-card";
-import Post from "@/features/post-card/types/Post";
 import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
 
 const PostScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<Post, Error>({
+	const query = useQuery({
 		queryKey: ["post", id],
-		queryFn: () => getOne(id),
+		queryFn: () => getPost(id),
 	});
 
 	if (query.isLoading) return <PostCardSkeleton />;

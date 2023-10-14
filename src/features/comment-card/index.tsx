@@ -5,7 +5,7 @@ import Comment from "./types/Comment";
 import { VStack, HStack, Title, Body, Avatar, Metadata } from "@/components/ui";
 
 const CommentCard = ({ comment }: { comment: Comment }) => {
-	const { created_at, content, author } = comment;
+	const { createdAt, content, author } = comment;
 	const segments = useSegments();
 
 	const handleAvatarPress = () => {
@@ -22,7 +22,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 		if (segments[1] === "profile") {
 			router.push({
 				pathname: "/(app)/post/[id]",
-				params: { id: comment.post_id },
+				params: { id: comment.postId },
 			});
 		}
 	};
@@ -34,7 +34,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 				onPress={handleAvatarPress}
 			>
 				<Avatar
-					src={author.avatar_url}
+					src={author.avatarUrl}
 					size={28}
 					alt={`${author.name} avatar`}
 				/>
@@ -50,7 +50,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 					<Body>{content}</Body>
 				</TouchableOpacity>
 			</VStack>
-			<Metadata>{getRelativeDate(created_at)}</Metadata>
+			<Metadata>{getRelativeDate(createdAt)}</Metadata>
 		</HStack>
 	);
 };

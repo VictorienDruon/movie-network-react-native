@@ -4,7 +4,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
 import { useQuery } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
-import { Media, getMovie, getShow } from "@/libs/tmdb/api/media";
+import { getMovie, getShow } from "@/libs/tmdb/api/media";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { pluralize } from "@/utils/texts";
 import { formatMoney } from "@/utils/numbers";
@@ -44,7 +44,7 @@ const MediaScreen = () => {
 
 	const media = type === "movie" ? getMovie : getShow;
 
-	const query = useQuery<Media, Error>({
+	const query = useQuery({
 		queryKey: ["media", type, id],
 		queryFn: () => media(id),
 	});

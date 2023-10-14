@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { tmdbConfig } from "@/libs/tmdb";
-import { Collection, getCollection } from "@/libs/tmdb/api/collection";
+import { getCollection } from "@/libs/tmdb/api/collection";
 import { ErrorState } from "@/components/commons";
 import { CollectionSkeleton } from "@/components/skeletons";
 import { Body, Heading, Image, VStack, LinearGradient } from "@/components/ui";
@@ -11,7 +11,7 @@ import PosterCard from "@/features/poster-card";
 const CollectionScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<Collection, Error>({
+	const query = useQuery({
 		queryKey: ["collection", id],
 		queryFn: () => getCollection(id),
 	});

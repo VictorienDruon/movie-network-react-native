@@ -1,7 +1,14 @@
-import { Database } from "@/libs/supabase/types/database.types";
-
-type Comment = Database["public"]["Tables"]["comments"]["Row"] & {
-	author: Database["public"]["Tables"]["profiles"]["Row"];
-};
+interface Comment {
+	id: string;
+	createdAt: string;
+	content: string;
+	postId: string;
+	userId: string;
+	author: {
+		id: string;
+		name: string;
+		avatarUrl: string;
+	};
+}
 
 export default Comment;

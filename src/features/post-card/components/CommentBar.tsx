@@ -3,7 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CommentSchema } from "@/utils/schema";
 import { supabase } from "@/libs/supabase";
-import { create, NewComment } from "@/libs/supabase/api/comments";
+import {
+	createComment,
+	handleCommentSuccess,
+} from "@/libs/supabase/api/comments";
 import { HStack, Input, Button } from "@/components/ui";
 
 const CommentBar = ({ postId }: { postId: string }) => {
@@ -13,11 +16,8 @@ const CommentBar = ({ postId }: { postId: string }) => {
 		resolver: zodResolver(CommentSchema),
 	});
 
-	const mutation = useMutation<NewComment, Error, NewComment>(create, {
-		onSuccess: ({ post_id, user_id }) => {
-			queryClient.invalidateQueries({ queryKey: ["comments", post_id] });
-			queryClient.invalidateQueries({ queryKey: ["comments", user_id] });
-		},
+	const mutation = useMutation(createComment, {
+		onSuccess: (comment) => handleCommentSuccess(comment, queryClient),
 	});
 
 	const handleCommentSubmit = handleSubmit(

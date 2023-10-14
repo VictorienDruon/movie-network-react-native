@@ -16,7 +16,7 @@ interface PersonCardProps extends Omit<BoxProps, "id"> {
 }
 
 const PersonCard = ({ person, ...props }: PersonCardProps) => {
-	const { id, name, role, profile_path } = person;
+	const { id, name, role, avatarUrl } = person;
 	return (
 		<VStack alignItems="center" width={96} space={0} {...props}>
 			<Link
@@ -25,12 +25,8 @@ const PersonCard = ({ person, ...props }: PersonCardProps) => {
 					params: { id },
 				}}
 			>
-				{profile_path ? (
-					<Avatar
-						src={`${tmdbConfig.links.image}/w185${profile_path}`}
-						size={80}
-						alt={`${name} avatar`}
-					/>
+				{avatarUrl ? (
+					<Avatar src={avatarUrl} size={80} alt={`${name} avatar`} />
 				) : (
 					<Box
 						justifyContent="center"

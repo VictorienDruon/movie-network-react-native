@@ -41,7 +41,13 @@ const PosterCard = ({
 	rotate,
 	...props
 }: PosterCardProps) => {
-	const { id, title, poster_path, backdrop_path, type } = poster;
+	const {
+		id,
+		title,
+		posterPath: poster_path,
+		backdropPath: backdrop_path,
+		type,
+	} = poster;
 	const context = usePosters();
 
 	const handlePress = () => {

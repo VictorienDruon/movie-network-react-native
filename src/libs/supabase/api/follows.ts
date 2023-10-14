@@ -1,19 +1,24 @@
+import { QueryClient } from "@tanstack/react-query";
+import { convertKeysToCamelCase } from "@/utils/objects";
+import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
+import { getPage, getRange } from "../utils/pagination";
 
-export type NewFollow = Database["public"]["Tables"]["follows"]["Insert"] & {
+type NewFollow = Database["public"]["Tables"]["follows"]["Insert"] & {
 	is_user_following: boolean;
 };
 
-export const getFollowing = async (
-	userId: string,
-	pageParam: number,
-	pageCount = 10
-) => {
-	const from = pageParam * pageCount;
-	const to = from + pageCount;
+type Follow = {
+	createdAt: string;
+	followedId: string;
+	followerId: string;
+};
 
-	const { data, error } = await supabase
+export const getFollowing = async (userId: string, page: number) => {
+	const { from, to } = getRange(page);
+
+	const { data: following, error } = await supabase
 		.from("follows")
 		.select("profiles!follows_followed_id_fkey(*)")
 		.eq("follower_id", userId)
@@ -22,24 +27,18 @@ export const getFollowing = async (
 
 	if (error) throw error;
 
-	const users = data.slice(0, pageCount).flatMap((user) => user.profiles);
-	const nextUser = data.slice(pageCount);
+	const flattenFollowers = following.map((follower) => follower.profiles);
+	const camelCaseFollowing = flattenFollowers.map(
+		convertKeysToCamelCase<Person>
+	);
 
-	return {
-		users,
-		nextCursor: nextUser.length ? pageParam + 1 : undefined,
-	};
+	return getPage<Person>(camelCaseFollowing, page);
 };
 
-export const getFollowers = async (
-	userId: string,
-	pageParam: number,
-	pageCount = 10
-) => {
-	const from = pageParam * pageCount;
-	const to = from + pageCount;
+export const getFollowers = async (userId: string, page: number) => {
+	const { from, to } = getRange(page);
 
-	const { data, error } = await supabase
+	const { data: followers, error } = await supabase
 		.from("follows")
 		.select("profiles!follows_follower_id_fkey(*)")
 		.eq("followed_id", userId)
@@ -48,29 +47,54 @@ export const getFollowers = async (
 
 	if (error) throw error;
 
-	const users = data.slice(0, pageCount).flatMap((user) => user.profiles);
-	const nextUser = data.slice(pageCount);
+	const flattenFollowers = followers.map((follower) => follower.profiles);
+	const camelCaseFollowers = flattenFollowers.map(
+		convertKeysToCamelCase<Person>
+	);
 
-	return {
-		users,
-		nextCursor: nextUser.length ? pageParam + 1 : undefined,
-	};
+	return getPage<Person>(camelCaseFollowers, page);
 };
 
-export const toggle = async (newFollow: NewFollow) => {
-	const { is_user_following, ...follow } = newFollow;
+export const toggleFollow = async (newFollow: NewFollow): Promise<Follow> => {
+	const { is_user_following, ...rest } = newFollow;
 
 	if (is_user_following) {
-		const { error } = await supabase.from("follows").delete().match(follow);
+		const { data: unfollowed, error } = await supabase
+			.from("follows")
+			.delete()
+			.match(rest)
+			.select()
+			.single();
 
 		if (error) throw error;
 
-		return newFollow;
+		return convertKeysToCamelCase<Follow>(unfollowed);
 	} else {
-		const { error } = await supabase.from("follows").insert(follow);
+		const { data: followed, error } = await supabase
+			.from("follows")
+			.insert(rest)
+			.select()
+			.single();
 
 		if (error) throw error;
 
-		return newFollow;
+		return convertKeysToCamelCase<Follow>(followed);
 	}
 };
+
+export function handleFollowSuccess(follow: Follow, queryClient: QueryClient) {
+	const { followedId, followerId } = follow;
+
+	queryClient.invalidateQueries({
+		queryKey: ["profile", followedId],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["followers", followedId],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["profile", followerId],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["following", followerId],
+	});
+}

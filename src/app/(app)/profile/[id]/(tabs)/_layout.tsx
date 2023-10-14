@@ -4,9 +4,8 @@ import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/providers/session";
 import { supabase } from "@/libs/supabase";
-import { NewFollow, toggle } from "@/libs/supabase/api/follows";
-import { Database } from "@/libs/supabase/types/database.types";
-import { getOne } from "@/libs/supabase/api/profiles";
+import { handleFollowSuccess, toggleFollow } from "@/libs/supabase/api/follows";
+import { getProfile } from "@/libs/supabase/api/profiles";
 import { pluralize } from "@/utils/texts";
 import { ErrorState } from "@/components/commons";
 import {
@@ -20,39 +19,21 @@ import {
 	Link,
 } from "@/components/ui";
 
-type Profile = Database["public"]["Tables"]["profiles"]["Row"] & {
-	following: number;
-	followers: number;
-	is_user_following: boolean;
-};
-
 const ParamsContext = createContext<{ [key: string]: any }>(null);
 
 const ProfileTabsLayout = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const { user } = useSession();
+
 	const queryClient = useQueryClient();
 
-	const query = useQuery<Profile, Error>({
+	const query = useQuery({
 		queryKey: ["profile", id],
-		queryFn: () => getOne(id),
+		queryFn: () => getProfile(id),
 	});
 
-	const mutation = useMutation<NewFollow, Error, NewFollow>(toggle, {
-		onSuccess: ({ follower_id, followed_id }) => {
-			queryClient.invalidateQueries({
-				queryKey: ["profile", followed_id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["followers", followed_id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["profile", follower_id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["following", follower_id],
-			});
-		},
+	const mutation = useMutation(toggleFollow, {
+		onSuccess: (folllow) => handleFollowSuccess(folllow, queryClient),
 	});
 
 	const handleFollowPress = async () => {
@@ -62,7 +43,7 @@ const ProfileTabsLayout = () => {
 		mutation.mutate({
 			follower_id: user.id,
 			followed_id: id,
-			is_user_following: query.data.is_user_following,
+			is_user_following: query.data.isUserFollowing,
 		});
 	};
 
@@ -88,7 +69,7 @@ const ProfileTabsLayout = () => {
 							<VStack space={8}>
 								<Avatar
 									size={64}
-									src={query.data.avatar_url}
+									src={query.data.avatarUrl}
 									alt={`${query.data.name} avatar`}
 								/>
 
@@ -134,7 +115,7 @@ const ProfileTabsLayout = () => {
 							) : (
 								<Button
 									variant={
-										query.data.is_user_following
+										query.data.isUserFollowing
 											? "secondaryOutline"
 											: "secondary"
 									}
@@ -142,7 +123,7 @@ const ProfileTabsLayout = () => {
 									disabled={mutation.isLoading}
 									onPress={handleFollowPress}
 								>
-									{query.data.is_user_following ? "Unfollow" : "Follow"}
+									{query.data.isUserFollowing ? "Unfollow" : "Follow"}
 								</Button>
 							)}
 						</HStack>

@@ -1,58 +1,89 @@
-import { RawPost, formatPost } from "@/libs/supabase/utils/map";
+import { QueryClient } from "@tanstack/react-query";
+import Post from "@/features/post-card/types/Post";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
+import DbPost from "../types/Post";
+import { getPage, getRange } from "../utils/pagination";
+import { formatPost } from "../utils/map";
+import { convertKeysToCamelCase } from "@/utils/objects";
 
-export type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
+type NewLike = Database["public"]["Tables"]["likes"]["Insert"] & {
 	userHasLikedPost: boolean;
 };
 
-export async function getAll(
-	userId: string,
-	pageParam: number,
-	pageCount = 10
-) {
-	const from = pageParam * pageCount;
-	const to = from + pageCount;
+type Like = {
+	userId: string;
+	postId: string;
+	createdAt: string;
+};
+
+export async function getLikes(userId: string, page: number) {
+	const { from, to } = getRange(page);
 
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
 
-	const { data, error } = await supabase
+	const { data: posts, error } = await supabase
 		.from("likes")
 		.select(
-			"posts(*, author: profiles(*), likes(user_id), posts_posters(posters: poster_id(*)))"
+			"posts(*, author: profiles!likes(*), likes(user_id), posts_posters(posters: poster_id(*)))"
 		)
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })
 		.range(from, to)
-		.returns<{ posts: RawPost }[]>();
+		.returns<{ posts: DbPost }[]>();
 
 	if (error) throw error;
 
-	const posts = data.slice(0, pageCount).flatMap((like) => like.posts);
-	const nextPost = data.slice(pageCount);
+	const flattenPosts = posts.flatMap((post) => post.posts);
+	const formattedPosts = flattenPosts.map((post) =>
+		formatPost(post, session.user.id)
+	);
 
-	return {
-		posts: posts.map((post) => formatPost(post, session.user.id)),
-		nextCursor: nextPost.length ? pageParam + 1 : undefined,
-	};
+	return getPage<Post>(formattedPosts, page);
 }
 
-export async function toggle(newLike: NewLike) {
-	const { userHasLikedPost, ...like } = newLike;
+export async function toggleLike(newLike: NewLike): Promise<Like> {
+	const { userHasLikedPost, ...rest } = newLike;
 
 	if (userHasLikedPost) {
-		const { error } = await supabase.from("likes").delete().match(like);
+		const { data: unliked, error } = await supabase
+			.from("likes")
+			.delete()
+			.match(rest)
+			.select()
+			.single();
 
 		if (error) throw error;
 
-		return newLike;
+		return convertKeysToCamelCase<Like>(unliked);
 	} else {
-		const { error } = await supabase.from("likes").insert(like);
+		const { data: liked, error } = await supabase
+			.from("likes")
+			.insert(rest)
+			.select()
+			.single();
 
 		if (error) throw error;
 
-		return newLike;
+		return convertKeysToCamelCase<Like>(liked);
 	}
+}
+
+export function handleLikeSuccess(like: Like, queryClient: QueryClient) {
+	const { postId, userId } = like;
+
+	queryClient.invalidateQueries({
+		queryKey: ["feed"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["posts", userId],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["likes", userId],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["post", postId],
+	});
 }

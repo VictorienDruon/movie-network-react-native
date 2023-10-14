@@ -1,11 +1,12 @@
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostSchema } from "@/utils/schema";
+import { convertKeysToSnakeCase } from "@/utils/objects";
 import { supabase } from "@/libs/supabase";
-import { NewPost, create } from "@/libs/supabase/api/posts";
+import { createPost, handlePostSuccess } from "@/libs/supabase/api/posts";
+import DbPoster from "@/libs/supabase/types/Poster";
 import { useSession } from "@/providers/session";
 import { usePosters } from "@/providers/posters";
 import {
@@ -22,31 +23,28 @@ import {
 import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
 
 const CreateScreen = () => {
-	const queryClient = useQueryClient();
 	const { user } = useSession();
 	const { posters } = usePosters();
+
+	const queryClient = useQueryClient();
 
 	const { control, formState, handleSubmit } = useForm<PostSchema>({
 		resolver: zodResolver(PostSchema),
 	});
 
-	const mutation = useMutation<NewPost, Error, NewPost>(create, {
-		onSuccess: ({ user_id }) => {
-			queryClient.invalidateQueries({
-				queryKey: ["feed"],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["posts", user_id],
-			});
-			router.push("..");
-		},
+	const mutation = useMutation(createPost, {
+		onSuccess: (post) => handlePostSuccess(post, queryClient),
 	});
 
 	const handlePostSubmit = handleSubmit(async ({ content }: PostSchema) => {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser();
-		mutation.mutate({ content, user_id: user.id, posters });
+		mutation.mutate({
+			content,
+			user_id: user.id,
+			posters: posters.map(convertKeysToSnakeCase<DbPoster>),
+		});
 	});
 
 	return (

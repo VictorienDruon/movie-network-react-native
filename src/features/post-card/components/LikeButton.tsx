@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
-import { NewLike, toggle } from "@/libs/supabase/api/likes";
+import { handleLikeSuccess, toggleLike } from "@/libs/supabase/api/likes";
 import { RoundButton } from "@/components/ui";
 
 interface LikeButtonProps {
@@ -11,21 +11,8 @@ interface LikeButtonProps {
 const LikeButton = ({ postId, userHasLikedPost }: LikeButtonProps) => {
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation<NewLike, Error, NewLike>(toggle, {
-		onSuccess: ({ user_id, post_id }) => {
-			queryClient.invalidateQueries({
-				queryKey: ["feed"],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["posts", user_id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["likes", user_id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ["post", post_id],
-			});
-		},
+	const mutation = useMutation(toggleLike, {
+		onSuccess: (like) => handleLikeSuccess(like, queryClient),
 	});
 
 	const handleLikePress = async () => {

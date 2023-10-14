@@ -11,6 +11,7 @@ import Poster from "@/features/poster-card/types/Poster";
 import Person from "@/features/person-card/types/Person";
 import Region from "@/features/region-card/types/Region";
 import { getCountry } from "iso-3166-1-alpha-2";
+import { tmdbConfig } from "..";
 
 export function formatPoster(
 	media: Movie | TV | Recommendation | BelongsToCollection
@@ -29,8 +30,8 @@ export function formatPoster(
 	return {
 		id: media.id,
 		title,
-		poster_path: media.poster_path,
-		backdrop_path: media.backdrop_path,
+		posterPath: media.poster_path,
+		backdropPath: media.backdrop_path,
 		type,
 	};
 }
@@ -52,7 +53,7 @@ export function formatPerson(person: TmdbPerson | Cast | Crew): Person {
 		id: person.id,
 		name: person.name,
 		role,
-		profile_path: person.profile_path,
+		avatarUrl: `${tmdbConfig.links.image}/w185${person.profile_path}`,
 	};
 }
 

@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getAll } from "@/libs/supabase/api/posts";
+import { getPosts } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/commons";
 import { Box, RoundButton, Separator } from "@/components/ui";
 import PostCard from "@/features/post-card";
@@ -13,9 +13,9 @@ interface PostsPage {
 }
 
 const FeedScreen = () => {
-	const query = useInfiniteQuery<PostsPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["feed"],
-		queryFn: ({ pageParam = 0 }) => getAll(pageParam),
+		queryFn: ({ pageParam = 0 }) => getPosts(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
@@ -34,7 +34,7 @@ const FeedScreen = () => {
 	return (
 		<Box flex={1} position="relative">
 			<FlatList
-				data={query.data.pages.flatMap((page) => page.posts)}
+				data={query.data.pages.flatMap((page) => page.results)}
 				keyExtractor={(post) => post.id}
 				renderItem={({ item: post }) => <PostCard post={post} />}
 				ItemSeparatorComponent={() => <Separator />}

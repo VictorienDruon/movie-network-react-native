@@ -13,21 +13,10 @@ import {
 	Link,
 } from "@/components/ui";
 
-type User = {
-	id: string;
-	name: string;
-	avatar_url: string;
-};
-
-interface UsersPage {
-	users: User[];
-	nextCursor: number;
-}
-
 const FollowingModal = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useInfiniteQuery<UsersPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["following", id],
 		queryFn: ({ pageParam = 0 }) => getFollowing(id, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -45,8 +34,8 @@ const FollowingModal = () => {
 
 	return (
 		<FlatList
-			data={query.data.pages.flatMap((page) => page.users)}
-			keyExtractor={(user) => user.id}
+			data={query.data.pages.flatMap((page) => page.results)}
+			keyExtractor={(user) => user.id.toString()}
 			renderItem={({ item: user }) => (
 				<Link
 					href={{
@@ -57,7 +46,7 @@ const FollowingModal = () => {
 					<HStack space={8} alignItems="center" p={16}>
 						<Avatar
 							size={40}
-							src={user.avatar_url}
+							src={user.avatarUrl}
 							alt={`${user.name} avatar`}
 						/>
 

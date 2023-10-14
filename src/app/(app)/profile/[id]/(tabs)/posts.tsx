@@ -1,28 +1,22 @@
 import { Animated } from "react-native";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getAllByUser } from "@/libs/supabase/api/posts";
+import { getPostsByUser } from "@/libs/supabase/api/posts";
 import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box, Separator } from "@/components/ui";
 import PostCard from "@/features/post-card";
 import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
-import Post from "@/features/post-card/types/Post";
 import { useParams } from "./_layout";
-
-interface PostsPage {
-	posts: Post[];
-	nextCursor: number;
-}
 
 const PostsTab = () => {
 	const { userId } = useParams();
 	const isFocused = useFocus();
 	const props = useScrollProps();
 
-	const query = useInfiniteQuery<PostsPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["posts", userId],
-		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
+		queryFn: ({ pageParam = 0 }) => getPostsByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: isFocused,
 	});
@@ -33,7 +27,7 @@ const PostsTab = () => {
 
 	return (
 		<Animated.FlatList
-			data={query.data.pages.flatMap((page) => page.posts)}
+			data={query.data.pages.flatMap((page) => page.results)}
 			keyExtractor={(post) => post.id}
 			renderItem={({ item: post }) => <PostCard post={post} />}
 			ItemSeparatorComponent={() => <Separator />}

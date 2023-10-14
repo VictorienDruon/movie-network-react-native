@@ -1,8 +1,16 @@
+import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
+import { isUserFollowing } from "../utils/filter";
 
 const MAX_PROFILES = 10;
 
-export async function getOne(id: string) {
+interface Profile extends Person {
+	following: number;
+	followers: number;
+	isUserFollowing: boolean;
+}
+
+export async function getProfile(id: string): Promise<Profile> {
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
@@ -18,11 +26,13 @@ export async function getOne(id: string) {
 	if (error) throw error;
 
 	return {
-		...profile,
+		id: parseInt(profile.id),
+		name: profile.name,
+		avatarUrl: profile.avatar_url,
 		following: profile.following.length,
 		followers: profile.followers.length,
-		is_user_following: profile.followers.some(
-			(follower) => follower.follower_id === session.user.id
+		isUserFollowing: profile.followers.some((follower) =>
+			isUserFollowing(session.user.id, follower.follower_id)
 		),
 	};
 }

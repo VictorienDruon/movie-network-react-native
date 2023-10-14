@@ -1,23 +1,27 @@
-import { Database } from "@/libs/supabase/types/database.types";
+import { convertKeysToCamelCase } from "@/utils/objects";
 import Post from "@/features/post-card/types/Post";
+import Poster from "@/features/poster-card/types/Poster";
+import Person from "@/features/person-card/types/Person";
+import DbPost from "../types/Post";
+import { hasUserLikedPost } from "./filter";
 
-export type RawPost = Database["public"]["Tables"]["posts"]["Row"] & {
-	author: Database["public"]["Tables"]["profiles"]["Row"];
-	likes: { user_id: Database["public"]["Tables"]["likes"]["Row"]["user_id"] }[];
-	posts_posters: { posters: Database["public"]["Tables"]["posters"]["Row"] }[];
-};
-
-export function formatPost(post: RawPost, userId: string) {
-	const { likes, posts_posters, ...rest } = post;
-
-	const posters =
-		posts_posters.length > 0 ? posts_posters.flatMap((p) => p.posters) : [];
-
-	const user_has_liked_post = likes.some((like) => like.user_id === userId);
-
+function formatPoster({ posters }: DbPost["posts_posters"][number]): Poster {
 	return {
-		...rest,
-		posters,
-		user_has_liked_post,
-	} as Post;
+		id: posters.id,
+		title: posters.title,
+		posterPath: posters.poster_path,
+		backdropPath: posters.backdrop_path,
+		type: posters.type as "movie" | "tv" | "collection",
+	};
+}
+
+export function formatPost(post: DbPost, userId: string): Post {
+	return {
+		id: post.id,
+		content: post.content,
+		createdAt: post.created_at,
+		posters: post.posts_posters.map(formatPoster),
+		author: convertKeysToCamelCase<Person>(post.author),
+		userHasLikedPost: hasUserLikedPost(post.likes, userId),
+	};
 }

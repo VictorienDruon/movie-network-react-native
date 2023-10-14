@@ -1,9 +1,9 @@
-type Poster = {
+interface Poster {
 	id: number;
 	title: string;
-	poster_path: string;
-	backdrop_path: string;
+	posterPath: string;
+	backdropPath: string;
 	type: "movie" | "tv" | "collection";
-};
+}
 
 export default Poster;

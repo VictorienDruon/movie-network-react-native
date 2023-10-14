@@ -2,7 +2,7 @@ interface Person {
 	id: number;
 	name: string;
 	role?: string;
-	profile_path: string;
+	avatarUrl: string;
 }
 
 export default Person;

@@ -1,27 +1,21 @@
 import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getAllByPost } from "@/libs/supabase/api/comments";
+import { getCommentsByPost } from "@/libs/supabase/api/comments";
 import { useSession } from "@/providers/session";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Avatar, Box, HStack } from "@/components/ui";
 import CommentCard from "@/features/comment-card";
-import Comment from "@/features/comment-card/types/Comment";
 import CommentBar from "@/features/post-card/components/CommentBar";
 import CommentCardSkeleton from "@/features/comment-card/components/CommentCardSkeleton";
-
-interface CommentsPage {
-	comments: Comment[];
-	nextCursor: number;
-}
 
 const CommentsModal = () => {
 	const { id: postId } = useLocalSearchParams<{ id: string }>();
 	const { user } = useSession();
 
-	const query = useInfiniteQuery<CommentsPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["comments", postId],
-		queryFn: ({ pageParam = 0 }) => getAllByPost(postId, pageParam),
+		queryFn: ({ pageParam = 0 }) => getCommentsByPost(postId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
@@ -37,7 +31,7 @@ const CommentsModal = () => {
 				/>
 			) : (
 				<FlatList
-					data={query.data.pages.flatMap((page) => page.comments)}
+					data={query.data.pages.flatMap((page) => page.results)}
 					keyExtractor={(comment) => comment.id}
 					renderItem={({ item: comment }) => <CommentCard comment={comment} />}
 					ListEmptyComponent={

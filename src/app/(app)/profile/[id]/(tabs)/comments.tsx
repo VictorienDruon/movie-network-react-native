@@ -1,28 +1,22 @@
 import { Animated } from "react-native";
 import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getAllByUser } from "@/libs/supabase/api/comments";
+import { getCommentsByUser } from "@/libs/supabase/api/comments";
 import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box } from "@/components/ui";
 import CommentCard from "@/features/comment-card";
-import Comment from "@/features/comment-card/types/Comment"
 import CommentCardSkeleton from "@/features/comment-card/components/CommentCardSkeleton";
 import { useParams } from "./_layout";
-
-interface CommentsPage {
-	comments: Comment[];
-	nextCursor: number;
-}
 
 const CommentsTab = () => {
 	const { userId } = useParams();
 	const isFocused = useFocus();
 	const props = useScrollProps();
 
-	const query = useInfiniteQuery<CommentsPage, Error>({
+	const query = useInfiniteQuery({
 		queryKey: ["comments", userId],
-		queryFn: ({ pageParam = 0 }) => getAllByUser(userId, pageParam),
+		queryFn: ({ pageParam = 0 }) => getCommentsByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: isFocused,
 	});
@@ -33,7 +27,7 @@ const CommentsTab = () => {
 
 	return (
 		<Animated.FlatList
-			data={query.data.pages.flatMap((page) => page.comments)}
+			data={query.data.pages.flatMap((page) => page.results)}
 			keyExtractor={(comment) => comment.id}
 			renderItem={({ item: comment }) => <CommentCard comment={comment} />}
 			ListEmptyComponent={

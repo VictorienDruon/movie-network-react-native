@@ -1,10 +1,13 @@
-import { Database } from "@/libs/supabase/types/database.types";
 import Poster from "@/features/poster-card/types/Poster";
+import Person from "@/features/person-card/types/Person";
 
-type Post = Database["public"]["Tables"]["posts"]["Row"] & {
-	author: Database["public"]["Tables"]["profiles"]["Row"];
+interface Post {
+	id: string;
+	content: string;
+	createdAt: string;
 	posters: Poster[];
-	user_has_liked_post: boolean;
-};
+	author: Person;
+	userHasLikedPost: boolean;
+}
 
 export default Post;

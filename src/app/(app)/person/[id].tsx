@@ -1,7 +1,7 @@
 import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { PersonDetails, getPerson } from "@/libs/tmdb/api/person";
+import { getPerson } from "@/libs/tmdb/api/person";
 import { getDateWithYear } from "@/utils/dates";
 import { ErrorState } from "@/components/commons";
 import { Information, Section } from "@/components/layouts";
@@ -12,7 +12,7 @@ import PosterCard from "@/features/poster-card";
 const PersonScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const query = useQuery<PersonDetails, Error>({
+	const query = useQuery({
 		queryKey: ["person", id],
 		queryFn: () => getPerson(id),
 	});
