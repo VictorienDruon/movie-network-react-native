@@ -22,16 +22,14 @@ const ExploreScreen = () => {
 		queryFn: () => getTrends("all", "day"),
 	});
 
-	const moviesTrendsQuery = useInfiniteQuery<DiscoverPage, Error>({
-		queryKey: ["trending", "movie"],
-		queryFn: ({ pageParam = 1 }) => discover("movie", { page: pageParam }),
-		getNextPageParam: (lastPage) => lastPage.nextCursor,
+	const moviesTrendsQuery = useQuery<TrendsPage<"movie">, Error>({
+		queryKey: ["trending", "movies"],
+		queryFn: () => getTrends("movie", "week"),
 	});
 
-	const tvTrendsQuery = useInfiniteQuery<DiscoverPage, Error>({
-		queryKey: ["trending", "tv"],
-		queryFn: ({ pageParam = 1 }) => discover("tvShow", { page: pageParam }),
-		getNextPageParam: (lastPage) => lastPage.nextCursor,
+	const showsTrendsQuery = useQuery<TrendsPage<"tv">, Error>({
+		queryKey: ["trending", "shows"],
+		queryFn: () => getTrends("tv", "week"),
 	});
 
 	const peopleTrendsQuery = useQuery<TrendsPage<"person">, Error>({
@@ -43,8 +41,8 @@ const ExploreScreen = () => {
 		return <ErrorState retry={dailyTrendsQuery.refetch} />;
 	if (moviesTrendsQuery.isError)
 		return <ErrorState retry={moviesTrendsQuery.refetch} />;
-	if (tvTrendsQuery.isError)
-		return <ErrorState retry={tvTrendsQuery.refetch} />;
+	if (showsTrendsQuery.isError)
+		return <ErrorState retry={showsTrendsQuery.refetch} />;
 	if (peopleTrendsQuery.isError)
 		return <ErrorState retry={peopleTrendsQuery.refetch} />;
 
@@ -143,9 +141,7 @@ const ExploreScreen = () => {
 						/>
 					) : (
 						<FlatList
-							data={moviesTrendsQuery.data.pages.flatMap(
-								(page) => page.results
-							)}
+							data={moviesTrendsQuery.data.results}
 							keyExtractor={(p) => p.id}
 							renderItem={({ item: poster }) => (
 								<PosterCard
@@ -154,19 +150,15 @@ const ExploreScreen = () => {
 									style={{ marginHorizontal: 8 }}
 								/>
 							)}
-							ListFooterComponent={() =>
-								moviesTrendsQuery.hasNextPage && <PosterCardSkeleton mx={8} />
-							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => moviesTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}
 				</Section>
 
 				<Section title="Shows" size="lg" flatlist>
-					{tvTrendsQuery.isLoading ? (
+					{showsTrendsQuery.isLoading ? (
 						<FlatList
 							data={Array.from({ length: 4 }, (_, i) => i)}
 							keyExtractor={(item) => item.toString()}
@@ -176,7 +168,7 @@ const ExploreScreen = () => {
 						/>
 					) : (
 						<FlatList
-							data={tvTrendsQuery.data.pages.flatMap((page) => page.results)}
+							data={showsTrendsQuery.data.results}
 							keyExtractor={(p) => p.id}
 							renderItem={({ item: poster }) => (
 								<PosterCard
@@ -185,12 +177,8 @@ const ExploreScreen = () => {
 									style={{ marginHorizontal: 8 }}
 								/>
 							)}
-							ListFooterComponent={() =>
-								tvTrendsQuery.hasNextPage && <PosterCardSkeleton mx={8} />
-							}
 							contentContainerStyle={{ paddingHorizontal: 8 }}
 							showsHorizontalScrollIndicator={false}
-							onEndReached={() => tvTrendsQuery.fetchNextPage()}
 							horizontal
 						/>
 					)}

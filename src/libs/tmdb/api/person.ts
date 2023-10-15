@@ -24,7 +24,6 @@ export async function getPerson(id: string): Promise<PersonDetails> {
 		const tmdb = await getTmdbClient();
 
 		const person = await tmdb.people.details(parseInt(id));
-
 		const movieCredits = await tmdb.people.movieCredits(parseInt(id));
 		const showCredits = await tmdb.people.tvShowCredits(parseInt(id));
 		const combinedCrewCredits = [...movieCredits.crew, ...showCredits.crew];
