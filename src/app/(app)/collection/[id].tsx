@@ -28,7 +28,7 @@ const CollectionScreen = () => {
 
 			<FlatList
 				data={parts}
-				keyExtractor={(part) => part.id.toString()}
+				keyExtractor={(part) => part.id}
 				ListHeaderComponent={() => (
 					<VStack alignItems="center" space={16}>
 						<Image

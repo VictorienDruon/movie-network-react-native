@@ -27,7 +27,7 @@ export async function getLikes(userId: string, page: number) {
 	const { data: posts, error } = await supabase
 		.from("likes")
 		.select(
-			"posts(*, author: profiles!likes(*), likes(user_id), posts_posters(posters: poster_id(*)))"
+			"posts(*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_posters(posters: poster_id(*)))"
 		)
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })

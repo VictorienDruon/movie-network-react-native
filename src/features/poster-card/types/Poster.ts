@@ -1,5 +1,5 @@
 interface Poster {
-	id: number;
+	id: string;
 	title: string;
 	posterPath: string;
 	backdropPath: string;

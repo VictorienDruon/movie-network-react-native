@@ -109,7 +109,7 @@ const PostersPicker = () => {
 			) : (
 				<FlatList
 					data={data.pages.flatMap((page) => page.results)}
-					keyExtractor={(poster) => poster.id.toString()}
+					keyExtractor={(poster) => poster.id}
 					renderItem={({ item: poster }) => (
 						<PosterCard poster={poster} action="select" />
 					)}

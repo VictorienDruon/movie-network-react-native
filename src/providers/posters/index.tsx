@@ -6,7 +6,7 @@ const MAX_POSTERS = 3;
 
 interface PostersContext {
 	posters: Poster[];
-	isSelected: (id: number, type: string) => boolean;
+	isSelected: (id: string, type: string) => boolean;
 	toggle: (attachment: Poster) => void;
 	push: () => void;
 }
@@ -31,7 +31,7 @@ export const PostersProvider = ({
 		setDraftPostersId(postersId);
 	}, [segments]);
 
-	const isSelected = (id: number, type: string) =>
+	const isSelected = (id: string, type: string) =>
 		draftPostersId.has(id + type);
 
 	const toggle = (attachment: Poster) => {

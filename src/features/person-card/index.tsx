@@ -1,4 +1,3 @@
-import { tmdbConfig } from "@/libs/tmdb";
 import {
 	Box,
 	Avatar,
@@ -16,15 +15,10 @@ interface PersonCardProps extends Omit<BoxProps, "id"> {
 }
 
 const PersonCard = ({ person, ...props }: PersonCardProps) => {
-	const { id, name, role, avatarUrl } = person;
+	const { id, name, role, avatarUrl, link } = person;
 	return (
 		<VStack alignItems="center" width={96} space={0} {...props}>
-			<Link
-				href={{
-					pathname: "/person/[id]",
-					params: { id },
-				}}
-			>
+			<Link href={link}>
 				{avatarUrl ? (
 					<Avatar src={avatarUrl} size={80} alt={`${name} avatar`} />
 				) : (

@@ -64,7 +64,7 @@ const GenreScreen = () => {
 							) : (
 								<FlatList
 									data={moviesQuery.data.pages.flatMap((page) => page.results)}
-									keyExtractor={(m) => "movie" + m.id.toString()}
+									keyExtractor={(m) => "movie" + m.id}
 									renderItem={({ item }) => (
 										<PosterCard poster={item} size="md" mx={8} />
 									)}
@@ -96,7 +96,7 @@ const GenreScreen = () => {
 							) : (
 								<FlatList
 									data={showsQuery.data.pages.flatMap((page) => page.results)}
-									keyExtractor={(s) => "show" + s.id.toString()}
+									keyExtractor={(s) => "show" + s.id}
 									renderItem={({ item }) => (
 										<PosterCard poster={item} size="md" mx={8} />
 									)}

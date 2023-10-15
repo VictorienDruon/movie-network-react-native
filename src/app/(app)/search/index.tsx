@@ -45,7 +45,7 @@ const SearchScreen = () => {
 		enabled: value.length > 0,
 	});
 
-	const profilesQuery = useInfiniteQuery<any, Error>({
+	const profilesQuery = useInfiniteQuery({
 		queryKey: ["search", "users", value],
 		queryFn: ({ pageParam = 1 }) => searchProfiles(value, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -97,7 +97,7 @@ const SearchScreen = () => {
 						) : (
 							<FlatList
 								data={moviesQuery.data.pages.flatMap((page) => page.results)}
-								keyExtractor={(p) => p.id.toString()}
+								keyExtractor={(p) => p.id}
 								renderItem={({ item: poster }) => (
 									<PosterCard
 										poster={poster}
@@ -130,7 +130,7 @@ const SearchScreen = () => {
 						) : (
 							<FlatList
 								data={tvQuery.data.pages.flatMap((page) => page.results)}
-								keyExtractor={(p) => p.id.toString()}
+								keyExtractor={(p) => p.id}
 								renderItem={({ item: poster }) => (
 									<PosterCard
 										poster={poster}
@@ -166,7 +166,7 @@ const SearchScreen = () => {
 						) : (
 							<FlatList
 								data={peopleQuery.data.pages.flatMap((page) => page.results)}
-								keyExtractor={(p) => p.id.toString()}
+								keyExtractor={(p) => p.id}
 								renderItem={({ item: person }) => (
 									<PersonCard person={person} mx={8} />
 								)}
@@ -185,7 +185,7 @@ const SearchScreen = () => {
 				)}
 
 				{(profilesQuery.isLoading ||
-					profilesQuery.data.pages[0].profiles.length > 0) && (
+					profilesQuery.data.pages[0].results.length > 0) && (
 					<Section title="Users" size="lg" flatlist>
 						{profilesQuery.isLoading ? (
 							<FlatList
@@ -199,40 +199,19 @@ const SearchScreen = () => {
 							/>
 						) : (
 							<FlatList
-								data={profilesQuery.data.pages.flatMap((page) => page.profiles)}
-								keyExtractor={(p) => p.id.toString()}
+								data={profilesQuery.data.pages.flatMap((page) => page.results)}
+								keyExtractor={(p) => p.id}
 								renderItem={({ item: profile }) => (
-									<VStack alignItems="center" width={96} mx={8} space={0}>
-										<Link
-											href={{
-												pathname: "/profile/[id]",
-												params: { id: profile.id },
-											}}
-										>
-											<Avatar
-												src={profile.avatar_url}
-												size={80}
-												alt={`${profile.name} avatar`}
-											/>
-										</Link>
-
-										<Body
-											textAlign="center"
-											numberOfLines={1}
-											ellipsizeMode="tail"
-										>
-											{profile.name}
-										</Body>
-									</VStack>
+									<PersonCard person={profile} mx={8} />
 								)}
 								ListFooterComponent={() =>
-									profilesQuery.hasNextPage && (
+									peopleQuery.hasNextPage && (
 										<PersonCardSkeleton withRole={false} mx={8} />
 									)
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
-								onEndReached={() => profilesQuery.fetchNextPage()}
+								onEndReached={() => peopleQuery.fetchNextPage()}
 								horizontal
 							/>
 						)}

@@ -76,7 +76,7 @@ const ExploreScreen = () => {
 			) : (
 				<FlatList
 					data={dailyTrendsQuery.data.results}
-					keyExtractor={(p) => p.id.toString()}
+					keyExtractor={(p) => p.id}
 					renderItem={({ item: poster }) => (
 						<PosterCard
 							poster={poster}
@@ -146,7 +146,7 @@ const ExploreScreen = () => {
 							data={moviesTrendsQuery.data.pages.flatMap(
 								(page) => page.results
 							)}
-							keyExtractor={(p) => p.id.toString()}
+							keyExtractor={(p) => p.id}
 							renderItem={({ item: poster }) => (
 								<PosterCard
 									poster={poster}
@@ -177,7 +177,7 @@ const ExploreScreen = () => {
 					) : (
 						<FlatList
 							data={tvTrendsQuery.data.pages.flatMap((page) => page.results)}
-							keyExtractor={(p) => p.id.toString()}
+							keyExtractor={(p) => p.id}
 							renderItem={({ item: poster }) => (
 								<PosterCard
 									poster={poster}
@@ -208,7 +208,7 @@ const ExploreScreen = () => {
 					) : (
 						<FlatList
 							data={peopleTrendsQuery.data.results}
-							keyExtractor={(p) => p.id.toString()}
+							keyExtractor={(p) => p.id}
 							renderItem={({ item: person }) => (
 								<PersonCard person={person} mx={8} />
 							)}

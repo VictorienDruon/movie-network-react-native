@@ -55,7 +55,7 @@ const PersonScreen = () => {
 						<Section title="Movies" size="lg" flatlist>
 							<FlatList
 								data={movies}
-								keyExtractor={(m) => "movie" + m.id.toString()}
+								keyExtractor={(m) => "movie" + m.id}
 								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -68,7 +68,7 @@ const PersonScreen = () => {
 						<Section title="Shows" size="lg" flatlist>
 							<FlatList
 								data={shows}
-								keyExtractor={(s) => "show" + s.id.toString()}
+								keyExtractor={(s) => "show" + s.id}
 								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -81,7 +81,7 @@ const PersonScreen = () => {
 						<Section title="Director" size="lg" flatlist>
 							<FlatList
 								data={directed}
-								keyExtractor={(d) => "directed" + d.id.toString()}
+								keyExtractor={(d) => "directed" + d.id}
 								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -94,7 +94,7 @@ const PersonScreen = () => {
 						<Section title="Writer" size="lg" flatlist>
 							<FlatList
 								data={written}
-								keyExtractor={(w) => "written" + w.id.toString()}
+								keyExtractor={(w) => "written" + w.id}
 								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
@@ -107,7 +107,7 @@ const PersonScreen = () => {
 						<Section title="Music Composer" size="lg" flatlist>
 							<FlatList
 								data={composed}
-								keyExtractor={(c) => "composed" + c.id.toString()}
+								keyExtractor={(c) => "composed" + c.id}
 								renderItem={({ item }) => <PosterCard poster={item} mx={8} />}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}

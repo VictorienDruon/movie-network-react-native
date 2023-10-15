@@ -35,14 +35,9 @@ const FollowersModal = () => {
 	return (
 		<FlatList
 			data={query.data.pages.flatMap((page) => page.results)}
-			keyExtractor={(user) => user.id.toString()}
+			keyExtractor={(user) => user.id}
 			renderItem={({ item: user }) => (
-				<Link
-					href={{
-						pathname: "/profile/[id]",
-						params: { id: user.id },
-					}}
-				>
+				<Link href={user.link}>
 					<HStack space={8} alignItems="center" p={16}>
 						<Avatar
 							size={40}

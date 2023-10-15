@@ -20,12 +20,7 @@ const PostCard = ({ post }: { post: Post }) => {
 	return (
 		<VStack space={20} p={16}>
 			<HStack justifyContent="space-between" space={8}>
-				<Link
-					href={{
-						pathname: "/profile/[id]",
-						params: { id: author.id },
-					}}
-				>
+				<Link href={author.link}>
 					<HStack space={8} alignItems="center">
 						<Avatar
 							size={40}

@@ -4,6 +4,7 @@ import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 import { getPage, getRange } from "../utils/pagination";
+import { formatPerson } from "../utils/map";
 
 type NewFollow = Database["public"]["Tables"]["follows"]["Insert"] & {
 	is_user_following: boolean;
@@ -28,9 +29,7 @@ export const getFollowing = async (userId: string, page: number) => {
 	if (error) throw error;
 
 	const flattenFollowers = following.map((follower) => follower.profiles);
-	const camelCaseFollowing = flattenFollowers.map(
-		convertKeysToCamelCase<Person>
-	);
+	const camelCaseFollowing = flattenFollowers.map(formatPerson);
 
 	return getPage<Person>(camelCaseFollowing, page);
 };
@@ -48,9 +47,7 @@ export const getFollowers = async (userId: string, page: number) => {
 	if (error) throw error;
 
 	const flattenFollowers = followers.map((follower) => follower.profiles);
-	const camelCaseFollowers = flattenFollowers.map(
-		convertKeysToCamelCase<Person>
-	);
+	const camelCaseFollowers = flattenFollowers.map(formatPerson);
 
 	return getPage<Person>(camelCaseFollowers, page);
 };

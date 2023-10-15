@@ -28,7 +28,7 @@ export function formatPoster(
 	}
 
 	return {
-		id: media.id,
+		id: media.id.toString(),
 		title,
 		posterPath: media.poster_path,
 		backdropPath: media.backdrop_path,
@@ -50,10 +50,11 @@ export function formatPerson(person: TmdbPerson | Cast | Crew): Person {
 	}
 
 	return {
-		id: person.id,
+		id: person.id.toString(),
 		name: person.name,
 		role,
 		avatarUrl: `${tmdbConfig.links.image}/w185${person.profile_path}`,
+		link: `/person/${person.id}`,
 	};
 }
 

@@ -149,7 +149,7 @@ const MediaScreen = () => {
 										key={genre.id}
 										href={{
 											pathname: "/genre/[id]",
-											params: { id: genre.id.toString() },
+											params: { id: genre.id },
 										}}
 									>
 										<Box px={12} py={4} bg="neutral-3" borderRadius="lg">
@@ -165,7 +165,7 @@ const MediaScreen = () => {
 						<Section title="Recommendations" flatlist>
 							<FlatList
 								data={recommendations}
-								keyExtractor={(r) => r.id.toString()}
+								keyExtractor={(r) => r.id}
 								renderItem={({ item: recommendation }) => (
 									<PosterCard poster={recommendation} mx={8} />
 								)}
@@ -180,7 +180,7 @@ const MediaScreen = () => {
 						<Section title="Cast" flatlist>
 							<FlatList
 								data={cast}
-								keyExtractor={(p) => p.id.toString() + p.role}
+								keyExtractor={(p) => p.id + p.role}
 								renderItem={({ item: person }) => (
 									<PersonCard person={person} mx={4} />
 								)}
@@ -195,7 +195,7 @@ const MediaScreen = () => {
 						<Section title="Crew" flatlist>
 							<FlatList
 								data={crew}
-								keyExtractor={(m) => m.id.toString() + m.role}
+								keyExtractor={(m) => m.id + m.role}
 								renderItem={({ item: person }) => (
 									<PersonCard person={person} mx={4} />
 								)}
@@ -298,7 +298,7 @@ const MediaScreen = () => {
 							<Section title="Streaming" flatlist>
 								<FlatList
 									data={providers[selectedRegion.code].flatrate}
-									keyExtractor={(p) => p.provider_id.toString()}
+									keyExtractor={(p) => p.provider_id}
 									renderItem={({ item: provider }) => (
 										<ProviderIcon
 											link={providers[selectedRegion.code].link}
@@ -314,7 +314,7 @@ const MediaScreen = () => {
 							<Section title="Buy" flatlist>
 								<FlatList
 									data={providers[selectedRegion.code].buy}
-									keyExtractor={(p) => p.provider_id.toString()}
+									keyExtractor={(p) => p.provider_id}
 									renderItem={({ item: provider }) => (
 										<ProviderIcon
 											link={providers[selectedRegion.code].link}
@@ -330,7 +330,7 @@ const MediaScreen = () => {
 							<Section title="Rent" flatlist>
 								<FlatList
 									data={providers[selectedRegion.code].rent}
-									keyExtractor={(p) => p.provider_id.toString()}
+									keyExtractor={(p) => p.provider_id}
 									renderItem={({ item: provider }) => (
 										<ProviderIcon
 											link={providers[selectedRegion.code].link}

@@ -1,8 +1,9 @@
 import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
 import { isUserFollowing } from "../utils/filter";
-
-const MAX_PROFILES = 10;
+import { getPage, getRange } from "../utils/pagination";
+import { convertKeysToCamelCase } from "@/utils/objects";
+import { formatPerson } from "../utils/map";
 
 interface Profile extends Person {
 	following: number;
@@ -25,23 +26,20 @@ export async function getProfile(id: string): Promise<Profile> {
 
 	if (error) throw error;
 
+	const { following, followers, ...rest } = profile;
+
 	return {
-		id: parseInt(profile.id),
-		name: profile.name,
-		avatarUrl: profile.avatar_url,
+		...formatPerson(rest),
 		following: profile.following.length,
 		followers: profile.followers.length,
-		isUserFollowing: profile.followers.some((follower) =>
-			isUserFollowing(session.user.id, follower.follower_id)
-		),
+		isUserFollowing: isUserFollowing(profile.followers, session.user.id),
 	};
 }
 
 export async function searchProfiles(query: string, page: number) {
-	const to = page * MAX_PROFILES;
-	const from = to - MAX_PROFILES;
+	const { from, to } = getRange(page);
 
-	const { data, error } = await supabase
+	const { data: profiles, error } = await supabase
 		.from("profiles")
 		.select("*")
 		.ilike("name", `%${query}%`)
@@ -49,11 +47,7 @@ export async function searchProfiles(query: string, page: number) {
 
 	if (error) throw error;
 
-	const profiles = data.slice(0, MAX_PROFILES);
-	const nextPost = data.slice(MAX_PROFILES);
+	const formattedProfiles = profiles.map(formatPerson);
 
-	return {
-		profiles,
-		nextCursor: nextPost.length ? page + 1 : undefined,
-	};
+	return getPage<Person>(formattedProfiles, page);
 }
