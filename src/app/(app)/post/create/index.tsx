@@ -6,7 +6,7 @@ import { PostSchema } from "@/utils/schema";
 import { convertKeysToSnakeCase } from "@/utils/objects";
 import { supabase } from "@/libs/supabase";
 import { createPost, handlePostSuccess } from "@/libs/supabase/api/posts";
-import DbPoster from "@/libs/supabase/types/Poster";
+import DbPoster from "@/libs/supabase/types/NewMedia";
 import { useSession } from "@/providers/session";
 import { usePosters } from "@/providers/posters";
 import {

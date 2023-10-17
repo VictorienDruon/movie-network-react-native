@@ -1,8 +1,7 @@
 import { Dimensions, FlatList, ScrollView } from "react-native";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { tmdbConfig } from "@/libs/tmdb";
 import { TrendsPage, getTrends } from "@/libs/tmdb/api/trending";
-import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { genresList } from "@/utils/genresList";
 import { providersList } from "@/utils/providersList";
 import { ErrorState } from "@/components/commons";

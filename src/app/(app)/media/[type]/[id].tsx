@@ -2,8 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { getLocales } from "expo-localization";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
+import { supabase } from "@/libs/supabase";
+import {
+	addToWatchlist,
+	handleAddToWatchlistSuccess,
+} from "@/libs/supabase/api/watchlist";
+import NewMedia from "@/libs/supabase/types/NewMedia";
 import { getMovie, getShow } from "@/libs/tmdb/api/media";
 import { getDateWithYear, getYear } from "@/utils/dates";
 import { pluralize } from "@/utils/texts";
@@ -36,10 +42,9 @@ const MediaScreen = () => {
 		type: "movie" | "tv";
 		id: string;
 	}>();
-
+	const queryClient = useQueryClient();
 	const providersRef = useRef(null);
 	const regionsRef = useRef(null);
-
 	const [selectedRegion, setSelectedRegion] = useState<Region>(null);
 	const { regionCode } = getLocales()[0];
 
@@ -49,6 +54,17 @@ const MediaScreen = () => {
 		queryKey: ["media", type, id],
 		queryFn: () => media(id),
 	});
+
+	const mutation = useMutation(addToWatchlist, {
+		onSuccess: () => handleAddToWatchlistSuccess(queryClient),
+	});
+
+	const handleAddToWatchlistPress = async (media: NewMedia) => {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+		mutation.mutate({ user_id: user.id, media });
+	};
 
 	useEffect(() => {
 		if (query.data) {
@@ -140,7 +156,19 @@ const MediaScreen = () => {
 						>
 							Play
 						</Button>
-						<Button variant="outline" leftIcon="Plus">
+						<Button
+							variant="outline"
+							leftIcon="Plus"
+							onPress={() =>
+								handleAddToWatchlistPress({
+									id: parseInt(id),
+									type,
+									title,
+									poster_path: posterPath,
+									backdrop_path: backdropPath,
+								})
+							}
+						>
 							Add to Watchlist
 						</Button>
 					</Section>

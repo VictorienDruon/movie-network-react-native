@@ -6,13 +6,13 @@ import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 import DbPost from "../types/Post";
-import DbPoster from "../types/Poster";
+import NewMedia from "../types/NewMedia";
 import { formatPost } from "../utils/map";
 import { getPage, getRange } from "../utils/pagination";
 import { convertKeysToCamelCase } from "@/utils/objects";
 
 type NewPost = Database["public"]["Tables"]["posts"]["Insert"] & {
-	posters: DbPoster[];
+	posters: NewMedia[];
 };
 
 export async function getPost(id: string): Promise<Post> {

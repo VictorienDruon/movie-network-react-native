@@ -219,6 +219,34 @@ export interface Database {
           }
         ]
       }
+      watchlists: {
+        Row: {
+          media_id: string
+          user_id: string
+        }
+        Insert: {
+          media_id: string
+          user_id: string
+        }
+        Update: {
+          media_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "watchlists_media_id_fkey"
+            columns: ["media_id"]
+            referencedRelation: "media"
+            referencedColumns: ["uuid"]
+          },
+          {
+            foreignKeyName: "watchlists_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never

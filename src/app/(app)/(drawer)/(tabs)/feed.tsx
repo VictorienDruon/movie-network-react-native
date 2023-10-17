@@ -4,13 +4,7 @@ import { getPosts } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/commons";
 import { Box, RoundButton, Separator } from "@/components/ui";
 import PostCard from "@/features/post-card";
-import Post from "@/features/post-card/types/Post";
 import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
-
-interface PostsPage {
-	posts: Post[];
-	nextCursor: number;
-}
 
 const FeedScreen = () => {
 	const query = useInfiniteQuery({
