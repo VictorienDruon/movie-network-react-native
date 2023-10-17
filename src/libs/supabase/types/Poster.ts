@@ -1,5 +1,5 @@
 import { Database } from "./database.types";
 
-type Poster = Database["public"]["Tables"]["posters"]["Insert"];
+type Poster = Database["public"]["Tables"]["media"]["Insert"];
 
 export default Poster;

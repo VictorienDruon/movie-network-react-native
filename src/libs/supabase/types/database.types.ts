@@ -108,7 +108,7 @@ export interface Database {
           }
         ]
       }
-      posters: {
+      media: {
         Row: {
           backdrop_path: string
           created_at: string
@@ -166,31 +166,31 @@ export interface Database {
           }
         ]
       }
-      posts_posters: {
+      posts_media: {
         Row: {
+          media_id: string
           post_id: string
-          poster_id: string
         }
         Insert: {
+          media_id: string
           post_id: string
-          poster_id: string
         }
         Update: {
+          media_id?: string
           post_id?: string
-          poster_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "posts_posters_post_id_fkey"
+            foreignKeyName: "posts_media_media_id_fkey"
+            columns: ["media_id"]
+            referencedRelation: "media"
+            referencedColumns: ["uuid"]
+          },
+          {
+            foreignKeyName: "posts_media_post_id_fkey"
             columns: ["post_id"]
             referencedRelation: "posts"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "posts_posters_poster_id_fkey"
-            columns: ["poster_id"]
-            referencedRelation: "posters"
-            referencedColumns: ["uuid"]
           }
         ]
       }

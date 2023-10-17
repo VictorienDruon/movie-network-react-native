@@ -5,7 +5,7 @@ import DbPost from "../types/Post";
 import DbPerson from "../types/Person";
 import { hasUserLikedPost } from "./filter";
 
-function formatPoster({ posters }: DbPost["posts_posters"][number]): Poster {
+function formatPoster({ posters }: DbPost["posts_media"][number]): Poster {
 	return {
 		id: posters.id.toString(),
 		title: posters.title,
@@ -29,7 +29,7 @@ export function formatPost(post: DbPost, userId: string): Post {
 		id: post.id,
 		content: post.content,
 		createdAt: post.created_at,
-		posters: post.posts_posters.map(formatPoster),
+		posters: post.posts_media.map(formatPoster),
 		author: formatPerson(post.author),
 		userHasLikedPost: hasUserLikedPost(post.likes, userId),
 	};

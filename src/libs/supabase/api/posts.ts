@@ -23,7 +23,7 @@ export async function getPost(id: string): Promise<Post> {
 	const { data: post, error } = await supabase
 		.from("posts")
 		.select(
-			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_posters(posters: poster_id(*))"
+			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_media(posters: media_id(*))"
 		)
 		.eq("id", id)
 		.returns<DbPost>()
@@ -44,7 +44,7 @@ export async function getPosts(page: number) {
 	const { data: posts, error } = await supabase
 		.from("posts")
 		.select(
-			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_posters(posters: poster_id(*))"
+			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_media(posters: media_id(*))"
 		)
 		.order("created_at", { ascending: false })
 		.range(from, to)
@@ -67,7 +67,7 @@ export async function getPostsByUser(userId: string, page: number) {
 	const { data: posts, error } = await supabase
 		.from("posts")
 		.select(
-			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_posters(posters: poster_id(*))"
+			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_media(posters: media_id(*))"
 		)
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })
@@ -91,20 +91,20 @@ export async function createPost(newPost: NewPost): Promise<Post> {
 	if (postError) throw postError;
 
 	const { data: posters, error: postersError } = await supabase
-		.from("posters")
+		.from("media")
 		.upsert(newPost.posters)
 		.select();
 
 	if (postersError) throw postersError;
 
-	const postsPosters = posters.map((poster) => ({
+	const postsMedia = posters.map((poster) => ({
 		post_id: post.id,
-		poster_id: poster.uuid,
+		media_id: poster.uuid,
 	}));
 
 	const { error: postsPostersError } = await supabase
-		.from("posts_posters")
-		.insert(postsPosters);
+		.from("posts_media")
+		.insert(postsMedia);
 
 	if (postsPostersError) throw postsPostersError;
 
