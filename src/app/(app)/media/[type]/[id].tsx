@@ -15,6 +15,7 @@ import {
 	Box,
 	Button,
 	HStack,
+	Icon,
 	Link,
 	Sheet,
 	SubHeading,
@@ -65,6 +66,7 @@ const MediaScreen = () => {
 	const {
 		title,
 		date,
+		voteAverage,
 		overview,
 		posterPath,
 		backdropPath,
@@ -118,6 +120,14 @@ const MediaScreen = () => {
 								: lastEpisodeToAir && (
 										<Subtitle>{`${lastEpisodeToAir.seasonNumber} seasons`}</Subtitle>
 								  )}
+							{(date?.length > 0 || runtime > 0 || lastEpisodeToAir) &&
+								voteAverage > 0 && <Subtitle>•</Subtitle>}
+							{voteAverage > 0 && (
+								<HStack justifyContent="center" alignItems="center" space={4}>
+									<Subtitle>{voteAverage.toFixed(1)}</Subtitle>
+									<Icon name="Star" size={12} fill />
+								</HStack>
+							)}
 						</HStack>
 					</Section>
 

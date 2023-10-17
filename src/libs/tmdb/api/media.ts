@@ -20,6 +20,7 @@ export interface Media {
 	id: number;
 	title: string;
 	date: string;
+	voteAverage: number;
 	overview: string;
 	posterPath: string;
 	backdropPath: string;
@@ -88,6 +89,7 @@ export async function getMovie(id: string): Promise<Media> {
 			id: movie.id,
 			title: movie.title,
 			date: movie.release_date,
+			voteAverage: movie.vote_average,
 			overview: movie.overview,
 			posterPath: movie.poster_path,
 			backdropPath: movie.backdrop_path,
@@ -154,6 +156,7 @@ export async function getShow(id: string): Promise<Media> {
 			id: show.id,
 			title: show.name,
 			date: show.first_air_date,
+			voteAverage: show.vote_average,
 			overview: show.overview,
 			posterPath: show.poster_path,
 			backdropPath: show.backdrop_path,

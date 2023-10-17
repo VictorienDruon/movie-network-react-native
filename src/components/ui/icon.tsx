@@ -14,7 +14,7 @@ export interface IconProps {
 
 export const Icon = ({
 	name,
-	color = "neutral-8",
+	color = "neutral-9",
 	size,
 	strokeWidth,
 	customColor,
