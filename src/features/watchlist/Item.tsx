@@ -2,34 +2,50 @@ import { Animated, Dimensions } from "react-native";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { tmdbConfig } from "@/libs/tmdb";
-import { Box, Image, Title } from "@/components/ui";
+import { Box, Heading, Image, Title } from "@/components/ui";
 import { WatchlistItem } from "./types/WatchlistItem";
+
+const { width } = Dimensions.get("screen");
+const ITEM_SIZE = width * 0.65;
+const DUMMY_WIDTH = (width - ITEM_SIZE) / 2;
 
 interface WatchlistItemCardProps {
 	item: WatchlistItem;
-	translateY: Animated.AnimatedInterpolation<string | number>;
+	index: number;
+	scrollX: Animated.Value;
 }
 
-const WatchlistItemCard = ({ item, translateY }: WatchlistItemCardProps) => {
+const WatchlistItemCard = ({
+	item,
+	index,
+	scrollX,
+}: WatchlistItemCardProps) => {
 	const { title, posterPath } = item;
-	const { width } = Dimensions.get("screen");
-	const itemSize = width * 0.72;
-	const dummyWidth = (width - itemSize) / 2;
 	const theme = useTheme<Theme>();
 
-	if (!("title" in item)) return <Box width={dummyWidth} />;
+	if (!("title" in item)) return <Box width={DUMMY_WIDTH} />;
+
+	const inputRange = [
+		(index - 2) * ITEM_SIZE,
+		(index - 1) * ITEM_SIZE,
+		index * ITEM_SIZE,
+	];
+	const translateY = scrollX.interpolate({
+		inputRange,
+		outputRange: [25, -25, 25],
+	});
 
 	return (
-		<Box width={itemSize}>
+		<Box alignItems="center" width={ITEM_SIZE}>
 			<Animated.View
 				style={{
 					flexDirection: "column",
 					alignItems: "center",
-					marginHorizontal: 12,
-					padding: 24,
-					gap: 16,
-					borderRadius: theme.borderRadii.lg,
-					backgroundColor: theme.colors["primary-1"],
+					maxWidth: 224,
+					padding: 12,
+					gap: 8,
+					borderRadius: theme.borderRadii.xl,
+					backgroundColor: theme.colors["neutral-1"],
 					transform: [{ translateY }],
 				}}
 			>
@@ -41,7 +57,9 @@ const WatchlistItemCard = ({ item, translateY }: WatchlistItemCardProps) => {
 					borderRadius="md"
 				/>
 
-				<Title textAlign="center">{title}</Title>
+				<Title textAlign="center" numberOfLines={2} ellipsizeMode="tail">
+					{title}
+				</Title>
 			</Animated.View>
 		</Box>
 	);

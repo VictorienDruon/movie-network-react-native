@@ -1,73 +1,53 @@
-import { Animated, Dimensions, FlatList } from "react-native";
+import { Animated, Dimensions } from "react-native";
 import Svg, { Rect } from "react-native-svg";
 import MaskedView from "@react-native-masked-view/masked-view";
-import { LinearGradient } from "expo-linear-gradient";
 import { tmdbConfig } from "@/libs/tmdb";
-import { Box, Image } from "@/components/ui";
+import { Image } from "@/components/ui";
 import { WatchlistItem } from "./types/WatchlistItem";
 
+const { width, height } = Dimensions.get("screen");
+const ITEM_SIZE = width * 0.65;
+const BACKDROP_HEIGHT = (width * 9) / 16;
+
 interface BackdropProps {
-	watchlist: WatchlistItem[];
+	item: WatchlistItem;
+	index: number;
 	scrollX: Animated.Value;
 }
 
-const Backdrop = ({ watchlist, scrollX }: BackdropProps) => {
-	const { width, height } = Dimensions.get("screen");
-	const itemSize = width * 0.72;
-	const backdropHeight = (width * 9) / 16;
+const Backdrop = ({ item, index, scrollX }: BackdropProps) => {
+	const { title, backdropPath } = item;
 	const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
+	if (!("title" in item)) return null;
+
+	const inputRange = [(index - 1) * ITEM_SIZE, index * ITEM_SIZE];
+	const translateX = scrollX.interpolate({
+		inputRange,
+		outputRange: [-width, 0],
+	});
+
 	return (
-		<Box position="absolute" width={width} height={backdropHeight}>
-			<FlatList
-				data={watchlist}
-				keyExtractor={(item) => item.id + item.type}
-				renderItem={({ item, index }) => {
-					if (!("title" in item)) return null;
-
-					const inputRange = [(index - 1) * itemSize, index * itemSize];
-					const translateX = scrollX.interpolate({
-						inputRange,
-						outputRange: [-width, 0],
-					});
-
-					const { title, backdropPath } = item;
-
-					return (
-						<MaskedView
-							style={{ position: "absolute" }}
-							maskElement={
-								<AnimatedSvg
-									width={width}
-									height={height}
-									viewBox={`0 0 ${width} ${height}`}
-									style={{ transform: [{ translateX }] }}
-								>
-									<Rect x="0" y="0" width={width} height={height} fill="red" />
-								</AnimatedSvg>
-							}
-						>
-							<Image
-								src={`${tmdbConfig.links.image}/w1280${backdropPath}`}
-								alt={title}
-								width={width}
-								height={backdropHeight}
-							/>
-						</MaskedView>
-					);
-				}}
+		<MaskedView
+			style={{ position: "absolute" }}
+			maskElement={
+				<AnimatedSvg
+					width={width}
+					height={height}
+					viewBox={`0 0 ${width} ${height}`}
+					style={{ transform: [{ translateX }] }}
+				>
+					<Rect x="0" y="0" width={width} height={height} fill="red" />
+				</AnimatedSvg>
+			}
+		>
+			<Image
+				src={`${tmdbConfig.links.image}/w1280${backdropPath}`}
+				alt={title}
+				width={width}
+				height={BACKDROP_HEIGHT}
 			/>
-
-			<LinearGradient
-				colors={["transparent", "white"]}
-				style={{
-					position: "absolute",
-					bottom: 0,
-					width,
-					height: backdropHeight,
-				}}
-			/>
-		</Box>
+		</MaskedView>
 	);
 };
 

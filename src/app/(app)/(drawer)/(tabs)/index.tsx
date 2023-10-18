@@ -1,16 +1,22 @@
 import { useRef } from "react";
-import { Animated, Dimensions } from "react-native";
+import { Animated, Dimensions, FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { color, useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 import { getWatchlist } from "@/libs/supabase/api/watchlist";
 import { ErrorState } from "@/components/commons";
-import WatchlistItemCard from "@/features/watchlist/Item";
 import { Box } from "@/components/ui";
 import Backdrop from "@/features/watchlist/Backdrop";
+import WatchlistItemCard from "@/features/watchlist/Item";
+import { LinearGradient } from "expo-linear-gradient";
+
+const { width } = Dimensions.get("screen");
+const ITEM_SIZE = width * 0.65;
+const BACKDROP_HEIGHT = (width * 9) / 16;
 
 const WatchlistScreen = () => {
+	const { colors } = useTheme<Theme>();
 	const scrollX = useRef(new Animated.Value(0)).current;
-	const { width } = Dimensions.get("screen");
-	const itemSize = width * 0.72;
 
 	const query = useInfiniteQuery({
 		queryKey: ["watchlist"],
@@ -22,44 +28,49 @@ const WatchlistScreen = () => {
 
 	return (
 		<Box flex={1}>
-			<Backdrop
-				watchlist={query.data.pages.flatMap((page) => page.results)}
-				scrollX={scrollX}
-			/>
+			<Box position="absolute" width={width} height={BACKDROP_HEIGHT}>
+				<FlatList
+					data={query.data.pages.flatMap((page) => page.results)}
+					keyExtractor={(item) => item.id + item.type}
+					renderItem={({ item, index }) => (
+						<Backdrop item={item} index={index} scrollX={scrollX} />
+					)}
+				/>
+
+				<LinearGradient
+					colors={["transparent", colors["neutral-1"]]}
+					style={{
+						position: "absolute",
+						bottom: 0,
+						width,
+						height: BACKDROP_HEIGHT,
+					}}
+				/>
+			</Box>
 
 			<Animated.FlatList
 				data={[
-					{ id: "leftDummyItem" },
+					{ id: "left", type: "dummy" },
 					...query.data.pages.flatMap((page) => page.results),
-					{ id: "rightDummyItem" },
+					{ id: "right", type: "dummy" },
 				]}
 				keyExtractor={(item) => item.id + item.type}
-				renderItem={({ item, index }) => {
-					const inputRange = [
-						(index - 2) * itemSize,
-						(index - 1) * itemSize,
-						index * itemSize,
-					];
-					const translateY = scrollX.interpolate({
-						inputRange,
-						outputRange: [100, 50, 100],
-					});
-
-					return <WatchlistItemCard item={item} translateY={translateY} />;
-				}}
+				renderItem={({ item, index }) => (
+					<WatchlistItemCard item={item} index={index} scrollX={scrollX} />
+				)}
 				contentContainerStyle={{
 					alignItems: "center",
 				}}
+				horizontal
 				showsHorizontalScrollIndicator={false}
 				bounces={false}
-				horizontal
-				snapToInterval={itemSize}
+				snapToInterval={ITEM_SIZE}
 				decelerationRate={0}
+				scrollEventThrottle={16}
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { x: scrollX } } }],
 					{ useNativeDriver: true }
 				)}
-				scrollEventThrottle={16}
 			/>
 		</Box>
 	);
