@@ -6,22 +6,26 @@ import { Image } from "@/components/ui";
 import { WatchlistItem } from "./types/WatchlistItem";
 
 const { width, height } = Dimensions.get("screen");
-const ITEM_SIZE = width * 0.65;
-const BACKDROP_HEIGHT = (width * 9) / 16;
 
 interface BackdropProps {
 	item: WatchlistItem;
 	index: number;
 	scrollX: Animated.Value;
+	itemSize: number;
+	backdropHeight: number;
 }
 
-const Backdrop = ({ item, index, scrollX }: BackdropProps) => {
+const Backdrop = ({
+	item,
+	index,
+	scrollX,
+	itemSize,
+	backdropHeight,
+}: BackdropProps) => {
 	const { title, backdropPath } = item;
 	const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
-	if (!("title" in item)) return null;
-
-	const inputRange = [(index - 1) * ITEM_SIZE, index * ITEM_SIZE];
+	const inputRange = [(index - 1) * itemSize, index * itemSize];
 	const translateX = scrollX.interpolate({
 		inputRange,
 		outputRange: [-width, 0],
@@ -45,7 +49,7 @@ const Backdrop = ({ item, index, scrollX }: BackdropProps) => {
 				src={`${tmdbConfig.links.image}/w1280${backdropPath}`}
 				alt={title}
 				width={width}
-				height={BACKDROP_HEIGHT}
+				height={backdropHeight}
 			/>
 		</MaskedView>
 	);

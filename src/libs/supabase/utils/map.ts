@@ -10,20 +10,25 @@ import { hasUserLikedPost } from "./filter";
 function formatPoster({ posters }: { posters: Media }): Poster {
 	return {
 		id: posters.id.toString(),
+		type: posters.type as "movie" | "tv" | "collection",
 		title: posters.title,
 		posterPath: posters.poster_path,
 		backdropPath: posters.backdrop_path,
-		type: posters.type as "movie" | "tv" | "collection",
 	};
 }
 
 export function formatWatchlistItem(item: Media): WatchlistItem {
 	return {
 		id: item.id.toString(),
+		type: item.type as "movie" | "tv" | "collection",
 		title: item.title,
 		posterPath: item.poster_path,
 		backdropPath: item.backdrop_path,
-		type: item.type as "movie" | "tv" | "collection",
+		date: item.date,
+		runtime: item.runtime,
+		seasonNumber: item.season_number,
+		rating: item.rating,
+		overview: item.overview,
 	};
 }
 

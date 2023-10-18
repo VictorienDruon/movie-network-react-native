@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Animated, Dimensions, FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { color, useTheme } from "@shopify/restyle";
+import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { getWatchlist } from "@/libs/supabase/api/watchlist";
 import { ErrorState } from "@/components/commons";
@@ -10,9 +10,10 @@ import Backdrop from "@/features/watchlist/Backdrop";
 import WatchlistItemCard from "@/features/watchlist/Item";
 import { LinearGradient } from "expo-linear-gradient";
 
-const { width } = Dimensions.get("screen");
-const ITEM_SIZE = width * 0.65;
-const BACKDROP_HEIGHT = (width * 9) / 16;
+const { width, height } = Dimensions.get("screen");
+const ITEM_SIZE = Math.round(width * 0.72);
+const BACKDROP_HEIGHT = Math.round(height * 0.4);
+const DUMMY_WIDTH = Math.round((width - ITEM_SIZE) / 2);
 
 const WatchlistScreen = () => {
 	const { colors } = useTheme<Theme>();
@@ -33,7 +34,13 @@ const WatchlistScreen = () => {
 					data={query.data.pages.flatMap((page) => page.results)}
 					keyExtractor={(item) => item.id + item.type}
 					renderItem={({ item, index }) => (
-						<Backdrop item={item} index={index} scrollX={scrollX} />
+						<Backdrop
+							item={item}
+							index={index}
+							scrollX={scrollX}
+							itemSize={ITEM_SIZE}
+							backdropHeight={BACKDROP_HEIGHT}
+						/>
 					)}
 				/>
 
@@ -55,9 +62,18 @@ const WatchlistScreen = () => {
 					{ id: "right", type: "dummy" },
 				]}
 				keyExtractor={(item) => item.id + item.type}
-				renderItem={({ item, index }) => (
-					<WatchlistItemCard item={item} index={index} scrollX={scrollX} />
-				)}
+				renderItem={({ item, index }) =>
+					"title" in item ? (
+						<WatchlistItemCard
+							item={item}
+							index={index}
+							scrollX={scrollX}
+							itemSize={ITEM_SIZE}
+						/>
+					) : (
+						<Box width={DUMMY_WIDTH} />
+					)
+				}
 				contentContainerStyle={{
 					alignItems: "center",
 				}}

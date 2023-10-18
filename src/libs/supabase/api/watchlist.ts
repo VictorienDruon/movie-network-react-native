@@ -3,6 +3,7 @@ import { supabase } from "..";
 import NewMedia from "../types/NewMedia";
 import { getPage, getRange } from "../utils/pagination";
 import { formatWatchlistItem } from "../utils/map";
+import { WatchlistItem } from "@/features/watchlist/types/WatchlistItem";
 
 type NewWatchlistItem = {
 	user_id: string;

@@ -166,6 +166,11 @@ const MediaScreen = () => {
 									title,
 									poster_path: posterPath,
 									backdrop_path: backdropPath,
+									date,
+									runtime,
+									season_number: lastEpisodeToAir?.seasonNumber,
+									rating: voteAverage,
+									overview,
 								})
 							}
 						>

@@ -112,8 +112,13 @@ export interface Database {
         Row: {
           backdrop_path: string
           created_at: string
+          date: string | null
           id: number
+          overview: string | null
           poster_path: string
+          rating: number | null
+          runtime: number | null
+          season_number: number | null
           title: string
           type: string
           uuid: string
@@ -121,8 +126,13 @@ export interface Database {
         Insert: {
           backdrop_path: string
           created_at?: string
+          date?: string | null
           id: number
+          overview?: string | null
           poster_path: string
+          rating?: number | null
+          runtime?: number | null
+          season_number?: number | null
           title: string
           type: string
           uuid?: string
@@ -130,8 +140,13 @@ export interface Database {
         Update: {
           backdrop_path?: string
           created_at?: string
+          date?: string | null
           id?: number
+          overview?: string | null
           poster_path?: string
+          rating?: number | null
+          runtime?: number | null
+          season_number?: number | null
           title?: string
           type?: string
           uuid?: string

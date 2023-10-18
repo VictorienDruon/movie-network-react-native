@@ -1,7 +1,12 @@
 export interface WatchlistItem {
 	id: string;
+	type: "movie" | "tv" | "collection";
 	title: string;
 	posterPath: string;
 	backdropPath: string;
-	type: "movie" | "tv" | "collection";
+	date: string;
+	runtime: number;
+	seasonNumber: number;
+	rating: number;
+	overview: string;
 }
