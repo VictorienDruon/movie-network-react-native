@@ -21,6 +21,7 @@ export async function getWatchlist(page: number) {
 		.from("watchlists")
 		.select("media(*)")
 		.eq("user_id", session.user.id)
+		.eq("status", "active")
 		.range(from, to);
 
 	if (error) throw error;
@@ -46,6 +47,7 @@ export async function addToWatchlist({
 	const newWatchlistRow = {
 		user_id,
 		media_id: updatedMedia.uuid,
+		status: "active",
 	};
 
 	const { error: watchlistsError } = await supabase

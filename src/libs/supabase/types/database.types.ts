@@ -237,14 +237,17 @@ export interface Database {
       watchlists: {
         Row: {
           media_id: string
+          status: string
           user_id: string
         }
         Insert: {
           media_id: string
+          status: string
           user_id: string
         }
         Update: {
           media_id?: string
+          status?: string
           user_id?: string
         }
         Relationships: [

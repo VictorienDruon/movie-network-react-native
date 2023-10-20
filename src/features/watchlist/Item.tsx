@@ -75,7 +75,7 @@ const WatchlistItemCard = ({
 				>
 					<Box
 						bg="neutral-3"
-						borderRadius="sm"
+						borderRadius="lg"
 						shadowColor="black"
 						shadowOffset={{ width: 0, height: 10 }}
 						shadowOpacity={0.15}
