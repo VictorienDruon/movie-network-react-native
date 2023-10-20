@@ -5,7 +5,8 @@ import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { getWatchlist } from "@/libs/supabase/api/watchlist";
 import { ErrorState } from "@/components/commons";
-import { Box } from "@/components/ui";
+import { WatchlistSkeleton } from "@/components/skeletons";
+import { Box, Heading, Subtitle, Title, VStack } from "@/components/ui";
 import Backdrop from "@/features/watchlist/Backdrop";
 import WatchlistItemCard from "@/features/watchlist/Item";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,10 +23,31 @@ const WatchlistScreen = () => {
 	const query = useInfiniteQuery({
 		queryKey: ["watchlist"],
 		queryFn: ({ pageParam = 0 }) => getWatchlist(pageParam),
+		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading) return <WatchlistSkeleton />;
 	if (query.isError) return <ErrorState retry={query.refetch} />;
+
+	if (query.data.pages[0].results.length === 0) {
+		return (
+			<VStack
+				flex={1}
+				justifyContent="center"
+				alignItems="center"
+				p={32}
+				space={16}
+			>
+				<Heading fontSize={96} lineHeight={108}>
+					🍿
+				</Heading>
+				<Title textAlign="center">Your watchlist is empty!</Title>
+				<Subtitle textAlign="center">
+					Add movies and TV shows to your watchlist to see them here.
+				</Subtitle>
+			</VStack>
+		);
+	}
 
 	return (
 		<Box flex={1}>
@@ -87,6 +109,8 @@ const WatchlistScreen = () => {
 					[{ nativeEvent: { contentOffset: { x: scrollX } } }],
 					{ useNativeDriver: true }
 				)}
+				onEndReachedThreshold={0.1}
+				onEndReached={() => query.fetchNextPage()}
 			/>
 		</Box>
 	);
