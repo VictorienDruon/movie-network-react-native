@@ -6,8 +6,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDuration } from "@/utils/time";
 import { supabase } from "@/libs/supabase";
 import {
-	addToWatchlist,
-	handleAddToWatchlistSuccess,
+	updateWatchlist,
+	handleUpdateWatchlist,
+	isMediaInWatchlist,
+	Status,
 } from "@/libs/supabase/api/watchlist";
 import NewMedia from "@/libs/supabase/types/NewMedia";
 import { getMovie, getShow } from "@/libs/tmdb/api/media";
@@ -48,36 +50,47 @@ const MediaScreen = () => {
 	const [selectedRegion, setSelectedRegion] = useState<Region>(null);
 	const { regionCode } = getLocales()[0];
 
-	const media = type === "movie" ? getMovie : getShow;
+	const getMedia = type === "movie" ? getMovie : getShow;
 
-	const query = useQuery({
+	const mediaQuery = useQuery({
 		queryKey: ["media", type, id],
-		queryFn: () => media(id),
+		queryFn: () => getMedia(id),
 	});
 
-	const mutation = useMutation(addToWatchlist, {
-		onSuccess: () => handleAddToWatchlistSuccess(queryClient),
+	const isInWatchlistQuery = useQuery({
+		queryKey: ["isInWatchlist", type, id],
+		queryFn: () => isMediaInWatchlist(type, id),
 	});
 
-	const handleAddToWatchlistPress = async (media: NewMedia) => {
+	const watchlistMutation = useMutation(updateWatchlist, {
+		onSuccess: () => handleUpdateWatchlist(queryClient, type, id),
+	});
+
+	const handleUpdateWatchlistPress = async (
+		media: NewMedia,
+		status: Status
+	) => {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser();
-		mutation.mutate({ user_id: user.id, media });
+		watchlistMutation.mutate({ user_id: user.id, media, status });
 	};
 
 	useEffect(() => {
-		if (query.data) {
+		if (mediaQuery.data) {
 			const selectedRegion =
-				query.data.regions.find((region) => region.code === regionCode) ||
-				query.data.regions[0];
+				mediaQuery.data.regions.find((region) => region.code === regionCode) ||
+				mediaQuery.data.regions[0];
 			setSelectedRegion(selectedRegion);
 		}
-	}, [query.data]);
+	}, [mediaQuery.data]);
 
-	if (query.isLoading) return <MediaSkeleton />;
+	if (mediaQuery.isLoading || isInWatchlistQuery.isLoading)
+		return <MediaSkeleton />;
 
-	if (query.isError) return <ErrorState retry={query.refetch} />;
+	if (mediaQuery.isError) return <ErrorState retry={mediaQuery.refetch} />;
+	if (isInWatchlistQuery.isError)
+		return <ErrorState retry={isInWatchlistQuery.refetch} />;
 
 	const {
 		title,
@@ -103,7 +116,22 @@ const MediaScreen = () => {
 		createdBy,
 		lastEpisodeToAir,
 		inProduction,
-	} = query.data;
+	} = mediaQuery.data;
+
+	const media: NewMedia = {
+		id: parseInt(id),
+		type,
+		title,
+		poster_path: posterPath,
+		backdrop_path: backdropPath,
+		date,
+		runtime,
+		season_number: lastEpisodeToAir?.seasonNumber,
+		rating: voteAverage,
+		overview,
+	};
+
+	const isInWatchlist = isInWatchlistQuery.data;
 
 	return (
 		<>
@@ -156,26 +184,39 @@ const MediaScreen = () => {
 						>
 							Play
 						</Button>
-						<Button
-							variant="outline"
-							leftIcon="Plus"
-							onPress={() =>
-								handleAddToWatchlistPress({
-									id: parseInt(id),
-									type,
-									title,
-									poster_path: posterPath,
-									backdrop_path: backdropPath,
-									date,
-									runtime,
-									season_number: lastEpisodeToAir?.seasonNumber,
-									rating: voteAverage,
-									overview,
-								})
-							}
-						>
-							Add to Watchlist
-						</Button>
+						{isInWatchlist ? (
+							<HStack justifyContent="space-between" space={8}>
+								<Box flex={1}>
+									<Button
+										variant="outline"
+										leftIcon="Check"
+										disabled={watchlistMutation.isLoading}
+										onPress={() => handleUpdateWatchlistPress(media, "seen")}
+									>
+										Seen
+									</Button>
+								</Box>
+								<Box flex={1}>
+									<Button
+										variant="outline"
+										leftIcon="Trash"
+										disabled={watchlistMutation.isLoading}
+										onPress={() => handleUpdateWatchlistPress(media, "deleted")}
+									>
+										Remove
+									</Button>
+								</Box>
+							</HStack>
+						) : (
+							<Button
+								variant="outline"
+								leftIcon="Plus"
+								disabled={watchlistMutation.isLoading}
+								onPress={() => handleUpdateWatchlistPress(media, "active")}
+							>
+								Add to Watchlist
+							</Button>
+						)}
 					</Section>
 
 					{overview?.length > 0 && (
