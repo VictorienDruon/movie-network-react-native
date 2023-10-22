@@ -1,0 +1,15 @@
+{
+	"build": {
+		"preview": {
+			"ios": {
+				"simulator": true
+			}
+		},
+		"production": {
+			"env": {
+				"EXPO_PUBLIC_SUPABASE_URL": "https://kypdradzgcprocgxvgvt.supabase.co",
+				"EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5cGRyYWR6Z2Nwcm9jZ3h2Z3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA2MzI4MTEsImV4cCI6MjAwNjIwODgxMX0.Vl6_PY_Yb0Vw0nLcKFJ0CUCwGxepnd314a0b_DCWrKA"
+			}
+		}
+	}
+}
