@@ -379,53 +379,59 @@ const MediaScreen = () => {
 						</HStack>
 
 						<VStack space={16}>
-							<Section title="Streaming" flatlist>
-								<FlatList
-									data={providers[selectedRegion.code].flatrate}
-									keyExtractor={(p) => p.provider_id}
-									renderItem={({ item: provider }) => (
-										<ProviderIcon
-											link={providers[selectedRegion.code].link}
-											provider={provider}
-										/>
-									)}
-									contentContainerStyle={{ paddingHorizontal: 8 }}
-									showsHorizontalScrollIndicator={false}
-									horizontal
-								/>
-							</Section>
+							{providers[selectedRegion.code].flatrate && (
+								<Section title="Streaming" flatlist>
+									<FlatList
+										data={providers[selectedRegion.code].flatrate}
+										keyExtractor={(p) => p.provider_id}
+										renderItem={({ item: provider }) => (
+											<ProviderIcon
+												link={providers[selectedRegion.code].link}
+												provider={provider}
+											/>
+										)}
+										contentContainerStyle={{ paddingHorizontal: 8 }}
+										showsHorizontalScrollIndicator={false}
+										horizontal
+									/>
+								</Section>
+							)}
 
-							<Section title="Buy" flatlist>
-								<FlatList
-									data={providers[selectedRegion.code].buy}
-									keyExtractor={(p) => p.provider_id}
-									renderItem={({ item: provider }) => (
-										<ProviderIcon
-											link={providers[selectedRegion.code].link}
-											provider={provider}
-										/>
-									)}
-									contentContainerStyle={{ paddingHorizontal: 8 }}
-									showsHorizontalScrollIndicator={false}
-									horizontal
-								/>
-							</Section>
+							{providers[selectedRegion.code].buy && (
+								<Section title="Buy" flatlist>
+									<FlatList
+										data={providers[selectedRegion.code].buy}
+										keyExtractor={(p) => p.provider_id}
+										renderItem={({ item: provider }) => (
+											<ProviderIcon
+												link={providers[selectedRegion.code].link}
+												provider={provider}
+											/>
+										)}
+										contentContainerStyle={{ paddingHorizontal: 8 }}
+										showsHorizontalScrollIndicator={false}
+										horizontal
+									/>
+								</Section>
+							)}
 
-							<Section title="Rent" flatlist>
-								<FlatList
-									data={providers[selectedRegion.code].rent}
-									keyExtractor={(p) => p.provider_id}
-									renderItem={({ item: provider }) => (
-										<ProviderIcon
-											link={providers[selectedRegion.code].link}
-											provider={provider}
-										/>
-									)}
-									contentContainerStyle={{ paddingHorizontal: 8 }}
-									showsHorizontalScrollIndicator={false}
-									horizontal
-								/>
-							</Section>
+							{providers[selectedRegion.code].rent && (
+								<Section title="Rent" flatlist>
+									<FlatList
+										data={providers[selectedRegion.code].rent}
+										keyExtractor={(p) => p.provider_id}
+										renderItem={({ item: provider }) => (
+											<ProviderIcon
+												link={providers[selectedRegion.code].link}
+												provider={provider}
+											/>
+										)}
+										contentContainerStyle={{ paddingHorizontal: 8 }}
+										showsHorizontalScrollIndicator={false}
+										horizontal
+									/>
+								</Section>
+							)}
 						</VStack>
 					</VStack>
 				) : (

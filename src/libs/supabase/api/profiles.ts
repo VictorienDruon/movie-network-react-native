@@ -2,7 +2,6 @@ import Person from "@/features/person-card/types/Person";
 import { supabase } from "..";
 import { isUserFollowing } from "../utils/filter";
 import { getPage, getRange } from "../utils/pagination";
-import { convertKeysToCamelCase } from "@/utils/objects";
 import { formatPerson } from "../utils/map";
 
 interface Profile extends Person {

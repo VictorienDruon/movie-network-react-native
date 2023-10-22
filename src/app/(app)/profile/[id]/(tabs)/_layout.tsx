@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { TopTabs } from "@bacons/expo-router-top-tabs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/providers/session";
@@ -108,9 +108,9 @@ const ProfileTabsLayout = () => {
 								<Button
 									variant="secondaryOutline"
 									size="lg"
-									onPress={() => supabase.auth.signOut()}
+									onPress={() => router.push("/profile/settings")}
 								>
-									Sign Out
+									Settings
 								</Button>
 							) : (
 								<Button
