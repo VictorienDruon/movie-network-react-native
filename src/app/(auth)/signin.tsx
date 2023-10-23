@@ -10,14 +10,17 @@ const SignInScreen = () => {
 
 	const handleSignInPress = async (provider: Provider) => {
 		try {
-			const { data, error } = await supabase.auth.signInWithOAuth({
+			const {
+				data: { url },
+				error,
+			} = await supabase.auth.signInWithOAuth({
 				provider,
 				options: { redirectTo },
 			});
 
 			if (error) throw new Error("Error getting auth url: " + error.message);
 
-			const res = await WebBrowser.openAuthSessionAsync(data.url);
+			const res = await WebBrowser.openAuthSessionAsync(url);
 
 			if (res.type === "success") {
 				const params = new URLSearchParams(res.url.split("#")[1]);

@@ -86,11 +86,11 @@ const DrawerLayout = () => {
 								<Title fontWeight="500">About</Title>
 							</Link>
 
-							<Link href={appConfig.links.site + "/terms-of-service"}>
+							<Link href={appConfig.links.site + "/terms"}>
 								<Title fontWeight="500">Terms of Service</Title>
 							</Link>
 
-							<Link href={appConfig.links.site + "/privacy-policy"}>
+							<Link href={appConfig.links.site + "/privacy"}>
 								<Title fontWeight="500">Privacy Policy</Title>
 							</Link>
 

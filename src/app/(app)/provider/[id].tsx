@@ -9,12 +9,6 @@ import { Section } from "@/components/layouts";
 import { Heading, VStack } from "@/components/ui";
 import PosterCard from "@/features/poster-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
-import Poster from "@/features/poster-card/types/Poster";
-
-interface PostersPage {
-	posters: Poster[];
-	nextCursor: number;
-}
 
 const ProviderScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -62,8 +56,8 @@ const ProviderScreen = () => {
 						{name}
 					</Heading>
 
-					<Section title="Movies" size="lg" flatlist>
-						{moviesQuery.isLoading ? (
+					{moviesQuery.isLoading ? (
+						<Section title="Movies" size="lg" flatlist>
 							<FlatList
 								data={[...Array(3).keys()]}
 								keyExtractor={(i) => "movie" + i.toString()}
@@ -72,28 +66,32 @@ const ProviderScreen = () => {
 								showsHorizontalScrollIndicator={false}
 								horizontal
 							/>
-						) : (
-							<FlatList
-								data={moviesQuery.data.pages.flatMap((page) => page.results)}
-								keyExtractor={(m) => "movie" + m.id}
-								renderItem={({ item }) => (
-									<PosterCard poster={item} size="md" mx={8} />
-								)}
-								ListFooterComponent={() =>
-									moviesQuery.hasNextPage && (
-										<PosterCardSkeleton size="md" mx={8} />
-									)
-								}
-								contentContainerStyle={{ paddingHorizontal: 8 }}
-								showsHorizontalScrollIndicator={false}
-								onEndReached={() => moviesQuery.fetchNextPage()}
-								horizontal
-							/>
-						)}
-					</Section>
+						</Section>
+					) : (
+						moviesQuery.data.pages[0].results.length > 0 && (
+							<Section title="Movies" size="lg" flatlist>
+								<FlatList
+									data={moviesQuery.data.pages.flatMap((page) => page.results)}
+									keyExtractor={(m) => "movie" + m.id}
+									renderItem={({ item }) => (
+										<PosterCard poster={item} size="md" mx={8} />
+									)}
+									ListFooterComponent={() =>
+										moviesQuery.hasNextPage && (
+											<PosterCardSkeleton size="md" mx={8} />
+										)
+									}
+									contentContainerStyle={{ paddingHorizontal: 8 }}
+									showsHorizontalScrollIndicator={false}
+									onEndReached={() => moviesQuery.fetchNextPage()}
+									horizontal
+								/>
+							</Section>
+						)
+					)}
 
-					<Section title="Shows" size="lg" flatlist>
-						{showsQuery.isLoading ? (
+					{showsQuery.isLoading ? (
+						<Section title="Shows" size="lg" flatlist>
 							<FlatList
 								data={[...Array(3).keys()]}
 								keyExtractor={(i) => "movie" + i.toString()}
@@ -102,25 +100,29 @@ const ProviderScreen = () => {
 								showsHorizontalScrollIndicator={false}
 								horizontal
 							/>
-						) : (
-							<FlatList
-								data={showsQuery.data.pages.flatMap((page) => page.results)}
-								keyExtractor={(s) => "show" + s.id}
-								renderItem={({ item }) => (
-									<PosterCard poster={item} size="md" mx={8} />
-								)}
-								ListFooterComponent={() =>
-									showsQuery.hasNextPage && (
-										<PosterCardSkeleton size="md" mx={8} />
-									)
-								}
-								contentContainerStyle={{ paddingHorizontal: 8 }}
-								showsHorizontalScrollIndicator={false}
-								onEndReached={() => showsQuery.fetchNextPage()}
-								horizontal
-							/>
-						)}
-					</Section>
+						</Section>
+					) : (
+						showsQuery.data.pages[0].results.length > 0 && (
+							<Section title="Shows" size="lg" flatlist>
+								<FlatList
+									data={showsQuery.data.pages.flatMap((page) => page.results)}
+									keyExtractor={(s) => "show" + s.id}
+									renderItem={({ item }) => (
+										<PosterCard poster={item} size="md" mx={8} />
+									)}
+									ListFooterComponent={() =>
+										showsQuery.hasNextPage && (
+											<PosterCardSkeleton size="md" mx={8} />
+										)
+									}
+									contentContainerStyle={{ paddingHorizontal: 8 }}
+									showsHorizontalScrollIndicator={false}
+									onEndReached={() => showsQuery.fetchNextPage()}
+									horizontal
+								/>
+							</Section>
+						)
+					)}
 				</VStack>
 			</ScrollView>
 		</>
