@@ -128,12 +128,15 @@ const textVariants: { [key in ButtonVariant]: TextProps } = {
 const textSizes: { [key in ButtonSize]: TextProps } = {
 	lg: {
 		fontSize: 16,
+		lineHeight: 20,
 	},
 	md: {
 		fontSize: 16,
+		lineHeight: 20,
 	},
 	sm: {
 		fontSize: 14,
+		lineHeight: 18,
 	},
 };
 

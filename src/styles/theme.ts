@@ -85,7 +85,6 @@ export const theme = createTheme({
 		},
 		button: {
 			fontWeight: "600",
-			lineHeight: 0,
 		},
 	},
 	colors: {
