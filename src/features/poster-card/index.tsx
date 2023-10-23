@@ -80,7 +80,7 @@ const PosterCard = ({
 					{...boxSizes[orientation][size]}
 					{...boxOrientation[orientation]}
 					{...(decoration === "border" && { ...boxBorder })}
-				></Image>
+				/>
 
 				{textPosition === "top" && (
 					<Box

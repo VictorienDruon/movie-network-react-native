@@ -103,25 +103,26 @@ const ExploreScreen = () => {
 								params: { id: genre.movieId || genre.tvId },
 							}}
 						>
-							<Image
-								src={`${tmdbConfig.links.image}/w780/${genre.backdrop_path}`}
-								alt={genre.name}
-								width={140}
-								aspectRatio={16 / 9}
-								marginHorizontal={4}
-								borderRadius="md"
-							>
-								<Box
-									position="absolute"
+							<Box marginHorizontal={4} borderRadius="md" overflow="hidden">
+								<Image
+									src={`${tmdbConfig.links.image}/w780/${genre.backdrop_path}`}
+									alt={genre.name}
 									width={140}
 									aspectRatio={16 / 9}
+								/>
+								<Box
+									position="absolute"
+									top={0}
+									right={0}
+									bottom={0}
+									left={0}
 									bg="black"
 									opacity={0.4}
 								/>
 								<Box position="absolute" bottom={8} left={12}>
 									<SubHeading color="white">{genre.name}</SubHeading>
 								</Box>
-							</Image>
+							</Box>
 						</Link>
 					)}
 					contentContainerStyle={{ paddingHorizontal: 12 }}
