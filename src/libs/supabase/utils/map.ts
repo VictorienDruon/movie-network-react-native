@@ -1,9 +1,11 @@
 import Post from "@/features/post-card/types/Post";
 import Poster from "@/features/poster-card/types/Poster";
 import Person from "@/features/person-card/types/Person";
+import Comment from "@/features/comment-card/types/Comment";
 import { WatchlistItem } from "@/features/watchlist/types/WatchlistItem";
 import DbPost from "../types/Post";
 import DbPerson from "../types/Person";
+import DbComment from "../types/Comment";
 import Media from "../types/Media";
 import { hasUserLikedPost } from "./filter";
 
@@ -49,5 +51,20 @@ export function formatPost(post: DbPost, userId: string): Post {
 		posters: post.posts_media.map(formatPoster),
 		author: formatPerson(post.author),
 		userHasLikedPost: hasUserLikedPost(post.likes, userId),
+	};
+}
+
+export function formatComment(comment: DbComment): Comment {
+	return {
+		id: comment.id,
+		content: comment.content,
+		createdAt: comment.created_at,
+		postId: comment.post_id,
+		userId: comment.user_id,
+		author: {
+			id: comment.author.id,
+			name: comment.author.name,
+			avatarUrl: comment.author.avatar_url,
+		},
 	};
 }

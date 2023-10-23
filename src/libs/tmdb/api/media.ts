@@ -146,14 +146,11 @@ export async function getShow(id: string): Promise<Media> {
 
 		const createdBy = show.created_by.map(extractName);
 
-		const lastEpisodeToAir = show.last_episode_to_air
-			? {
-					seasonNumber: show.last_episode_to_air.season_number,
-					episodeNumber: show.last_episode_to_air.episode_number,
-					name: show.last_episode_to_air.name,
-			  }
-			: undefined;
-
+		const lastEpisodeToAir = show.last_episode_to_air && {
+			seasonNumber: show.last_episode_to_air.season_number,
+			episodeNumber: show.last_episode_to_air.episode_number,
+			name: show.last_episode_to_air.name,
+		};
 		return {
 			id: show.id,
 			title: show.name,

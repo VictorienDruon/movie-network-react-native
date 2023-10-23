@@ -4,6 +4,7 @@ import Comment from "@/features/comment-card/types/Comment";
 import { supabase } from "..";
 import { Database } from "../types/database.types";
 import { getPage, getRange } from "../utils/pagination";
+import { formatComment } from "../utils/map";
 
 type NewComment = Database["public"]["Tables"]["comments"]["Insert"];
 
@@ -19,9 +20,9 @@ export async function getCommentsByPost(postId: string, page: number) {
 
 	if (error) throw error;
 
-	const camelCaseComments = comments.map(convertKeysToCamelCase<Comment>);
+	const formattedComments = comments.map(formatComment);
 
-	return getPage<Comment>(camelCaseComments, page);
+	return getPage<Comment>(formattedComments, page);
 }
 
 export async function getCommentsByUser(userId: string, page: number) {
@@ -36,9 +37,9 @@ export async function getCommentsByUser(userId: string, page: number) {
 
 	if (error) throw error;
 
-	const camelCaseComments = comments.map(convertKeysToCamelCase<Comment>);
+	const formattedComments = comments.map(formatComment);
 
-	return getPage<Comment>(camelCaseComments, page);
+	return getPage<Comment>(formattedComments, page);
 }
 
 export async function createComment(newComment: NewComment): Promise<Comment> {
