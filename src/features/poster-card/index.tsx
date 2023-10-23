@@ -76,14 +76,20 @@ const PosterCard = ({
 						imagesResolution[orientation][size]
 					}${orientation === "vertical" ? posterPath : backdropPath}`}
 					alt={`${title} poster`}
-					alignItems="center"
 					borderRadius="sm"
 					{...boxSizes[orientation][size]}
 					{...boxOrientation[orientation]}
-					{...imageSizes[size]}
 					{...(decoration === "border" && { ...boxBorder })}
-				>
-					{textPosition === "top" && (
+				></Image>
+
+				{textPosition === "top" && (
+					<Box
+						position="absolute"
+						left={0}
+						right={0}
+						alignItems="center"
+						{...imageSizes[size]}
+					>
 						<Blur intensity={15} tint="dark" borderRadius="full">
 							<Title
 								color="white"
@@ -94,8 +100,8 @@ const PosterCard = ({
 								{title}
 							</Title>
 						</Blur>
-					)}
-				</Image>
+					</Box>
+				)}
 
 				{action === "select" && context.isSelected(id, type) && (
 					<Box
