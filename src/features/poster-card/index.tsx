@@ -41,13 +41,7 @@ const PosterCard = ({
 	rotate,
 	...props
 }: PosterCardProps) => {
-	const {
-		id,
-		title,
-		posterPath: poster_path,
-		backdropPath: backdrop_path,
-		type,
-	} = poster;
+	const { id, title, posterPath, backdropPath, type } = poster;
 	const context = usePosters();
 
 	const handlePress = () => {
@@ -80,7 +74,7 @@ const PosterCard = ({
 				<Image
 					src={`${tmdbConfig.links.image}${
 						imagesResolution[orientation][size]
-					}${orientation === "vertical" ? poster_path : backdrop_path}`}
+					}${orientation === "vertical" ? posterPath : backdropPath}`}
 					alt={`${title} poster`}
 					alignItems="center"
 					borderRadius="sm"
