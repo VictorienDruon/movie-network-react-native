@@ -1,12 +1,16 @@
 import { useCallback, useState } from "react";
-import { RefreshControl as RefreshControlRN } from "react-native";
+import {
+	RefreshControl as RefreshControlRN,
+	RefreshControlProps as RefreshControlPropsRN,
+} from "react-native";
 import { QueryObserverResult } from "@tanstack/react-query";
 
-export const RefreshControl = ({
-	refetch,
-}: {
+interface RefreshControlProps
+	extends Omit<RefreshControlPropsRN, "refreshing"> {
 	refetch: () => Promise<QueryObserverResult>;
-}) => {
+}
+
+export const RefreshControl = ({ refetch, ...props }: RefreshControlProps) => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 
 	const handleRefresh = useCallback(() => {
@@ -14,7 +18,13 @@ export const RefreshControl = ({
 		refetch().then(() => setRefreshing(false));
 	}, []);
 
-	return <RefreshControlRN refreshing={refreshing} onRefresh={handleRefresh} />;
+	return (
+		<RefreshControlRN
+			refreshing={refreshing}
+			onRefresh={handleRefresh}
+			{...props}
+		/>
+	);
 };
 
 export default RefreshControl;
