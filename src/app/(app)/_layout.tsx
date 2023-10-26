@@ -1,5 +1,7 @@
-import { Stack } from "expo-router";
+import { Platform } from "react-native";
+import { Link, Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Title } from "@/components/ui";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +21,21 @@ const AppLayout = () => (
 			/>
 			<Stack.Screen name="profile/settings" options={{ title: "Settings" }} />
 
-			<Stack.Screen name="post/create" options={{ title: "Create a Post" }} />
+			<Stack.Screen
+				name="post/create"
+				options={{
+					title: "Create a Post",
+					presentation: Platform.OS === "ios" ? "fullScreenModal" : "card",
+					headerLeft: () =>
+						Platform.OS === "ios" ? (
+							<Link href="..">
+								<Title color="primary-9" fontWeight="normal">
+									Cancel
+								</Title>
+							</Link>
+						) : null,
+				}}
+			/>
 			<Stack.Screen name="post/[id]/index" options={{ title: "Post" }} />
 			<Stack.Screen
 				name="post/[id]/comments"

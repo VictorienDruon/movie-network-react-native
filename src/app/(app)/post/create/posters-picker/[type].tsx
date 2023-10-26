@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import {
 	FlatList,
 	NativeSyntheticEvent,
+	Platform,
 	TextInputFocusEventData,
 	TouchableOpacity,
 } from "react-native";
@@ -71,13 +72,14 @@ const PostersPicker = () => {
 			<Stack.Screen
 				options={{
 					title: type === "movie" ? "Select Movies" : "Select Shows",
-					headerLeft: () => (
-						<Link href="..">
-							<Title color="primary-9" fontWeight="normal">
-								Cancel
-							</Title>
-						</Link>
-					),
+					headerLeft: () =>
+						Platform.OS === "ios" ? (
+							<Link href="..">
+								<Title color="primary-9" fontWeight="normal">
+									Cancel
+								</Title>
+							</Link>
+						) : null,
 					headerRight: () => (
 						<TouchableOpacity
 							onPress={() => {

@@ -87,7 +87,7 @@ const CreateScreen = () => {
 
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
-				keyboardVerticalOffset={94}
+				keyboardVerticalOffset={98}
 			>
 				<HStack
 					justifyContent="space-between"
