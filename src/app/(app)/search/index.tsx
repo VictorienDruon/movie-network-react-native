@@ -11,14 +11,17 @@ import { SearchPage, search as searchTmdb } from "@/libs/tmdb/api/search";
 import { searchProfiles } from "@/libs/supabase/api/profiles";
 import { ErrorState } from "@/components/commons";
 import { Section } from "@/components/layouts";
-import { Avatar, Body, Link, VStack } from "@/components/ui";
+import { VStack } from "@/components/ui";
 import PosterCard from "@/features/poster-card";
 import PersonCard from "@/features/person-card";
 import PosterCardSkeleton from "@/features/poster-card/components/PosterSkeleton";
 import PersonCardSkeleton from "@/features/person-card/components/PersonCardSkeleton";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 
 const SearchScreen = () => {
 	const navigation = useNavigation();
+	const { colors } = useTheme<Theme>();
 	const [value, setValue] = useState("");
 
 	const moviesQuery = useInfiniteQuery<SearchPage<"movies">, Error>({
@@ -55,13 +58,18 @@ const SearchScreen = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerSearchBarOptions: {
-				placeholder: "Movies, shows, people and more",
+				placeholder: "Movies, shows, people, users...",
+				textColor: colors["neutral-12"],
+				hintTextColor: colors["neutral-11"],
+				headerIconColor: colors["neutral-12"],
+				shouldShowHintSearchIcon: false,
 				onSearchButtonPress: (
 					e: NativeSyntheticEvent<TextInputFocusEventData>
 				) => setValue(e.nativeEvent.text.trim()),
 				onCancelButtonPress: () => setValue(""),
 				hideWhenScrolling: false,
 				hideNavigationBar: false,
+				autoFocus: true,
 			},
 		});
 	}, [navigation]);

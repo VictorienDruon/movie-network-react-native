@@ -13,6 +13,8 @@ import {
 	useNavigation,
 } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 import { DiscoverPage, discover } from "@/libs/tmdb/api/discover";
 import { SearchPage, search } from "@/libs/tmdb/api/search";
 import { usePosters } from "@/providers/posters";
@@ -27,6 +29,7 @@ type PluralType = "movies" | "tvShows";
 const PostersPicker = () => {
 	const navigation = useNavigation();
 	const { type } = useLocalSearchParams<{ type: Type }>();
+	const { colors } = useTheme<Theme>();
 	const pluralType: PluralType = `${type}s`;
 	const [value, setValue] = useState("");
 	const { push } = usePosters();
@@ -48,7 +51,12 @@ const PostersPicker = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerSearchBarOptions: {
-				placeholder: type === "movie" ? "Search movies" : "Search Shows",
+				placeholder:
+					type === "movie" ? "Search for movies" : "Search for shows",
+				textColor: colors["neutral-12"],
+				hintTextColor: colors["neutral-11"],
+				headerIconColor: colors["neutral-12"],
+				shouldShowHintSearchIcon: false,
 				onSearchButtonPress: (
 					e: NativeSyntheticEvent<TextInputFocusEventData>
 				) => setValue(e.nativeEvent.text.trim()),

@@ -20,6 +20,6 @@ export const darkTheme = {
 		card: neutralDark["neutral-1"],
 		text: neutralDark["neutral-12"],
 		border: neutralDark["neutral-6"],
-		notification: primaryDark["primary-5"],
+		notification: primaryDark["primary-9"],
 	},
 };
