@@ -20,7 +20,7 @@ const SignInScreen = () => {
 
 			if (error) throw new Error("Error getting auth url: " + error.message);
 
-			const res = await WebBrowser.openAuthSessionAsync(url);
+			const res = await WebBrowser.openAuthSessionAsync(url, redirectTo);
 
 			if (res.type === "success") {
 				const params = new URLSearchParams(res.url.split("#")[1]);
