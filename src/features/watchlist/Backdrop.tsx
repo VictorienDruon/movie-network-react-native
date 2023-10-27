@@ -1,4 +1,4 @@
-import { Animated, Dimensions } from "react-native";
+import { Animated, Dimensions, Platform } from "react-native";
 import Svg, { Rect } from "react-native-svg";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { tmdbConfig } from "@/libs/tmdb";
@@ -30,6 +30,27 @@ const Backdrop = ({
 		inputRange,
 		outputRange: [-width, 0],
 	});
+
+	if (Platform.OS === "android")
+		return (
+			<Animated.View
+				removeClippedSubviews={false}
+				style={{
+					position: "absolute",
+					width,
+					height,
+					overflow: "hidden",
+					transform: [{ translateX }],
+				}}
+			>
+				<Image
+					src={`${tmdbConfig.links.image}/w1280${backdropPath}`}
+					alt={title}
+					width={width}
+					height={backdropHeight}
+				/>
+			</Animated.View>
+		);
 
 	return (
 		<MaskedView

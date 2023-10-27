@@ -55,6 +55,7 @@ const WatchlistScreen = () => {
 				<FlatList
 					data={query.data.pages.flatMap((page) => page.results)}
 					keyExtractor={(item) => item.id + item.type}
+					removeClippedSubviews={false}
 					renderItem={({ item, index }) => (
 						<Backdrop
 							item={item}
@@ -64,6 +65,7 @@ const WatchlistScreen = () => {
 							backdropHeight={BACKDROP_HEIGHT}
 						/>
 					)}
+					contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
 				/>
 
 				<LinearGradient
