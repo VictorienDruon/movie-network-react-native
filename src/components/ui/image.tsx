@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Image as ExpoImage, ImageContentFit } from "expo-image";
+import { Image as ExpoImage, ImageContentFit, ImageSource } from "expo-image";
 import {
 	spacing,
 	SpacingProps,
@@ -25,7 +25,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
 ]);
 
 type ImageProps = RestyleProps & {
-	src: string;
+	src: string | number | string[] | ImageSource | ImageSource[];
 	alt: string;
 	contentFit?: ImageContentFit;
 	children?: React.ReactNode;

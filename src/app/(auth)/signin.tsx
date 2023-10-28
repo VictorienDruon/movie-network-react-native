@@ -1,19 +1,24 @@
 import { useEffect } from "react";
-import { Platform, useColorScheme } from "react-native";
+import { Platform, TouchableOpacity, useColorScheme } from "react-native";
 import { createURL } from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { useAssets } from "expo-asset";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 import { Provider } from "@supabase/supabase-js";
 import { supabase } from "@/libs/supabase";
-import { Button, Title, VStack } from "@/components/ui";
-import { border, useTheme } from "@shopify/restyle";
-import { Theme } from "@/styles/theme";
+import { Button, HStack, Image, Title, VStack } from "@/components/ui";
 
 const SignInScreen = () => {
 	const colorScheme = useColorScheme();
-	const buttonStyle = colorScheme === "dark" ? "LIGHT" : "BLACK";
+	const isDark = colorScheme === "dark";
 	const { borderRadii } = useTheme<Theme>();
 	const redirectTo = createURL("/");
+	const [assets] = useAssets([
+		require("../../../assets/x-black.png"),
+		require("../../../assets/x-white.png"),
+	]);
 
 	const handleSignInPress = async (provider: Provider) => {
 		try {
@@ -60,10 +65,7 @@ const SignInScreen = () => {
 			});
 
 			if (credential.identityToken) {
-				const {
-					error,
-					data: { user },
-				} = await supabase.auth.signInWithIdToken({
+				const { error } = await supabase.auth.signInWithIdToken({
 					provider: "apple",
 					token: credential.identityToken,
 				});
@@ -97,18 +99,44 @@ const SignInScreen = () => {
 			<Title>Sign In</Title>
 
 			<Button onPress={() => handleSignInPress("google")}>
-				Sign In with Google
+				Sign in with Google
 			</Button>
 
-			<Button onPress={() => handleSignInPress("twitter")}>
-				Sign In with Twitter
-			</Button>
+			<TouchableOpacity
+				style={{
+					justifyContent: "center",
+					alignItems: "center",
+					width: "80%",
+					height: 48,
+					backgroundColor: isDark ? "white" : "black",
+					borderRadius: borderRadii.xl,
+				}}
+				onPress={() => handleSignInPress("twitter")}
+			>
+				<HStack alignItems="center" space={8}>
+					<Image
+						src={isDark ? assets[0] : assets[1]}
+						alt="X"
+						width={16}
+						height={16}
+					/>
+					<Title
+						fontSize={18}
+						fontWeight="600"
+						color={isDark ? "black" : "white"}
+					>
+						Sign in with X
+					</Title>
+				</HStack>
+			</TouchableOpacity>
 
 			{Platform.OS === "ios" && (
 				<AppleAuthentication.AppleAuthenticationButton
 					buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
 					buttonStyle={
-						AppleAuthentication.AppleAuthenticationButtonStyle[buttonStyle]
+						AppleAuthentication.AppleAuthenticationButtonStyle[
+							isDark ? "WHITE" : "BLACK"
+						]
 					}
 					cornerRadius={borderRadii.xl}
 					style={{ width: "80%", height: 48 }}
