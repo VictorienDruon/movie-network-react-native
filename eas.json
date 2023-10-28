@@ -9,5 +9,8 @@
 			}
 		},
 		"production": {}
+	},
+	"cli": {
+		"promptToConfigurePushNotifications": false
 	}
 }

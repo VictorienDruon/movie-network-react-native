@@ -1,11 +1,18 @@
 import { useEffect } from "react";
-import * as WebBrowser from "expo-web-browser";
+import { Platform, useColorScheme } from "react-native";
 import { createURL } from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { Provider } from "@supabase/supabase-js";
 import { supabase } from "@/libs/supabase";
 import { Button, Title, VStack } from "@/components/ui";
+import { border, useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 
 const SignInScreen = () => {
+	const colorScheme = useColorScheme();
+	const buttonStyle = colorScheme === "dark" ? "LIGHT" : "BLACK";
+	const { borderRadii } = useTheme<Theme>();
 	const redirectTo = createURL("/");
 
 	const handleSignInPress = async (provider: Provider) => {
@@ -40,7 +47,34 @@ const SignInScreen = () => {
 			} else throw new Error("Authentication failed: " + res.type);
 		} catch (err) {
 			console.error(err);
-		} finally {
+		}
+	};
+
+	const handleAppleSignInPress = async () => {
+		try {
+			const credential = await AppleAuthentication.signInAsync({
+				requestedScopes: [
+					AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+					AppleAuthentication.AppleAuthenticationScope.EMAIL,
+				],
+			});
+
+			if (credential.identityToken) {
+				const {
+					error,
+					data: { user },
+				} = await supabase.auth.signInWithIdToken({
+					provider: "apple",
+					token: credential.identityToken,
+				});
+
+				if (error)
+					throw new Error("Error setting auth session: " + error.message);
+			} else {
+				throw new Error("Authentication failed: no identityToken");
+			}
+		} catch (error) {
+			console.error(error);
 		}
 	};
 
@@ -69,6 +103,18 @@ const SignInScreen = () => {
 			<Button onPress={() => handleSignInPress("twitter")}>
 				Sign In with Twitter
 			</Button>
+
+			{Platform.OS === "ios" && (
+				<AppleAuthentication.AppleAuthenticationButton
+					buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+					buttonStyle={
+						AppleAuthentication.AppleAuthenticationButtonStyle[buttonStyle]
+					}
+					cornerRadius={borderRadii.xl}
+					style={{ width: "80%", height: 48 }}
+					onPress={handleAppleSignInPress}
+				/>
+			)}
 		</VStack>
 	);
 };

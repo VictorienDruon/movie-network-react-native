@@ -1,47 +1,45 @@
 {
-  "expo": {
-    "name": "Movie Network",
-    "slug": "TheMovieNetwork",
-    "scheme": "themovienetwork",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": false,
-      "config": {
-        "usesNonExemptEncryption": false
-      },
-      "bundleIdentifier": "com.victoriend.TheMovieNetwork"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.victoriend.TheMovieNetwork"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "experiments": {
-      "tsconfigPaths": true
-    },
-    "extra": {
-      "router": {
-        "origin": false
-      },
-      "eas": {
-        "projectId": "27c6b5a7-b6e6-4b18-9dcc-4bcc46294e57"
-      }
-    }
-  }
+	"expo": {
+		"name": "Movie Network",
+		"slug": "TheMovieNetwork",
+		"scheme": "themovienetwork",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "automatic",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": false,
+			"usesAppleSignIn": true,
+			"config": {
+				"usesNonExemptEncryption": false
+			},
+			"buildNumber": "1.0.1",
+			"bundleIdentifier": "com.victoriend.TheMovieNetwork"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.victoriend.TheMovieNetwork"
+		},
+		"plugins": ["expo-router", "expo-apple-authentication"],
+		"experiments": {
+			"tsconfigPaths": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "27c6b5a7-b6e6-4b18-9dcc-4bcc46294e57"
+			}
+		}
+	}
 }
