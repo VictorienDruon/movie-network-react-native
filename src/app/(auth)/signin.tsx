@@ -8,7 +8,14 @@ import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { Provider } from "@supabase/supabase-js";
 import { supabase } from "@/libs/supabase";
-import { Button, HStack, Image, Title, VStack } from "@/components/ui";
+import {
+	HStack,
+	Heading,
+	Image,
+	SubHeading,
+	Title,
+	VStack,
+} from "@/components/ui";
 
 const SignInScreen = () => {
 	const colorScheme = useColorScheme();
@@ -16,6 +23,7 @@ const SignInScreen = () => {
 	const { borderRadii } = useTheme<Theme>();
 	const redirectTo = createURL("/");
 	const [assets] = useAssets([
+		require("../../../assets/google.png"),
 		require("../../../assets/x-black.png"),
 		require("../../../assets/x-white.png"),
 	]);
@@ -88,61 +96,81 @@ const SignInScreen = () => {
 	}, []);
 
 	return (
-		<VStack
-			flex={1}
-			justifyContent="center"
-			alignItems="center"
-			px={16}
-			py={64}
-			space={16}
-		>
-			<Title>Sign In</Title>
+		<VStack flex={1} justifyContent="space-between" px={32} py={128} space={64}>
+			<VStack space={16}>
+				<Heading textAlign="center">Welcome to the Movie Network!</Heading>
 
-			<Button onPress={() => handleSignInPress("google")}>
-				Sign in with Google
-			</Button>
+				<SubHeading textAlign="center">Sign in to get started.</SubHeading>
+			</VStack>
 
-			<TouchableOpacity
-				style={{
-					justifyContent: "center",
-					alignItems: "center",
-					width: "80%",
-					height: 48,
-					backgroundColor: isDark ? "white" : "black",
-					borderRadius: borderRadii.xl,
-				}}
-				onPress={() => handleSignInPress("twitter")}
-			>
-				<HStack alignItems="center" space={8}>
-					<Image
-						src={isDark ? assets[0] : assets[1]}
-						alt="X"
-						width={16}
-						height={16}
+			<VStack space={16}>
+				<TouchableOpacity
+					style={{
+						justifyContent: "center",
+						alignItems: "center",
+						width: "100%",
+						height: 48,
+						backgroundColor: isDark ? "white" : "black",
+						borderRadius: borderRadii.xl,
+					}}
+					onPress={() => handleSignInPress("google")}
+				>
+					<HStack alignItems="center" space={8}>
+						<Image src={assets[0]} alt="Google" width={16} height={16} />
+						<Title
+							fontSize={18}
+							fontWeight="600"
+							color={isDark ? "black" : "white"}
+						>
+							Sign in with Google
+						</Title>
+					</HStack>
+				</TouchableOpacity>
+
+				<TouchableOpacity
+					style={{
+						justifyContent: "center",
+						alignItems: "center",
+						width: "100%",
+						height: 48,
+						backgroundColor: isDark ? "white" : "black",
+						borderRadius: borderRadii.xl,
+					}}
+					onPress={() => handleSignInPress("twitter")}
+				>
+					<HStack alignItems="center" space={8}>
+						<Image
+							src={isDark ? assets[1] : assets[2]}
+							alt="X"
+							width={16}
+							height={16}
+						/>
+						<Title
+							fontSize={18}
+							fontWeight="600"
+							color={isDark ? "black" : "white"}
+						>
+							Sign in with X
+						</Title>
+					</HStack>
+				</TouchableOpacity>
+
+				{Platform.OS === "ios" && (
+					<AppleAuthentication.AppleAuthenticationButton
+						buttonType={
+							AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+						}
+						buttonStyle={
+							AppleAuthentication.AppleAuthenticationButtonStyle[
+								isDark ? "WHITE" : "BLACK"
+							]
+						}
+						cornerRadius={borderRadii.xl}
+						style={{ width: "100%", height: 48 }}
+						onPress={handleAppleSignInPress}
 					/>
-					<Title
-						fontSize={18}
-						fontWeight="600"
-						color={isDark ? "black" : "white"}
-					>
-						Sign in with X
-					</Title>
-				</HStack>
-			</TouchableOpacity>
-
-			{Platform.OS === "ios" && (
-				<AppleAuthentication.AppleAuthenticationButton
-					buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-					buttonStyle={
-						AppleAuthentication.AppleAuthenticationButtonStyle[
-							isDark ? "WHITE" : "BLACK"
-						]
-					}
-					cornerRadius={borderRadii.xl}
-					style={{ width: "80%", height: 48 }}
-					onPress={handleAppleSignInPress}
-				/>
-			)}
+				)}
+			</VStack>
 		</VStack>
 	);
 };
