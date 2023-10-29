@@ -104,56 +104,60 @@ const SignInScreen = () => {
 			</VStack>
 
 			<VStack space={16}>
-				<TouchableOpacity
-					style={{
-						justifyContent: "center",
-						alignItems: "center",
-						width: "100%",
-						height: 48,
-						backgroundColor: isDark ? "white" : "black",
-						borderRadius: borderRadii.xl,
-					}}
-					onPress={() => handleSignInPress("google")}
-				>
-					<HStack alignItems="center" space={8}>
-						<Image src={assets[0]} alt="Google" width={16} height={16} />
-						<Title
-							fontSize={18}
-							fontWeight="600"
-							color={isDark ? "black" : "white"}
-						>
-							Sign in with Google
-						</Title>
-					</HStack>
-				</TouchableOpacity>
+				{assets && (
+					<TouchableOpacity
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+							width: "100%",
+							height: 48,
+							backgroundColor: isDark ? "white" : "black",
+							borderRadius: borderRadii.xl,
+						}}
+						onPress={() => handleSignInPress("google")}
+					>
+						<HStack alignItems="center" space={8}>
+							<Image src={assets[0]} alt="Google" width={16} height={16} />
+							<Title
+								fontSize={18}
+								fontWeight="600"
+								color={isDark ? "black" : "white"}
+							>
+								Sign in with Google
+							</Title>
+						</HStack>
+					</TouchableOpacity>
+				)}
 
-				<TouchableOpacity
-					style={{
-						justifyContent: "center",
-						alignItems: "center",
-						width: "100%",
-						height: 48,
-						backgroundColor: isDark ? "white" : "black",
-						borderRadius: borderRadii.xl,
-					}}
-					onPress={() => handleSignInPress("twitter")}
-				>
-					<HStack alignItems="center" space={8}>
-						<Image
-							src={isDark ? assets[1] : assets[2]}
-							alt="X"
-							width={16}
-							height={16}
-						/>
-						<Title
-							fontSize={18}
-							fontWeight="600"
-							color={isDark ? "black" : "white"}
-						>
-							Sign in with X
-						</Title>
-					</HStack>
-				</TouchableOpacity>
+				{assets && (
+					<TouchableOpacity
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+							width: "100%",
+							height: 48,
+							backgroundColor: isDark ? "white" : "black",
+							borderRadius: borderRadii.xl,
+						}}
+						onPress={() => handleSignInPress("twitter")}
+					>
+						<HStack alignItems="center" space={8}>
+							<Image
+								src={isDark ? assets[1] : assets[2]}
+								alt="X"
+								width={16}
+								height={16}
+							/>
+							<Title
+								fontSize={18}
+								fontWeight="600"
+								color={isDark ? "black" : "white"}
+							>
+								Sign in with X
+							</Title>
+						</HStack>
+					</TouchableOpacity>
+				)}
 
 				{Platform.OS === "ios" && (
 					<AppleAuthentication.AppleAuthenticationButton
