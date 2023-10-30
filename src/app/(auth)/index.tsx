@@ -1,9 +1,17 @@
 import { useEffect } from "react";
-import { Platform } from "react-native";
+import { Linking, Platform } from "react-native";
 import { ErrorBoundary } from "react-error-boundary";
 import { router } from "expo-router";
+import { appConfig } from "@/config/app";
 import { ErrorFallback } from "@/components/commons";
-import { Heading, SubHeading, VStack } from "@/components/ui";
+import {
+	Box,
+	Heading,
+	Link,
+	Metadata,
+	SubHeading,
+	VStack,
+} from "@/components/ui";
 import { useOnboarding } from "@/features/onboarding/hooks/useOnboarding";
 import SocialAuthButton from "@/features/sign-in/SocialAuthButton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
@@ -27,7 +35,7 @@ const SignInScreen = () => {
 				flex={1}
 				justifyContent="space-between"
 				px={32}
-				py={128}
+				py={96}
 				space={64}
 			>
 				<VStack space={16}>
@@ -37,7 +45,7 @@ const SignInScreen = () => {
 						textAlign="center"
 						lineHeight={40}
 					>
-						The Movie Network
+						Movie Network
 					</Heading>
 
 					<SubHeading textAlign="center">Sign in to get started.</SubHeading>
@@ -49,6 +57,26 @@ const SignInScreen = () => {
 					<SocialAuthButton provider="twitter" />
 
 					{Platform.OS === "ios" && <AppleAuthButton />}
+
+					<Box px={32}>
+						<Metadata textAlign="center">
+							By signing in, you agree to our{" "}
+							<Metadata
+								onPress={() => Linking.openURL(appConfig.links.site + "/terms")}
+							>
+								Terms of Service
+							</Metadata>
+							{" and "}
+							<Metadata
+								onPress={() =>
+									Linking.openURL(appConfig.links.site + "/privacy")
+								}
+							>
+								Privacy Policy
+							</Metadata>
+							.
+						</Metadata>
+					</Box>
 				</VStack>
 			</VStack>
 		</ErrorBoundary>

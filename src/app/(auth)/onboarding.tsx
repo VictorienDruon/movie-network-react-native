@@ -54,7 +54,7 @@ const OnboardingScreen = () => {
 				textAlign="center"
 				lineHeight={40}
 			>
-				Welcome to the Movie Network!
+				Welcome to Movie Network!
 			</Heading>
 
 			<VStack flex={1} space={40}>

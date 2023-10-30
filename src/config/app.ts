@@ -1,7 +1,7 @@
 export const appConfig = {
-	name: "The Movie Network",
+	name: "Movie Network",
 	links: {
-		site: "https://themovienetwork.com",
+		site: "https://movie-network.vercel.app",
 		contact:
 			"https://go.crisp.chat/chat/embed/?website_id=b4ce6fab-b074-4400-b2fa-ebd9d7e8c81c",
 		featureRequests: "https://movienetwork.featurebase.app",
