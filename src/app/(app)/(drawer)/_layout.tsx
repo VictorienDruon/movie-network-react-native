@@ -82,20 +82,23 @@ const DrawerLayout = () => {
 							borderTopWidth={0.5}
 							borderColor="neutral-6"
 						>
+							<Link href={appConfig.links.contact}>
+								<Title fontWeight="500">Contact us</Title>
+							</Link>
+
+							<Link href={appConfig.links.featureRequests}>
+								<Title fontWeight="500">Feature requests</Title>
+							</Link>
 							<Link href={appConfig.links.site + "/terms"}>
-								<Title fontWeight="500">Terms of Service</Title>
+								<Title fontWeight="500">Terms of service</Title>
 							</Link>
 
 							<Link href={appConfig.links.site + "/privacy"}>
-								<Title fontWeight="500">Privacy Policy</Title>
+								<Title fontWeight="500">Privacy policy</Title>
 							</Link>
 
 							<Link href={appConfig.links.site + "/credits"}>
 								<Title fontWeight="500">Credits</Title>
-							</Link>
-
-							<Link href={appConfig.links.featureRequests}>
-								<Title fontWeight="500">Feature Requests</Title>
 							</Link>
 						</VStack>
 					</VStack>
