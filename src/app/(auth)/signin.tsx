@@ -5,7 +5,7 @@ import * as WebBrowser from "expo-web-browser";
 import { Heading, SubHeading, VStack } from "@/components/ui";
 import SocialAuthButton from "@/features/sign-in/SocialAuthButton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
-import { ErrorState } from "@/components/commons";
+import { ErrorFallback } from "@/components/commons";
 
 const SignInScreen = () => {
 	useEffect(() => {
@@ -16,7 +16,7 @@ const SignInScreen = () => {
 	}, []);
 
 	return (
-		<ErrorBoundary fallback={<ErrorState />}>
+		<ErrorBoundary fallback={<ErrorFallback />}>
 			<VStack
 				flex={1}
 				justifyContent="space-between"
