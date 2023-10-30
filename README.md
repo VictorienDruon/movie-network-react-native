@@ -1,4 +1,4 @@
-# The Movie Network
+# Movie Network
 
 The Movie Network is a dynamic application that empowers users to explore, share, and save their favorite films and TV shows. In addition to discovering new content, users can connect with like-minded movie enthusiasts and friends. This README will provide an overview of the application and its technical stack.
 
