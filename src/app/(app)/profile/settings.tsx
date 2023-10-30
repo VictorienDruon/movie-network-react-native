@@ -7,7 +7,7 @@ import { Box, VStack } from "@/components/ui";
 const SettingsScreen = () => {
 	return (
 		<ErrorBoundary fallback={<ErrorState />}>
-			<Box flex={1} justifyContent="center" alignItems="center">
+			<Box p={32}>
 				<VStack space={16}>
 					<SignOutButton />
 
