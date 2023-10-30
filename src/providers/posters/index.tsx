@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
 import { useSegments } from "expo-router";
 import Poster from "@/features/poster-card/types/Poster";
 
@@ -52,7 +53,10 @@ export const PostersProvider = ({
 				return newSet;
 			});
 		} else {
-			alert(`You can attach a maximum of ${MAX_POSTERS} posters per post.`);
+			Alert.alert(
+				"You have reached the limit.",
+				`You can only select ${MAX_POSTERS} attachments.`
+			);
 		}
 	};
 

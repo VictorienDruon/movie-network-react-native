@@ -19,7 +19,7 @@
 			"config": {
 				"usesNonExemptEncryption": false
 			},
-			"buildNumber": "1.0.1",
+			"buildNumber": "1.0.2",
 			"bundleIdentifier": "com.victoriend.TheMovieNetwork"
 		},
 		"android": {
