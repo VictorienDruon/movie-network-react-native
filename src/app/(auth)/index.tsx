@@ -1,19 +1,25 @@
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { ErrorBoundary } from "react-error-boundary";
-import * as WebBrowser from "expo-web-browser";
+import { router } from "expo-router";
+import { ErrorFallback } from "@/components/commons";
 import { Heading, SubHeading, VStack } from "@/components/ui";
+import { useOnboarding } from "@/features/onboarding/hooks/useOnboarding";
 import SocialAuthButton from "@/features/sign-in/SocialAuthButton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
-import { ErrorFallback } from "@/components/commons";
 
 const SignInScreen = () => {
+	const { isOnboarded } = useOnboarding();
+
 	useEffect(() => {
-		WebBrowser.warmUpAsync();
-		return () => {
-			WebBrowser.coolDownAsync();
-		};
-	}, []);
+		if (!isOnboarded) {
+			const timer = setTimeout(() => {
+				router.push("/onboarding");
+			}, 1000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [isOnboarded]);
 
 	return (
 		<ErrorBoundary fallback={<ErrorFallback />}>
@@ -25,7 +31,14 @@ const SignInScreen = () => {
 				space={64}
 			>
 				<VStack space={16}>
-					<Heading textAlign="center">Welcome to the Movie Network!</Heading>
+					<Heading
+						fontSize={32}
+						fontWeight="800"
+						textAlign="center"
+						lineHeight={40}
+					>
+						The Movie Network
+					</Heading>
 
 					<SubHeading textAlign="center">Sign in to get started.</SubHeading>
 				</VStack>

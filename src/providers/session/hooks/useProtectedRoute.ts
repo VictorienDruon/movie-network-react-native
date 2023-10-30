@@ -13,7 +13,7 @@ export const useProtectedRoute = (
 
 		const inAuthGroup = segments[0] === "(auth)";
 
-		if (!session && !inAuthGroup) router.replace("/signin");
-		else if (session && inAuthGroup) router.replace("/");
+		if (!session && !inAuthGroup) router.replace("/");
+		else if (session && inAuthGroup) router.replace("/watchlist");
 	}, [isSessionLoaded, session, segments]);
 };

@@ -28,7 +28,7 @@ const TabsLayout = () => {
 			}}
 		>
 			<Tabs.Screen
-				name="index"
+				name="watchlist"
 				options={{
 					title: "Home",
 					tabBarIcon: ({ color }) => (
