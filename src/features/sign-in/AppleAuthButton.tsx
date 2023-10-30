@@ -1,10 +1,12 @@
 import { useColorScheme } from "react-native";
+import { useErrorBoundary } from "react-error-boundary";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { supabase } from "@/libs/supabase";
 
 const AppleAuthButton = () => {
+	const { showBoundary } = useErrorBoundary();
 	const colorScheme = useColorScheme();
 	const buttonStyle = colorScheme === "dark" ? "WHITE" : "BLACK";
 	const { borderRadii } = useTheme<Theme>();
@@ -26,11 +28,11 @@ const AppleAuthButton = () => {
 
 				if (error) throw error;
 			} else {
-				throw new Error("No identity token.");
+				throw new Error("No identity token returned from Apple");
 			}
 		} catch (error) {
 			if (error.code !== "ERR_REQUEST_CANCELED") {
-				console.error(error.message);
+				showBoundary(error);
 			}
 		}
 	};

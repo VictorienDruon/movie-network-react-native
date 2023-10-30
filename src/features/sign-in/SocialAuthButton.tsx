@@ -1,4 +1,5 @@
 import { TouchableOpacity, useColorScheme } from "react-native";
+import { useErrorBoundary } from "react-error-boundary";
 import { useAssets } from "expo-asset";
 import { createURL } from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
@@ -9,6 +10,7 @@ import { supabase } from "@/libs/supabase";
 import { HStack, Image, Title } from "@/components/ui";
 
 const SocialAuthButton = ({ provider }: { provider: Provider }) => {
+	const { showBoundary } = useErrorBoundary();
 	const colorScheme = useColorScheme();
 	const isDark = colorScheme === "dark";
 	const { borderRadii } = useTheme<Theme>();
@@ -29,7 +31,7 @@ const SocialAuthButton = ({ provider }: { provider: Provider }) => {
 				options: { redirectTo },
 			});
 
-			if (error) throw new Error("Error getting auth url: " + error.message);
+			if (error) throw error;
 
 			const res = await WebBrowser.openAuthSessionAsync(url, redirectTo);
 
@@ -46,11 +48,11 @@ const SocialAuthButton = ({ provider }: { provider: Provider }) => {
 					refresh_token: refreshToken,
 				});
 
-				if (error)
-					throw new Error("Error setting auth session: " + error.message);
-			} else throw new Error("Authentication failed: " + res.type);
-		} catch (err) {
-			console.error(err);
+				if (error) throw error;
+			} else if (res.type !== "dismiss" && res.type !== "cancel")
+				throw new Error("Authentication failed");
+		} catch (error) {
+			showBoundary(error);
 		}
 	};
 
