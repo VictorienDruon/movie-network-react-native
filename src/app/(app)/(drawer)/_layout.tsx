@@ -82,10 +82,6 @@ const DrawerLayout = () => {
 							borderTopWidth={0.5}
 							borderColor="neutral-6"
 						>
-							<Link href={appConfig.links.site}>
-								<Title fontWeight="500">About</Title>
-							</Link>
-
 							<Link href={appConfig.links.site + "/terms"}>
 								<Title fontWeight="500">Terms of Service</Title>
 							</Link>
@@ -96,6 +92,10 @@ const DrawerLayout = () => {
 
 							<Link href={appConfig.links.site + "/credits"}>
 								<Title fontWeight="500">Credits</Title>
+							</Link>
+
+							<Link href={appConfig.links.featureRequests}>
+								<Title fontWeight="500">Feature Requests</Title>
 							</Link>
 						</VStack>
 					</VStack>
