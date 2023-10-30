@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "@/libs/supabase";
@@ -44,8 +45,25 @@ const DeleteAccountButton = () => {
 		}
 	};
 
+	const createDeletionAlert = () =>
+		Alert.alert(
+			"Are you sure you want to delete your account?",
+			"You will lose all your data. This action cannot be undone.",
+			[
+				{
+					text: "Cancel",
+					style: "cancel",
+				},
+				{
+					text: "Confirm",
+					onPress: handleDeleteAccountPress,
+					style: "destructive",
+				},
+			]
+		);
+
 	return (
-		<Button variant="outline" size="lg" onPress={handleDeleteAccountPress}>
+		<Button variant="outline" size="lg" onPress={createDeletionAlert}>
 			Delete Account
 		</Button>
 	);
