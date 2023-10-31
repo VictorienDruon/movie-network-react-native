@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { OnboardingProvider } from "@/features/onboarding/hooks/useOnboarding";
+import { OnboardingProvider } from "@/providers/onboarding";
 
 const AuthLayout = () => {
 	return (

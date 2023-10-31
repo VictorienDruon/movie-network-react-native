@@ -13,7 +13,7 @@ import {
 	SubHeading,
 	VStack,
 } from "@/components/ui";
-import { useOnboarding } from "@/features/onboarding/hooks/useOnboarding";
+import { useOnboarding } from "@/providers/onboarding";
 import SocialAuthButton from "@/features/sign-in/SocialAuthButton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
 import PosterCard from "@/features/poster-card";

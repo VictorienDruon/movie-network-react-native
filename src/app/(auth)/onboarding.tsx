@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { icons } from "lucide-react";
-import { useOnboarding } from "@/features/onboarding/hooks/useOnboarding";
+import { useOnboarding } from "@/providers/onboarding";
 import {
 	Body,
 	Box,
@@ -34,7 +34,7 @@ const features: Feature[] = [
 	{
 		icon: "MessageSquare",
 		title: "Feed",
-		description: "Read and write thougts about your favorite movies and shows.",
+		description: "Read and write posts about your favorite movies and shows.",
 	},
 ];
 

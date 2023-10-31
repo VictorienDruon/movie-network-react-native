@@ -20,6 +20,8 @@ const AppleAuthButton = () => {
 				],
 			});
 
+			console.log(credential.email);
+
 			if (credential.identityToken) {
 				const { error } = await supabase.auth.signInWithIdToken({
 					provider: "apple",
