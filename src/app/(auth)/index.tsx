@@ -1,25 +1,17 @@
 import { useEffect } from "react";
-import { Linking, Platform } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ErrorBoundary } from "react-error-boundary";
 import { router } from "expo-router";
-import { appConfig } from "@/config/app";
 import { ErrorFallback, ErrorState } from "@/components/commons";
-import {
-	Box,
-	Heading,
-	Metadata,
-	Skeleton,
-	SubHeading,
-	VStack,
-} from "@/components/ui";
+import { Heading, SubHeading, VStack } from "@/components/ui";
 import { useOnboarding } from "@/providers/onboarding";
-import SocialAuthButton from "@/features/sign-in/SocialAuthButton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
-import PosterCard from "@/features/poster-card";
 import { useQuery } from "@tanstack/react-query";
 import { getTrends } from "@/libs/tmdb/api/trending";
 import Poster from "@/features/poster-card/types/Poster";
+import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
+import PosterCardsLayoutSkeleton from "@/features/poster-card/components/PosterCardsLayoutSkeleton";
+import LegalDisclaimer from "@/features/sign-in/LegalDisclaimer";
 
 const SignInScreen = () => {
 	const { isOnboarded } = useOnboarding();
@@ -65,87 +57,19 @@ const SignInScreen = () => {
 				</VStack>
 
 				{query.isLoading ? (
-					<Box position="relative" alignItems="center" maxHeight={280}>
-						<Skeleton
-							position="relative"
-							right={60}
-							width={100}
-							aspectRatio={5 / 7}
-							borderRadius="sm"
-							style={{ transform: [{ rotate: "-4deg" }] }}
-						/>
-						<Skeleton
-							position="relative"
-							top={-100}
-							left={60}
-							width={100}
-							aspectRatio={5 / 7}
-							borderRadius="sm"
-							style={{ transform: [{ rotate: "4deg" }] }}
-						/>
-						<Skeleton
-							position="relative"
-							top={-145}
-							right={15}
-							width={100}
-							aspectRatio={5 / 7}
-							borderRadius="sm"
-						/>
-					</Box>
+					<PosterCardsLayoutSkeleton length={3} />
 				) : (
 					<TouchableWithoutFeedback>
-						<Box position="relative" alignItems="center" maxHeight={280}>
-							<PosterCard
-								poster={query.data.results[0] as Poster}
-								size="sm"
-								decoration="shadow"
-								textPosition="top"
-								right={60}
-								rotate="-4deg"
-							/>
-							<PosterCard
-								poster={query.data.results[1] as Poster}
-								size="sm"
-								decoration="shadow"
-								textPosition="top"
-								top={-100}
-								left={60}
-								rotate="4deg"
-							/>
-							<PosterCard
-								poster={query.data.results[2] as Poster}
-								size="sm"
-								decoration="shadow"
-								textPosition="top"
-								top={-145}
-								right={15}
-							/>
-						</Box>
+						<PosterCardsLayout
+							posters={query.data.results.slice(0, 3) as Poster[]}
+						/>
 					</TouchableWithoutFeedback>
 				)}
 
 				<VStack space={16}>
-					<SocialAuthButton provider="google" />
+					<AppleAuthButton />
 
-					<SocialAuthButton provider="twitter" />
-
-					{Platform.OS === "ios" && <AppleAuthButton />}
-
-					<Metadata px={16} textAlign="center">
-						{"By signing in, you agree to our "}
-						<Metadata
-							onPress={() => Linking.openURL(appConfig.links.site + "/terms")}
-						>
-							Terms of Service
-						</Metadata>
-						{" and "}
-						<Metadata
-							onPress={() => Linking.openURL(appConfig.links.site + "/privacy")}
-						>
-							Privacy Policy
-						</Metadata>
-						{"."}
-					</Metadata>
+					<LegalDisclaimer />
 				</VStack>
 			</VStack>
 		</ErrorBoundary>

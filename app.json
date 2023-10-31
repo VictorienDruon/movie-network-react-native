@@ -29,7 +29,11 @@
 			},
 			"package": "com.victoriend.TheMovieNetwork"
 		},
-		"plugins": ["expo-router", "expo-apple-authentication"],
+		"plugins": [
+			"expo-router",
+			"expo-apple-authentication",
+			"@react-native-google-signin/google-signin"
+		],
 		"experiments": {
 			"tsconfigPaths": true
 		},
