@@ -16,12 +16,12 @@ import {
 import Poster from "./types/Poster";
 
 type PosterCardOrientation = "horizontal" | "vertical";
-type PosterCardAction = "select" | "navigate";
+type PosterCardAction = "select" | "navigate" | "none";
 type PosterCardSize = "sm" | "md" | "lg";
 type PosterCardDecoration = "shadow" | "border";
 type PosterCardTextPosition = "top" | "bottom";
 
-interface PosterCardProps extends Omit<BoxProps, "id"> {
+export interface PosterCardProps extends Omit<BoxProps, "id"> {
 	poster: Poster;
 	orientation?: PosterCardOrientation;
 	action?: PosterCardAction;
@@ -47,17 +47,13 @@ const PosterCard = ({
 	const handlePress = () => {
 		action === "select"
 			? context.toggle(poster)
-			: router.push(
+			: action === "navigate"
+			? router.push(
 					type === "collection"
-						? {
-								pathname: `/collection/[id]`,
-								params: { id: id },
-						  }
-						: {
-								pathname: `/media/[type]/[id]`,
-								params: { type, id: id },
-						  }
-			  );
+						? { pathname: `/collection/[id]`, params: { id: id } }
+						: { pathname: `/media/[type]/[id]`, params: { type, id: id } }
+			  )
+			: undefined;
 	};
 
 	return (
@@ -70,7 +66,7 @@ const PosterCard = ({
 			{...(decoration === "shadow" && { ...boxShadow })}
 			{...props}
 		>
-			<TouchableOpacity onPress={handlePress}>
+			<TouchableOpacity onPress={handlePress} disabled={action === "none"}>
 				<Image
 					src={`${tmdbConfig.links.image}${
 						imagesResolution[orientation][size]

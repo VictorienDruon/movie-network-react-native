@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ErrorBoundary } from "react-error-boundary";
 import { router } from "expo-router";
 import { ErrorFallback, ErrorState } from "@/components/commons";
@@ -59,11 +58,10 @@ const SignInScreen = () => {
 				{query.isLoading ? (
 					<PosterCardsLayoutSkeleton length={3} />
 				) : (
-					<TouchableWithoutFeedback>
-						<PosterCardsLayout
-							posters={query.data.results.slice(0, 3) as Poster[]}
-						/>
-					</TouchableWithoutFeedback>
+					<PosterCardsLayout
+						posters={query.data.results.slice(0, 3) as Poster[]}
+						action="none"
+					/>
 				)}
 
 				<VStack space={16}>

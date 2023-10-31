@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import {
 	GoogleSignin,
 	GoogleSigninButton,
@@ -14,7 +15,9 @@ const GoogleAuthButton = () => {
 	const handleGoogleSignIn = async () => {
 		try {
 			await GoogleSignin.hasPlayServices();
+
 			const userInfo = await GoogleSignin.signIn();
+
 			if (userInfo.idToken) {
 				const { data, error } = await supabase.auth.signInWithIdToken({
 					provider: "google",
@@ -22,7 +25,7 @@ const GoogleAuthButton = () => {
 				});
 				console.log(error, data);
 			} else {
-				throw new Error("no ID token present!");
+				throw new Error("No ID token.");
 			}
 		} catch (error: any) {
 			if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -37,13 +40,14 @@ const GoogleAuthButton = () => {
 		}
 	};
 
-	return (
-		<GoogleSigninButton
-			size={GoogleSigninButton.Size.Wide}
-			color={GoogleSigninButton.Color.Dark}
-			onPress={handleGoogleSignIn}
-		/>
-	);
+	if (Platform.OS === "android")
+		return (
+			<GoogleSigninButton
+				size={GoogleSigninButton.Size.Wide}
+				color={GoogleSigninButton.Color.Dark}
+				onPress={handleGoogleSignIn}
+			/>
+		);
 };
 
 export default GoogleAuthButton;

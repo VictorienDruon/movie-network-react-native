@@ -1,8 +1,12 @@
 import { Box } from "@/components/ui";
-import PosterCard from "..";
+import PosterCard, { PosterCardProps } from "..";
 import Poster from "../types/Poster";
 
-const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
+interface PosterCardsLayoutProps extends Omit<PosterCardProps, "poster"> {
+	posters: Poster[];
+}
+
+const PosterCardsLayout = ({ posters, ...props }: PosterCardsLayoutProps) => {
 	switch (posters.length) {
 		case 1:
 			return (
@@ -12,6 +16,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						size="lg"
 						decoration="shadow"
 						textPosition="top"
+						{...props}
 					/>
 				</Box>
 			);
@@ -25,6 +30,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						textPosition="top"
 						right={50}
 						rotate="-3deg"
+						{...props}
 					/>
 					<PosterCard
 						poster={posters[1]}
@@ -34,6 +40,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						top={-140}
 						left={50}
 						rotate="3deg"
+						{...props}
 					/>
 				</Box>
 			);
@@ -47,6 +54,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						textPosition="top"
 						right={60}
 						rotate="-4deg"
+						{...props}
 					/>
 					<PosterCard
 						poster={posters[1]}
@@ -56,6 +64,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						top={-100}
 						left={60}
 						rotate="4deg"
+						{...props}
 					/>
 					<PosterCard
 						poster={posters[2]}
@@ -64,6 +73,7 @@ const PosterCardsLayout = ({ posters }: { posters: Poster[] }) => {
 						textPosition="top"
 						top={-145}
 						right={15}
+						{...props}
 					/>
 				</Box>
 			);

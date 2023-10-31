@@ -1,7 +1,7 @@
 import { Platform, useColorScheme } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { border, useTheme } from "@shopify/restyle";
+import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
 import { supabase } from "@/libs/supabase";
 
