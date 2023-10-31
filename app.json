@@ -1,7 +1,7 @@
 {
 	"expo": {
 		"name": "Movie Network",
-		"slug": "movieNetwork",
+		"slug": "TheMovieNetwork",
 		"scheme": "movie-network",
 		"version": "1.0.0",
 		"orientation": "portrait",
@@ -19,7 +19,7 @@
 			"config": {
 				"usesNonExemptEncryption": false
 			},
-			"buildNumber": "1.0.2",
+			"buildNumber": "1.0.3",
 			"bundleIdentifier": "com.victoriend.TheMovieNetwork"
 		},
 		"android": {
