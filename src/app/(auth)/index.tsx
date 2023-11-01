@@ -4,12 +4,13 @@ import { router } from "expo-router";
 import { ErrorFallback, ErrorState } from "@/components/commons";
 import { Heading, SubHeading, VStack } from "@/components/ui";
 import { useOnboarding } from "@/providers/onboarding";
-import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
 import { useQuery } from "@tanstack/react-query";
 import { getTrends } from "@/libs/tmdb/api/trending";
 import Poster from "@/features/poster-card/types/Poster";
 import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
 import PosterCardsLayoutSkeleton from "@/features/poster-card/components/PosterCardsLayoutSkeleton";
+import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
+import GoogleAuthButton from "@/features/sign-in/GoogleAuthButton";
 import LegalDisclaimer from "@/features/sign-in/LegalDisclaimer";
 
 const SignInScreen = () => {
@@ -64,8 +65,10 @@ const SignInScreen = () => {
 					/>
 				)}
 
-				<VStack space={16}>
+				<VStack alignItems="center" space={16}>
 					<AppleAuthButton />
+
+					<GoogleAuthButton />
 
 					<LegalDisclaimer />
 				</VStack>

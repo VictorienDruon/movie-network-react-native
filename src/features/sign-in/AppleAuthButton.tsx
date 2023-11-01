@@ -28,7 +28,7 @@ const AppleAuthButton = () => {
 
 				if (error) throw error;
 			} else {
-				throw new Error("No identityToken.");
+				throw new Error("No identity token.");
 			}
 		} catch (error) {
 			if (error.code !== "ERR_REQUEST_CANCELED") {
