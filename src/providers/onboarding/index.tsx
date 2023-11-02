@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { set } from "react-hook-form";
 
 const ONBOARDING_KEY = "onboarding";
 
