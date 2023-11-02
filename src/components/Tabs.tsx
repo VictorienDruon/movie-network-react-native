@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, TouchableOpacity, View } from "react-native";
-import { capitalizeFirstLetter } from "@/utils/texts";
 import { Box, Subtitle, VStack } from "@/components/ui";
 
 type Measurements = {
@@ -72,7 +71,7 @@ const Tabs = ({ tabs, contentRef, scrollX }: TabsProps) => {
 						ref={tabRefs[index]}
 						onPress={() => handleTabPress(index)}
 					>
-						<Subtitle>{capitalizeFirstLetter(tab)}</Subtitle>
+						<Subtitle>{tab}</Subtitle>
 					</TouchableOpacity>
 				))}
 			</Box>

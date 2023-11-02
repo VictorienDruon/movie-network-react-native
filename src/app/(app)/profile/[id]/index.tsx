@@ -28,7 +28,7 @@ const ProfileScreen = () => {
 	const { width } = Dimensions.get("screen");
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const { user } = useSession();
-	const activities = ["posts", "likes", "comments"];
+	const activities = ["Posts", "Likes", "Comments"];
 	const activitiesRef = useRef<Animated.FlatList>(null);
 	const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -57,82 +57,84 @@ const ProfileScreen = () => {
 	if (query.isError) return <ErrorState retry={query.refetch} />;
 
 	return (
-		<VStack space={16}>
-			{query.isLoading ? (
-				<VStack p={16} space={8}>
-					<Skeleton width={64} height={64} borderRadius="full" />
-					<Skeleton width={96} height={24} borderRadius="md" />
-					<Skeleton width={200} height={16} borderRadius="md" />
-				</VStack>
-			) : (
-				<HStack
-					justifyContent="space-between"
-					alignItems="flex-end"
-					p={16}
-					space={8}
-				>
-					<VStack space={8}>
-						<Avatar
-							size={64}
-							src={query.data.avatarUrl}
-							alt={`${query.data.name} avatar`}
-						/>
-
-						<Heading>{query.data.name}</Heading>
-
-						<HStack space={6}>
-							<Link
-								href={{
-									pathname: "/profile/[id]/following",
-									params: { id },
-								}}
-							>
-								<HStack space={4}>
-									<Body fontWeight="bold">{query.data.following}</Body>
-									<Body>Following</Body>
-								</HStack>
-							</Link>
-
-							<Body>•</Body>
-
-							<Link
-								href={{
-									pathname: "/profile/[id]/followers",
-									params: { id },
-								}}
-							>
-								<HStack space={4}>
-									<Body fontWeight="bold">{query.data.followers}</Body>
-									<Body>{pluralize(query.data.followers, "Follower")}</Body>
-								</HStack>
-							</Link>
-						</HStack>
+		<Box flex={1}>
+			<VStack space={8} borderBottomWidth={1} borderColor="neutral-6">
+				{query.isLoading ? (
+					<VStack p={16} space={8}>
+						<Skeleton width={64} height={64} borderRadius="full" />
+						<Skeleton width={150} height={22} borderRadius="md" />
+						<Skeleton width={200} height={18} borderRadius="md" />
 					</VStack>
+				) : (
+					<HStack
+						justifyContent="space-between"
+						alignItems="flex-end"
+						p={16}
+						space={8}
+					>
+						<VStack space={8}>
+							<Avatar
+								size={64}
+								src={query.data.avatarUrl}
+								alt={`${query.data.name} avatar`}
+							/>
 
-					{user.id === id ? (
-						<Button
-							variant="secondaryOutline"
-							size="lg"
-							onPress={() => router.push("/profile/settings")}
-						>
-							Settings
-						</Button>
-					) : (
-						<Button
-							variant={
-								query.data.isUserFollowing ? "secondaryOutline" : "secondary"
-							}
-							size="lg"
-							disabled={mutation.isLoading}
-							onPress={handleFollowPress}
-						>
-							{query.data.isUserFollowing ? "Unfollow" : "Follow"}
-						</Button>
-					)}
-				</HStack>
-			)}
+							<Heading>{query.data.name}</Heading>
 
-			<Tabs tabs={activities} contentRef={activitiesRef} scrollX={scrollX} />
+							<HStack space={6}>
+								<Link
+									href={{
+										pathname: "/profile/[id]/following",
+										params: { id },
+									}}
+								>
+									<HStack space={4}>
+										<Body fontWeight="bold">{query.data.following}</Body>
+										<Body>Following</Body>
+									</HStack>
+								</Link>
+
+								<Body>•</Body>
+
+								<Link
+									href={{
+										pathname: "/profile/[id]/followers",
+										params: { id },
+									}}
+								>
+									<HStack space={4}>
+										<Body fontWeight="bold">{query.data.followers}</Body>
+										<Body>{pluralize(query.data.followers, "Follower")}</Body>
+									</HStack>
+								</Link>
+							</HStack>
+						</VStack>
+
+						{user.id === id ? (
+							<Button
+								variant="secondaryOutline"
+								size="lg"
+								onPress={() => router.push("/profile/settings")}
+							>
+								Settings
+							</Button>
+						) : (
+							<Button
+								variant={
+									query.data.isUserFollowing ? "secondaryOutline" : "secondary"
+								}
+								size="lg"
+								disabled={mutation.isLoading}
+								onPress={handleFollowPress}
+							>
+								{query.data.isUserFollowing ? "Unfollow" : "Follow"}
+							</Button>
+						)}
+					</HStack>
+				)}
+
+				<Tabs tabs={activities} contentRef={activitiesRef} scrollX={scrollX} />
+			</VStack>
 
 			<Animated.FlatList
 				ref={activitiesRef}
@@ -140,11 +142,11 @@ const ProfileScreen = () => {
 				keyExtractor={(activity) => activity}
 				renderItem={({ item: activity }) => {
 					switch (activity) {
-						case "posts":
+						case "Posts":
 							return <PostsTab userId={id} />;
-						case "likes":
+						case "Likes":
 							return <LikesTab userId={id} />;
-						case "comments":
+						case "Comments":
 							return <CommentsTab userId={id} />;
 					}
 				}}
@@ -160,7 +162,7 @@ const ProfileScreen = () => {
 				pagingEnabled
 				horizontal
 			/>
-		</VStack>
+		</Box>
 	);
 };
 
