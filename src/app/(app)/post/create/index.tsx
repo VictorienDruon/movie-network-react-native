@@ -54,7 +54,7 @@ const CreateScreen = () => {
 					<HStack justifyContent="space-between" alignItems="center" space={16}>
 						<HStack alignItems="center" space={16}>
 							{user && (
-								<Avatar src={user.avatar_url} size={40} alt="Your avatar" />
+								<Avatar src={user.avatar_url} size={40} name={user.name} />
 							)}
 
 							{user && <Title>{user.name}</Title>}

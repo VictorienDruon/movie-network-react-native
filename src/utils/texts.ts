@@ -8,3 +8,15 @@ export function capitalizeFirstLetter(word: string) {
 	}
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
+export function getInitials(name: string) {
+	if (!name) {
+		return "";
+	}
+
+	const trimmedName = name.trim();
+	const names = trimmedName.split(" ");
+	const initials = names.map((n) => n[0].toUpperCase());
+
+	return initials.slice(0, 2).join("");
+}

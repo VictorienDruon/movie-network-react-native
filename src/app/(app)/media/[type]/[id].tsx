@@ -18,11 +18,11 @@ import { pluralize } from "@/utils/texts";
 import { formatMoney } from "@/utils/numbers";
 import { EmptyState, ErrorState } from "@/components/commons";
 import {
-	Avatar,
 	Body,
 	Box,
 	Button,
 	HStack,
+	Image,
 	Icon,
 	Link,
 	Sheet,
@@ -357,10 +357,14 @@ const MediaScreen = () => {
 				{selectedRegion ? (
 					<VStack space={24}>
 						<HStack alignItems="center" space={16} px={16}>
-							<Avatar
+							<Image
 								src={selectedRegion.flagUrl}
-								size={28}
 								alt={selectedRegion.name}
+								width={28}
+								height={28}
+								borderRadius="full"
+								borderWidth={1}
+								borderColor="neutral-6"
 							/>
 
 							<Box flex={1} maxWidth="70%">

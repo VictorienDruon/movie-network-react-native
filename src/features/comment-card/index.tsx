@@ -33,11 +33,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 				disabled={segments[1] !== "post"}
 				onPress={handleAvatarPress}
 			>
-				<Avatar
-					src={author.avatarUrl}
-					size={28}
-					alt={`${author.name} avatar`}
-				/>
+				<Avatar src={author.avatarUrl} size={28} name={author.name} />
 			</TouchableOpacity>
 
 			<VStack space={8} flex={1}>

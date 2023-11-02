@@ -1,5 +1,5 @@
 import { TouchableOpacity } from "react-native";
-import { HStack, Avatar, Title, Subtitle, Box } from "@/components/ui";
+import { HStack, Image, Title, Subtitle, Box } from "@/components/ui";
 import Region from "./types/Region";
 
 interface RegionCardProps {
@@ -21,7 +21,15 @@ const RegionCard = ({ region, isSelected, onPress }: RegionCardProps) => (
 			borderWidth={1}
 			borderColor={isSelected ? "primary-6" : "neutral-6"}
 		>
-			<Avatar src={region.flagUrl} size={40} alt={region.name} />
+			<Image
+				src={region.flagUrl}
+				alt={region.name}
+				width={40}
+				height={40}
+				borderRadius="full"
+				borderWidth={1}
+				borderColor="neutral-6"
+			/>
 
 			<Box flex={1} maxWidth="70%">
 				<Title numberOfLines={1} ellipsizeMode="tail">

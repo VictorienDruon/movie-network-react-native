@@ -39,11 +39,7 @@ const FollowingModal = () => {
 			renderItem={({ item: user }) => (
 				<Link href={user.link}>
 					<HStack space={8} alignItems="center" p={16}>
-						<Avatar
-							size={40}
-							src={user.avatarUrl}
-							alt={`${user.name} avatar`}
-						/>
+						<Avatar size={40} src={user.avatarUrl} name={user.name} />
 
 						<Title>{user.name}</Title>
 					</HStack>

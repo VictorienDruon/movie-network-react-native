@@ -18,7 +18,7 @@ const TabsLayout = () => {
 					>
 						<Box mx={20}>
 							{user ? (
-								<Avatar src={user.avatar_url} alt="Drawer" size={32} />
+								<Avatar src={user.avatar_url} name={user.name} size={32} />
 							) : (
 								<Skeleton width={32} height={32} borderRadius="full" />
 							)}

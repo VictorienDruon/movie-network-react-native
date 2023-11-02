@@ -57,7 +57,7 @@ const CommentsModal = () => {
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
-					{user && <Avatar size={40} src={user.avatar_url} alt={user.name} />}
+					{user && <Avatar size={40} src={user.avatar_url} name={user.name} />}
 					<CommentBar postId={postId} />
 				</HStack>
 			</KeyboardAvoidingView>

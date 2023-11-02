@@ -20,7 +20,7 @@ const PersonCard = ({ person, ...props }: PersonCardProps) => {
 		<VStack alignItems="center" width={96} space={0} {...props}>
 			<Link href={link}>
 				{avatarUrl ? (
-					<Avatar src={avatarUrl} size={80} alt={`${name} avatar`} />
+					<Avatar src={avatarUrl} size={80} name={name} />
 				) : (
 					<Box
 						justifyContent="center"

@@ -37,7 +37,7 @@ const DrawerLayout = () => {
 						>
 							{user ? (
 								<VStack space={20}>
-									<Avatar size={40} src={user.avatar_url} alt="Your avatar" />
+									<Avatar size={40} src={user.avatar_url} name={user.name} />
 									<Heading>{user.name}</Heading>
 								</VStack>
 							) : (

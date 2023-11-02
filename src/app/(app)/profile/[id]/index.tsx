@@ -76,7 +76,7 @@ const ProfileScreen = () => {
 							<Avatar
 								size={64}
 								src={query.data.avatarUrl}
-								alt={`${query.data.name} avatar`}
+								name={query.data.name}
 							/>
 
 							<Heading>{query.data.name}</Heading>
