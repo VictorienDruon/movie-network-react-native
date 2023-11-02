@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Platform } from "react-native";
 import { ErrorBoundary } from "react-error-boundary";
 import { router } from "expo-router";
 import { ErrorFallback, ErrorState } from "@/components/commons";
@@ -39,8 +40,7 @@ const SignInScreen = () => {
 				flex={1}
 				justifyContent="space-between"
 				px={32}
-				pt={96}
-				pb={64}
+				py={96}
 				space={16}
 			>
 				<VStack space={16}>
@@ -57,18 +57,16 @@ const SignInScreen = () => {
 				</VStack>
 
 				{query.isLoading ? (
-					<PosterCardsLayoutSkeleton length={3} />
+					<PosterCardsLayoutSkeleton length={2} />
 				) : (
 					<PosterCardsLayout
-						posters={query.data.results.slice(0, 3) as Poster[]}
+						posters={query.data.results.slice(0, 2) as Poster[]}
 						action="none"
 					/>
 				)}
 
 				<VStack alignItems="center" space={16}>
-					<AppleAuthButton />
-
-					<GoogleAuthButton />
+					{Platform.OS === "ios" ? <AppleAuthButton /> : <GoogleAuthButton />}
 
 					<LegalDisclaimer />
 				</VStack>

@@ -1,29 +1,22 @@
 import { Animated } from "react-native";
-import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCommentsByUser } from "@/libs/supabase/api/comments";
-import useFocus from "@/hooks/useFocus";
 import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box } from "@/components/ui";
 import CommentCard from "@/features/comment-card";
 import CommentCardSkeleton from "@/features/comment-card/components/CommentCardSkeleton";
-import { useParams } from "./_layout";
 
-const CommentsTab = () => {
-	const { userId } = useParams();
-	const isFocused = useFocus();
-	const props = useScrollProps();
-
+const CommentsTab = ({ userId }: { userId: string }) => {
 	const query = useInfiniteQuery({
 		queryKey: ["comments", userId],
 		queryFn: ({ pageParam = 0 }) => getCommentsByUser(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
-		enabled: isFocused,
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading) return <CommentCardSkeleton />;
 
-	if (query.isError) return null;
+	if (query.isError)
+		return <EmptyState>An error occured, please try again later.</EmptyState>;
 
 	return (
 		<Animated.FlatList
@@ -31,7 +24,7 @@ const CommentsTab = () => {
 			keyExtractor={(comment) => comment.id}
 			renderItem={({ item: comment }) => <CommentCard comment={comment} />}
 			ListEmptyComponent={
-				<EmptyState>This user has not posted any comments yet.</EmptyState>
+				<EmptyState>This user has not commented anything yet.</EmptyState>
 			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <CommentCardSkeleton />}</Box>
@@ -39,7 +32,6 @@ const CommentsTab = () => {
 			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
-			{...props}
 		/>
 	);
 };

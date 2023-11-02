@@ -1,29 +1,22 @@
 import { Animated } from "react-native";
-import { useScrollProps } from "@bacons/expo-router-top-tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getPostsByUser } from "@/libs/supabase/api/posts";
-import useFocus from "@/hooks/useFocus";
+import { getLikes } from "@/libs/supabase/api/likes";
 import { EmptyState, RefreshControl } from "@/components/commons";
 import { Box, Separator } from "@/components/ui";
 import PostCard from "@/features/post-card";
 import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
-import { useParams } from "./_layout";
 
-const PostsTab = () => {
-	const { userId } = useParams();
-	const isFocused = useFocus();
-	const props = useScrollProps();
-
+const LikesTab = ({ userId }: { userId: string }) => {
 	const query = useInfiniteQuery({
-		queryKey: ["posts", userId],
-		queryFn: ({ pageParam = 0 }) => getPostsByUser(userId, pageParam),
+		queryKey: ["likes", userId],
+		queryFn: ({ pageParam = 0 }) => getLikes(userId, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
-		enabled: isFocused,
 	});
 
-	if (query.isLoading) return null;
+	if (query.isLoading) return <PostCardSkeleton />;
 
-	if (query.isError) return null;
+	if (query.isError)
+		return <EmptyState>An error occured, please try again later.</EmptyState>;
 
 	return (
 		<Animated.FlatList
@@ -32,7 +25,7 @@ const PostsTab = () => {
 			renderItem={({ item: post }) => <PostCard post={post} />}
 			ItemSeparatorComponent={() => <Separator />}
 			ListEmptyComponent={
-				<EmptyState>This user has not posted any posts yet.</EmptyState>
+				<EmptyState>This user has not liked anything yet.</EmptyState>
 			}
 			ListFooterComponent={
 				<Box pb={64}>{query.hasNextPage && <PostCardSkeleton />}</Box>
@@ -40,9 +33,8 @@ const PostsTab = () => {
 			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
-			{...props}
 		/>
 	);
 };
 
-export default PostsTab;
+export default LikesTab;

@@ -1,4 +1,4 @@
-import { Platform, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
 import {
 	GoogleSignin,
@@ -23,11 +23,15 @@ const GoogleAuthButton = () => {
 
 			const userInfo = await GoogleSignin.signIn();
 
+			console.log({ userInfo });
+
 			if (userInfo.idToken) {
-				const { error } = await supabase.auth.signInWithIdToken({
+				const { data, error } = await supabase.auth.signInWithIdToken({
 					provider: "google",
 					token: userInfo.idToken,
 				});
+
+				console.log({ data, error });
 
 				if (error) throw error;
 			} else {
@@ -43,14 +47,13 @@ const GoogleAuthButton = () => {
 		}
 	};
 
-	if (Platform.OS === "android")
-		return (
-			<GoogleSigninButton
-				size={GoogleSigninButton.Size.Wide}
-				color={GoogleSigninButton.Color[buttonStyle]}
-				onPress={handleGoogleSignIn}
-			/>
-		);
+	return (
+		<GoogleSigninButton
+			size={GoogleSigninButton.Size.Wide}
+			color={GoogleSigninButton.Color[buttonStyle]}
+			onPress={handleGoogleSignIn}
+		/>
+	);
 };
 
 export default GoogleAuthButton;

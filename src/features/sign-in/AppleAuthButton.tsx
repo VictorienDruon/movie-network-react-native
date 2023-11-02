@@ -1,4 +1,4 @@
-import { Platform, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { useTheme } from "@shopify/restyle";
@@ -37,18 +37,17 @@ const AppleAuthButton = () => {
 		}
 	};
 
-	if (Platform.OS === "ios")
-		return (
-			<AppleAuthentication.AppleAuthenticationButton
-				buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-				buttonStyle={
-					AppleAuthentication.AppleAuthenticationButtonStyle[buttonStyle]
-				}
-				cornerRadius={borderRadii.xl}
-				style={{ width: "100%", height: 48 }}
-				onPress={handleAppleSignIn}
-			/>
-		);
+	return (
+		<AppleAuthentication.AppleAuthenticationButton
+			buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+			buttonStyle={
+				AppleAuthentication.AppleAuthenticationButtonStyle[buttonStyle]
+			}
+			cornerRadius={borderRadii.xl}
+			style={{ width: "100%", height: 48 }}
+			onPress={handleAppleSignIn}
+		/>
+	);
 };
 
 export default AppleAuthButton;
