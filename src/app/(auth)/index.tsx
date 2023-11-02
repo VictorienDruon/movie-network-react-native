@@ -50,7 +50,7 @@ const SignInScreen = () => {
 						textAlign="center"
 						lineHeight={40}
 					>
-						Movie Network
+						Welcome to Movie Network!
 					</Heading>
 
 					<SubHeading textAlign="center">Sign in to get started.</SubHeading>

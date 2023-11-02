@@ -38,6 +38,7 @@ const FeedScreen = () => {
 				refreshControl={<RefreshControl refetch={query.refetch} />}
 				showsVerticalScrollIndicator={false}
 				onEndReached={() => query.fetchNextPage()}
+				automaticallyAdjustKeyboardInsets={true}
 			/>
 
 			<RoundButton

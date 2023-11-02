@@ -33,6 +33,7 @@ const PostsTab = ({ userId }: { userId: string }) => {
 			refreshControl={<RefreshControl refetch={query.refetch} />}
 			onEndReached={() => query.fetchNextPage()}
 			showsVerticalScrollIndicator={false}
+			automaticallyAdjustKeyboardInsets={true}
 		/>
 	);
 };
