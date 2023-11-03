@@ -1,22 +1,21 @@
 import { ReactNode, createContext, useContext } from "react";
-import { useSessionLoader, User } from "./hooks/useSessionLoader";
+import { useSessionLoader } from "./hooks/useSessionLoader";
 import { useProtectedRoute } from "./hooks/useProtectedRoute";
 import { Session } from "@supabase/supabase-js";
 
 interface SessionContext {
 	isSessionLoaded: boolean;
 	session: Session | null;
-	user: User | null;
 }
 
 const SessionContext = createContext<SessionContext>(null);
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
-	const { isSessionLoaded, session, user } = useSessionLoader();
+	const { isSessionLoaded, session } = useSessionLoader();
 	useProtectedRoute(isSessionLoaded, session);
 
 	return (
-		<SessionContext.Provider value={{ isSessionLoaded, session, user }}>
+		<SessionContext.Provider value={{ isSessionLoaded, session }}>
 			{children}
 		</SessionContext.Provider>
 	);

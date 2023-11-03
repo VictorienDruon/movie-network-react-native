@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "@/providers/session";
 import { ThemeProvider } from "@/providers/theme";
-import { SplashScreenProvider } from "@/providers/SplashScreen";
+import { SplashScreenProvider } from "@/providers/splash-screen";
 
 const queryClient = new QueryClient();
 

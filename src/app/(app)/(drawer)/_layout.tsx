@@ -1,7 +1,7 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Drawer } from "expo-router/drawer";
 import { appConfig } from "@/config/app";
-import { useSession } from "@/providers/session";
+import useUser from "@/hooks/useUser";
 import {
 	Avatar,
 	Link,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 
 const DrawerLayout = () => {
-	const { user } = useSession();
+	const user = useUser();
 
 	return (
 		<Drawer
@@ -37,7 +37,7 @@ const DrawerLayout = () => {
 						>
 							{user ? (
 								<VStack space={20}>
-									<Avatar size={40} src={user.avatar_url} name={user.name} />
+									<Avatar size={40} src={user.avatarUrl} name={user.name} />
 									<Heading>{user.name}</Heading>
 								</VStack>
 							) : (
@@ -60,6 +60,18 @@ const DrawerLayout = () => {
 								<HStack alignItems="center" space={24}>
 									<Icon name="User2" size={24} color="neutral-12" />
 									<Heading fontWeight="600">Profile</Heading>
+								</HStack>
+							</Link>
+
+							<Link href="/profile/edit">
+								<HStack alignItems="center" space={24}>
+									<Icon
+										name="PencilRuler"
+										size={24}
+										strokeWidth={2}
+										color="neutral-12"
+									/>
+									<Heading fontWeight="600">Edit</Heading>
 								</HStack>
 							</Link>
 

@@ -15,6 +15,7 @@ const AppLayout = () => (
 			name="profile/[id]/followers"
 			options={{ title: "Followers", presentation: "modal" }}
 		/>
+		<Stack.Screen name="profile/edit" options={{ title: "Edit" }} />
 		<Stack.Screen name="profile/settings" options={{ title: "Settings" }} />
 
 		<Stack.Screen

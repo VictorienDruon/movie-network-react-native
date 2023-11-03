@@ -7,7 +7,7 @@ import { convertKeysToSnakeCase } from "@/utils/objects";
 import { supabase } from "@/libs/supabase";
 import { createPost, handlePostSuccess } from "@/libs/supabase/api/posts";
 import DbPoster from "@/libs/supabase/types/NewMedia";
-import { useSession } from "@/providers/session";
+import useUser from "@/hooks/useUser";
 import { usePosters } from "@/providers/posters";
 import {
 	Avatar,
@@ -23,7 +23,7 @@ import {
 import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
 
 const CreateScreen = () => {
-	const { user } = useSession();
+	const user = useUser();
 	const { posters } = usePosters();
 
 	const queryClient = useQueryClient();
@@ -54,7 +54,7 @@ const CreateScreen = () => {
 					<HStack justifyContent="space-between" alignItems="center" space={16}>
 						<HStack alignItems="center" space={16}>
 							{user && (
-								<Avatar src={user.avatar_url} size={40} name={user.name} />
+								<Avatar src={user.avatarUrl} size={40} name={user.name} />
 							)}
 
 							{user && <Title>{user.name}</Title>}

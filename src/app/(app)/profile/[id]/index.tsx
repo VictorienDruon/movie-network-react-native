@@ -3,7 +3,7 @@ import { Animated, Dimensions } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pluralize } from "@/utils/texts";
-import { useSession } from "@/providers/session";
+import useUser from "@/hooks/useUser";
 import { supabase } from "@/libs/supabase";
 import { getProfile } from "@/libs/supabase/api/profiles";
 import { handleFollowSuccess, toggleFollow } from "@/libs/supabase/api/follows";
@@ -27,7 +27,7 @@ import CommentsTab from "@/features/profile/CommentsTab";
 const ProfileScreen = () => {
 	const { width } = Dimensions.get("screen");
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { user } = useSession();
+	const user = useUser();
 	const activities = ["Posts", "Likes", "Comments"];
 	const activitiesRef = useRef<Animated.FlatList>(null);
 	const scrollX = useRef(new Animated.Value(0)).current;
@@ -114,9 +114,9 @@ const ProfileScreen = () => {
 							<Button
 								variant="secondaryOutline"
 								size="lg"
-								onPress={() => router.push("/profile/settings")}
+								onPress={() => router.push("/profile/edit")}
 							>
-								Settings
+								Edit
 							</Button>
 						) : (
 							<Button

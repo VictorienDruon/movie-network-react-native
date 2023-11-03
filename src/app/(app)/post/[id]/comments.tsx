@@ -2,7 +2,7 @@ import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCommentsByPost } from "@/libs/supabase/api/comments";
-import { useSession } from "@/providers/session";
+import useUser from "@/hooks/useUser";
 import { ErrorState, EmptyState } from "@/components/commons";
 import { Avatar, Box, HStack } from "@/components/ui";
 import CommentCard from "@/features/comment-card";
@@ -11,7 +11,7 @@ import CommentCardSkeleton from "@/features/comment-card/components/CommentCardS
 
 const CommentsModal = () => {
 	const { id: postId } = useLocalSearchParams<{ id: string }>();
-	const { user } = useSession();
+	const user = useUser();
 
 	const query = useInfiniteQuery({
 		queryKey: ["comments", postId],
@@ -57,7 +57,7 @@ const CommentsModal = () => {
 					borderTopWidth={0.5}
 					borderColor="neutral-6"
 				>
-					{user && <Avatar size={40} src={user.avatar_url} name={user.name} />}
+					{user && <Avatar size={40} src={user.avatarUrl} name={user.name} />}
 					<CommentBar postId={postId} />
 				</HStack>
 			</KeyboardAvoidingView>
