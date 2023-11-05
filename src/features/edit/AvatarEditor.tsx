@@ -1,9 +1,14 @@
 import { TouchableOpacity } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+	QueryClient,
+	useMutation,
+	useQueryClient,
+} from "@tanstack/react-query";
 import useUser from "@/hooks/useUser";
 import { supabase } from "@/libs/supabase";
-import { handleUserUpdated, uploadAvatar } from "@/libs/supabase/api/storage";
+import { uploadAvatar } from "@/libs/supabase/api/storage";
+import { handleProfileUpdated } from "@/libs/supabase/api/profiles";
 import { Avatar, Skeleton, Subtitle, VStack } from "@/components/ui";
 
 const AvatarEditor = () => {
@@ -12,7 +17,7 @@ const AvatarEditor = () => {
 	const user = useUser();
 
 	const mutation = useMutation(uploadAvatar, {
-		onSuccess: (userId) => handleUserUpdated(userId, queryClient),
+		onSuccess: (userId) => handleProfileUpdated(userId, queryClient),
 	});
 
 	const handleUploadAvatar = async () => {

@@ -1,7 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
 import { decode } from "base64-arraybuffer";
-import { QueryClient } from "@tanstack/react-query";
 import { supabase } from "..";
+import { updateProfile } from "./profiles";
 
 export const uploadAvatar = async (userId: string) => {
 	const pickImage = await ImagePicker.launchImageLibraryAsync({
@@ -38,18 +38,8 @@ export const uploadAvatar = async (userId: string) => {
 
 		if (updateUserError) throw updateUserError;
 
-		const { error: updateProfileError } = await supabase
-			.from("profiles")
-			.update({ avatar_url: publicUrl })
-			.eq("id", userId);
-
-		if (updateProfileError) throw updateProfileError;
+		await updateProfile({ id: userId, updates: { avatar_url: publicUrl } });
 
 		return userId;
 	}
-};
-
-export const handleUserUpdated = (userId, queryClient: QueryClient) => {
-	queryClient.invalidateQueries({ queryKey: ["user"] });
-	queryClient.invalidateQueries({ queryKey: ["profile", userId] });
 };
