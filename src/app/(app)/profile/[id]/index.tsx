@@ -62,7 +62,7 @@ const ProfileScreen = () => {
 				{query.isLoading ? (
 					<VStack p={16} space={8}>
 						<Skeleton width={64} height={64} borderRadius="full" />
-						<Skeleton width={150} height={22} borderRadius="md" />
+						<Skeleton width={150} height={24} borderRadius="md" />
 						<Skeleton width={200} height={18} borderRadius="md" />
 					</VStack>
 				) : (
