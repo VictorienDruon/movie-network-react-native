@@ -1,59 +1,82 @@
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { useErrorBoundary } from "react-error-boundary";
-import {
-	GoogleSignin,
-	GoogleSigninButton,
-	statusCodes,
-} from "@react-native-google-signin/google-signin";
+import { useAssets } from "expo-asset";
+import { createURL } from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "@/styles/theme";
 import { supabase } from "@/libs/supabase";
+import { HStack, Image, Title } from "@/components/ui";
 
-const GoogleAuthButton = () => {
+const SocialAuthButton = ({}) => {
 	const { showBoundary } = useErrorBoundary();
-	const theme = useColorScheme();
-	const buttonStyle = theme === "dark" ? "Light" : "Dark";
+	const colorScheme = useColorScheme();
+	const isDark = colorScheme === "dark";
+	const { borderRadii } = useTheme<Theme>();
+	const redirectTo = createURL("/");
+	const [assets] = useAssets([require("../../../assets/google.png")]);
 
-	GoogleSignin.configure({
-		scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-		webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
-	});
-
-	const handleGoogleSignIn = async () => {
+	const handleSignInPress = async () => {
 		try {
-			await GoogleSignin.hasPlayServices();
+			const {
+				data: { url },
+				error,
+			} = await supabase.auth.signInWithOAuth({
+				provider: "google",
+				options: { redirectTo },
+			});
 
-			const userInfo = await GoogleSignin.signIn();
+			if (error) throw error;
 
-			console.log({ userInfo });
+			const res = await WebBrowser.openAuthSessionAsync(url, redirectTo);
 
-			if (userInfo.idToken) {
-				const { data, error } = await supabase.auth.signInWithIdToken({
-					provider: "google",
-					token: userInfo.idToken,
+			if (res.type === "success") {
+				const params = new URLSearchParams(res.url.split("#")[1]);
+				const accessToken = params.get("access_token");
+				const refreshToken = params.get("refresh_token");
+
+				if (!accessToken || !refreshToken)
+					throw new Error("Error retrieving tokens in url");
+
+				const { error } = await supabase.auth.setSession({
+					access_token: accessToken,
+					refresh_token: refreshToken,
 				});
 
-				console.log({ data, error });
-
 				if (error) throw error;
-			} else {
-				throw new Error("No identity token.");
-			}
-		} catch (error: any) {
-			if (
-				error.code !== statusCodes.SIGN_IN_CANCELLED &&
-				error.code !== statusCodes.IN_PROGRESS
-			) {
-				showBoundary(error);
-			}
+			} else if (res.type !== "dismiss" && res.type !== "cancel")
+				throw new Error("Authentication failed");
+		} catch (error) {
+			showBoundary(error);
 		}
 	};
 
+	if (!assets) return null;
+
 	return (
-		<GoogleSigninButton
-			size={GoogleSigninButton.Size.Wide}
-			color={GoogleSigninButton.Color[buttonStyle]}
-			onPress={handleGoogleSignIn}
-		/>
+		<TouchableOpacity
+			style={{
+				justifyContent: "center",
+				alignItems: "center",
+				width: "100%",
+				height: 48,
+				backgroundColor: isDark ? "white" : "black",
+				borderRadius: borderRadii.xl,
+			}}
+			onPress={handleSignInPress}
+		>
+			<HStack alignItems="center" space={8}>
+				<Image src={assets[0]} alt="google" width={16} height={16} />
+				<Title
+					fontSize={18}
+					fontWeight="600"
+					color={isDark ? "black" : "white"}
+				>
+					Sign in with Google
+				</Title>
+			</HStack>
+		</TouchableOpacity>
 	);
 };
 
-export default GoogleAuthButton;
+export default SocialAuthButton;
