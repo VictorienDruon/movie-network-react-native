@@ -50,7 +50,7 @@ const SearchScreen = () => {
 
 	const profilesQuery = useInfiniteQuery({
 		queryKey: ["search", "users", value],
-		queryFn: ({ pageParam = 1 }) => searchProfiles(value, pageParam),
+		queryFn: ({ pageParam = 0 }) => searchProfiles(value, pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: value.length > 0,
 	});
@@ -213,13 +213,13 @@ const SearchScreen = () => {
 									<PersonCard person={profile} mx={8} />
 								)}
 								ListFooterComponent={() =>
-									peopleQuery.hasNextPage && (
+									profilesQuery.hasNextPage && (
 										<PersonCardSkeleton withRole={false} mx={8} />
 									)
 								}
 								contentContainerStyle={{ paddingHorizontal: 8 }}
 								showsHorizontalScrollIndicator={false}
-								onEndReached={() => peopleQuery.fetchNextPage()}
+								onEndReached={() => profilesQuery.fetchNextPage()}
 								horizontal
 							/>
 						)}
