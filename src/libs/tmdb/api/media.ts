@@ -1,7 +1,11 @@
+import { Platform } from "react-native";
 import {
 	AppendToResponseMovieKey,
 	AppendToResponseTvKey,
+	Buy,
+	Flatrate,
 	Genre,
+	Rent,
 	WatchLocale,
 } from "tmdb-ts";
 import Region from "@/features/region-card/types/Region";
@@ -72,7 +76,7 @@ export async function getMovie(id: string): Promise<Media> {
 
 		const crew = movie.credits.crew.filter(isValidPerson).map(formatPerson);
 
-		const providers = movie["watch/providers"].results;
+		const providers = filterWatchLocale(movie["watch/providers"].results);
 
 		const regions = Object.keys(providers).map(formatRegion);
 
@@ -140,7 +144,7 @@ export async function getShow(id: string): Promise<Media> {
 			.filter(isValidPerson)
 			.map(formatPerson);
 
-		const providers = show["watch/providers"].results;
+		const providers = filterWatchLocale(show["watch/providers"].results);
 
 		const regions = Object.keys(providers).map(formatRegion);
 
@@ -173,4 +177,41 @@ export async function getShow(id: string): Promise<Media> {
 	} catch (error) {
 		throw error;
 	}
+}
+
+function filterWatchLocale(watchLocale: WatchLocale) {
+	const filteredWatchLocale = {};
+
+	for (const [region, providersCategoriesWithLink] of Object.entries(
+		watchLocale
+	) as [
+		string,
+		{
+			link: string;
+			flatrate: Flatrate[];
+			rent: Rent[];
+			buy: Buy[];
+		}
+	][]) {
+		const { link, ...providersCategories } = providersCategoriesWithLink;
+		filteredWatchLocale[region] = { link };
+
+		for (const [category, providers] of Object.entries(providersCategories)) {
+			const filteredProviders = providers.filter((provider) =>
+				Platform.OS === "ios"
+					? provider.provider_id !== 3
+					: provider.provider_id !== 350
+			);
+
+			if (filteredProviders.length > 0) {
+				filteredWatchLocale[region][category] = filteredProviders;
+			}
+		}
+
+		if (Object.keys(filteredWatchLocale[region]).length === 1) {
+			delete filteredWatchLocale[region];
+		}
+	}
+
+	return filteredWatchLocale as WatchLocale;
 }

@@ -7,7 +7,7 @@ interface ProviderIconProps {
 	provider: Provider;
 }
 
-const ProviderIcon = ({ link, provider }: ProviderIconProps) => (
+const ProviderIcon = ({ provider }: ProviderIconProps) => (
 	<Image
 		src={`${tmdbConfig.links.image}/w500${provider.logo_path}`}
 		alt={provider.provider_name}
