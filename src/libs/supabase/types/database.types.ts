@@ -253,19 +253,19 @@ export interface Database {
       }
       profiles: {
         Row: {
-          avatar_url: string
+          avatar_url: string | null
           id: string
-          name: string
+          name: string | null
         }
         Insert: {
-          avatar_url: string
+          avatar_url?: string | null
           id: string
-          name: string
+          name?: string | null
         }
         Update: {
-          avatar_url?: string
+          avatar_url?: string | null
           id?: string
-          name?: string
+          name?: string | null
         }
         Relationships: [
           {

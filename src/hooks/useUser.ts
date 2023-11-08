@@ -1,24 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/libs/supabase";
 
-interface User {
-	id: string;
-	name: string;
-	avatarUrl: string;
-}
-
 const getUser = async () => {
 	const {
 		data: { user: dbUser },
 	} = await supabase.auth.getUser();
 
-	const user: User = {
-		id: dbUser.id,
-		name: dbUser.user_metadata.full_name,
-		avatarUrl: dbUser.user_metadata.avatar_url,
-	};
+	const { data: user, error } = await supabase
+		.from("profiles")
+		.select("*")
+		.eq("id", dbUser.id)
+		.single();
 
-	return user;
+	return {
+		id: user.id,
+		name: user.name,
+		avatarUrl: user.avatar_url,
+	};
 };
 
 const useUser = () => {

@@ -21,12 +21,22 @@ const AppleAuthButton = () => {
 			});
 
 			if (credential.identityToken) {
-				const { error } = await supabase.auth.signInWithIdToken({
+				const {
+					data: { user },
+					error: authError,
+				} = await supabase.auth.signInWithIdToken({
 					provider: "apple",
 					token: credential.identityToken,
 				});
 
-				if (error) throw error;
+				if (authError) throw authError;
+
+				const { error: profileError } = await supabase.from("profiles").upsert({
+					id: user.id,
+					name: credential.fullName.givenName,
+				});
+
+				if (profileError) throw profileError;
 			} else {
 				throw new Error("No identity token.");
 			}
