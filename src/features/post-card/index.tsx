@@ -13,6 +13,7 @@ import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayo
 import Post from "./types/Post";
 import CommentBar from "./components/CommentBar";
 import LikeButton from "./components/LikeButton";
+import ReportButton from "./components/ReportButton";
 
 const PostCard = ({ post }: { post: Post }) => {
 	const { id, content, createdAt, author, posters, userHasLikedPost } = post;
@@ -28,7 +29,13 @@ const PostCard = ({ post }: { post: Post }) => {
 					</HStack>
 				</Link>
 
-				<Metadata>{getRelativeDate(createdAt)}</Metadata>
+				<HStack alignItems="center" space={4}>
+					<Metadata>{getRelativeDate(createdAt)}</Metadata>
+
+					<Metadata>•</Metadata>
+
+					<ReportButton postId={id} />
+				</HStack>
 			</HStack>
 
 			<Body>{content}</Body>
