@@ -5,17 +5,19 @@ import { Database } from "../types/database.types";
 import { isUserFollowing } from "../utils/filter";
 import { getPage, getRange } from "../utils/pagination";
 import { formatPerson } from "../utils/map";
+import { getBlockedUsers } from "./blocked-users";
 
 interface Profile extends Person {
 	following: number;
 	followers: number;
 	isUserFollowing: boolean;
+	isUserBlocked: boolean;
 }
 
 export async function getProfile(id: string): Promise<Profile> {
 	const {
-		data: { session },
-	} = await supabase.auth.getSession();
+		data: { user },
+	} = await supabase.auth.getUser();
 
 	const { data: profile, error } = await supabase
 		.from("profiles")
@@ -29,11 +31,14 @@ export async function getProfile(id: string): Promise<Profile> {
 
 	const { following, followers, ...rest } = profile;
 
+	const blcokedUserIds = await getBlockedUsers(user.id);
+
 	return {
 		...formatPerson(rest),
 		following: profile.following.length,
 		followers: profile.followers.length,
-		isUserFollowing: isUserFollowing(profile.followers, session.user.id),
+		isUserFollowing: isUserFollowing(profile.followers, user.id),
+		isUserBlocked: blcokedUserIds.includes(profile.id),
 	};
 }
 

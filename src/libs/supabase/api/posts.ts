@@ -10,6 +10,7 @@ import NewMedia from "../types/NewMedia";
 import { formatPost } from "../utils/map";
 import { getPage, getRange } from "../utils/pagination";
 import { convertKeysToCamelCase } from "@/utils/objects";
+import { getBlockedUsers } from "./blocked-users";
 
 type NewPost = Database["public"]["Tables"]["posts"]["Insert"] & {
 	posters: NewMedia[];
@@ -38,10 +39,12 @@ export async function getPosts(page: number) {
 	const { from, to } = getRange(page);
 
 	const {
-		data: { session },
-	} = await supabase.auth.getSession();
+		data: { user },
+	} = await supabase.auth.getUser();
 
-	const { data: posts, error } = await supabase
+	const blockedUserIds = await getBlockedUsers(user.id);
+
+	const { data, error } = await supabase
 		.from("posts")
 		.select(
 			"*, author: profiles!posts_user_id_fkey(*), likes(user_id), posts_media(posters: media_id(*))"
@@ -52,7 +55,9 @@ export async function getPosts(page: number) {
 
 	if (error) throw error;
 
-	const formattedPosts = posts.map((post) => formatPost(post, session.user.id));
+	const posts = data.filter((post) => !blockedUserIds.includes(post.user_id));
+
+	const formattedPosts = posts.map((post) => formatPost(post, user.id));
 
 	return getPage<Post>(formattedPosts, page);
 }
