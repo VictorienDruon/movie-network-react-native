@@ -80,7 +80,13 @@ const OnboardingScreen = () => {
 			</VStack>
 
 			<Box pt={16}>
-				<Button size="lg" height={56} variant="primary" onPress={handleClose}>
+				<Button
+					size="lg"
+					height={56}
+					variant="primary"
+					borderRadius="full"
+					onPress={handleClose}
+				>
 					Get started
 				</Button>
 			</Box>
