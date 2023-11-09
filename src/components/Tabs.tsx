@@ -70,6 +70,7 @@ const Tabs = ({ tabs, contentRef, scrollX }: TabsProps) => {
 						key={tab}
 						ref={tabRefs[index]}
 						onPress={() => handleTabPress(index)}
+						hitSlop={{ top: 6, bottom: 6, left: 12, right: 12 }}
 					>
 						<Subtitle>{tab}</Subtitle>
 					</TouchableOpacity>

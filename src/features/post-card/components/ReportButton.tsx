@@ -39,6 +39,7 @@ const ReportButton = ({ postId }: { postId: string }) => {
 		<TouchableOpacity
 			disabled={mutation.isLoading}
 			onPress={createReportingAlert}
+			hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
 		>
 			<Icon name="Flag" size={12} />
 		</TouchableOpacity>

@@ -82,7 +82,10 @@ const PostersPicker = () => {
 					title: type === "movie" ? "Select Movies" : "Select Shows",
 					headerLeft: () =>
 						Platform.OS === "ios" ? (
-							<Link href="..">
+							<Link
+								href=".."
+								hitSlop={{ top: 6, bottom: 6, left: 12, right: 12 }}
+							>
 								<Title color="primary-9" fontWeight="normal">
 									Cancel
 								</Title>
@@ -94,6 +97,7 @@ const PostersPicker = () => {
 								push();
 								router.push("..");
 							}}
+							hitSlop={{ top: 6, bottom: 6, left: 12, right: 12 }}
 						>
 							<Title color="primary-9">Done</Title>
 						</TouchableOpacity>

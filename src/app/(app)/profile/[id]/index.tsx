@@ -65,6 +65,7 @@ const ProfileScreen = () => {
 										pathname: "/profile/[id]/following",
 										params: { id },
 									}}
+									hitSlop={{ top: 6, bottom: 6, left: 8, right: 8 }}
 								>
 									<HStack space={4}>
 										<Body fontWeight="bold">{query.data.following}</Body>
@@ -79,6 +80,7 @@ const ProfileScreen = () => {
 										pathname: "/profile/[id]/followers",
 										params: { id },
 									}}
+									hitSlop={{ top: 6, bottom: 6, left: 8, right: 8 }}
 								>
 									<HStack space={4}>
 										<Body fontWeight="bold">{query.data.followers}</Body>

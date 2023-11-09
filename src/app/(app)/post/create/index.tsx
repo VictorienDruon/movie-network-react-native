@@ -104,6 +104,7 @@ const CreateScreen = () => {
 								pathname: "/post/create/posters-picker/[type]",
 								params: { type: "movie" },
 							}}
+							hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
 						>
 							<Icon name="Clapperboard" color="primary-9" size={24} />
 						</Link>
@@ -113,6 +114,7 @@ const CreateScreen = () => {
 								pathname: "/post/create/posters-picker/[type]",
 								params: { type: "tvShow" },
 							}}
+							hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
 						>
 							<Icon name="Tv" color="primary-9" size={24} />
 						</Link>
