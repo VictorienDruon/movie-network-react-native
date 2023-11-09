@@ -22,7 +22,7 @@ const PostCard = ({ post }: { post: Post }) => {
 		<VStack space={20} p={16}>
 			<HStack justifyContent="space-between" space={8}>
 				<Link href={author.link}>
-					<HStack space={8} alignItems="center">
+					<HStack space={8} alignItems="center" maxWidth="80%">
 						<Avatar size={40} src={author.avatarUrl} name={author.name} />
 
 						<Title>{author.name}</Title>
