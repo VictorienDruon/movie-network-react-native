@@ -1,6 +1,8 @@
+import { TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Drawer } from "expo-router/drawer";
 import { appConfig } from "@/config/app";
+import { onOpenExternalLink } from "@/utils/linking";
 import useUser from "@/hooks/useUser";
 import {
 	Avatar,
@@ -95,24 +97,45 @@ const DrawerLayout = () => {
 							borderTopWidth={0.5}
 							borderColor="neutral-6"
 						>
-							<Link href={appConfig.links.contact}>
+							<TouchableOpacity
+								onPress={() =>
+									onOpenExternalLink(appConfig.links.contact, true)
+								}
+							>
 								<Title fontWeight="500">Contact us</Title>
-							</Link>
+							</TouchableOpacity>
 
-							<Link href={appConfig.links.feedback}>
+							<TouchableOpacity
+								onPress={() =>
+									onOpenExternalLink(appConfig.links.feedback, true)
+								}
+							>
 								<Title fontWeight="500">Feedback</Title>
-							</Link>
-							<Link href={appConfig.links.site + "/terms"}>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								onPress={() =>
+									onOpenExternalLink(appConfig.links.site + "/terms", true)
+								}
+							>
 								<Title fontWeight="500">Terms of service</Title>
-							</Link>
+							</TouchableOpacity>
 
-							<Link href={appConfig.links.site + "/privacy"}>
+							<TouchableOpacity
+								onPress={() =>
+									onOpenExternalLink(appConfig.links.site + "/privacy", true)
+								}
+							>
 								<Title fontWeight="500">Privacy policy</Title>
-							</Link>
+							</TouchableOpacity>
 
-							<Link href={appConfig.links.site + "/credits"}>
+							<TouchableOpacity
+								onPress={() =>
+									onOpenExternalLink(appConfig.links.site + "/credits", true)
+								}
+							>
 								<Title fontWeight="500">Credits</Title>
-							</Link>
+							</TouchableOpacity>
 						</VStack>
 					</VStack>
 				</DrawerContentScrollView>
