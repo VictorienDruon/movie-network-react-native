@@ -99,8 +99,8 @@ const DrawerLayout = () => {
 								<Title fontWeight="500">Contact us</Title>
 							</Link>
 
-							<Link href={appConfig.links.featureRequests}>
-								<Title fontWeight="500">Feature requests</Title>
+							<Link href={appConfig.links.feedback}>
+								<Title fontWeight="500">Feedback</Title>
 							</Link>
 							<Link href={appConfig.links.site + "/terms"}>
 								<Title fontWeight="500">Terms of service</Title>

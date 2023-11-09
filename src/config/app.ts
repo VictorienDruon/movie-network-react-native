@@ -4,7 +4,7 @@ export const appConfig = {
 		site: "https://movie-network.vercel.app",
 		contact:
 			"https://go.crisp.chat/chat/embed/?website_id=b4ce6fab-b074-4400-b2fa-ebd9d7e8c81c",
-		featureRequests: "https://movienetwork.featurebase.app",
+		feedback: "https://movienetwork.featurebase.app",
 	},
 };
 
