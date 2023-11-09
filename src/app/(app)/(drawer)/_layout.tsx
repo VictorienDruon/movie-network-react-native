@@ -8,9 +8,9 @@ import {
 	HStack,
 	Heading,
 	Icon,
-	Skeleton,
 	Title,
 	VStack,
+	Box,
 } from "@/components/ui";
 
 const DrawerLayout = () => {
@@ -27,66 +27,67 @@ const DrawerLayout = () => {
 					contentContainerStyle={{ height: "90%" }}
 				>
 					<VStack flex={1} justifyContent="space-between" px={20} space={64}>
-						<Link
-							href={
-								user && {
-									pathname: "/profile/[id]",
-									params: { id: user.id },
-								}
-							}
-						>
-							{user ? (
+						{user ? (
+							<Link
+								href={{ pathname: "/profile/[id]", params: { id: user.id } }}
+							>
 								<VStack space={20}>
 									<Avatar size={40} src={user.avatarUrl} name={user.name} />
 									<Heading>{user.name}</Heading>
 								</VStack>
-							) : (
-								<VStack space={20}>
-									<Skeleton width={40} height={40} borderRadius="full" />
-									<Skeleton width={150} height={24} borderRadius="md" />
-								</VStack>
-							)}
-						</Link>
-
-						<VStack space={32}>
-							<Link
-								href={
-									user && {
-										pathname: "/profile/[id]",
-										params: { id: user.id },
-									}
-								}
-							>
-								<HStack alignItems="center" space={24}>
-									<Icon name="User2" size={24} color="neutral-12" />
-									<Heading fontWeight="600">Profile</Heading>
-								</HStack>
 							</Link>
+						) : (
+							<Box height={64} />
+						)}
 
-							<Link href="/profile/edit">
+						{user ? (
+							<VStack space={32}>
+								<Link
+									href={{ pathname: "/profile/[id]", params: { id: user.id } }}
+								>
+									<HStack alignItems="center" space={24}>
+										<Icon name="User2" size={24} color="neutral-12" />
+										<Heading fontWeight="600">Profile</Heading>
+									</HStack>
+								</Link>
+
+								<Link href="/profile/edit">
+									<HStack alignItems="center" space={24}>
+										<Icon
+											name="PencilRuler"
+											size={24}
+											strokeWidth={2}
+											color="neutral-12"
+										/>
+										<Heading fontWeight="600">Edit</Heading>
+									</HStack>
+								</Link>
+
+								<Link href="/profile/settings">
+									<HStack alignItems="center" space={24}>
+										<Icon
+											name="Cog"
+											size={24}
+											strokeWidth={2}
+											color="neutral-12"
+										/>
+										<Heading fontWeight="600">Settings</Heading>
+									</HStack>
+								</Link>
+							</VStack>
+						) : (
+							<Link href="/">
 								<HStack alignItems="center" space={24}>
 									<Icon
-										name="PencilRuler"
+										name="User2"
 										size={24}
 										strokeWidth={2}
 										color="neutral-12"
 									/>
-									<Heading fontWeight="600">Edit</Heading>
+									<Heading fontWeight="600">Sign in</Heading>
 								</HStack>
 							</Link>
-
-							<Link href="/profile/settings">
-								<HStack alignItems="center" space={24}>
-									<Icon
-										name="Cog"
-										size={24}
-										strokeWidth={2}
-										color="neutral-12"
-									/>
-									<Heading fontWeight="600">Settings</Heading>
-								</HStack>
-							</Link>
-						</VStack>
+						)}
 
 						<VStack
 							space={20}

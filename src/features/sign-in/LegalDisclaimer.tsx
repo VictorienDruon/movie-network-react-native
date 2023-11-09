@@ -5,7 +5,7 @@ import { Metadata } from "@/components/ui";
 const LegalDisclaimer = () => {
 	return (
 		<Metadata px={16} textAlign="center">
-			{"By signing in, you agree to our "}
+			{"By continuing, you agree to our "}
 			<Metadata
 				onPress={() => Linking.openURL(appConfig.links.site + "/terms")}
 			>

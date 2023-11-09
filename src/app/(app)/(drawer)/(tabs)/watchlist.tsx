@@ -1,15 +1,17 @@
 import { useRef } from "react";
 import { Animated, Dimensions, FlatList } from "react-native";
+import { router } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/styles/theme";
+import useUser from "@/hooks/useUser";
 import { getWatchlist } from "@/libs/supabase/api/watchlist";
 import { ErrorState } from "@/components/commons";
 import { WatchlistSkeleton } from "@/components/skeletons";
-import { Box, Heading, Subtitle, Title, VStack } from "@/components/ui";
+import { Box, Button, Heading, Subtitle, Title, VStack } from "@/components/ui";
 import Backdrop from "@/features/watchlist/Backdrop";
 import WatchlistItemCard from "@/features/watchlist/Item";
-import { LinearGradient } from "expo-linear-gradient";
 
 const { width, height } = Dimensions.get("screen");
 const ITEM_SIZE = Math.round(width * 0.72);
@@ -18,13 +20,26 @@ const DUMMY_WIDTH = Math.round((width - ITEM_SIZE) / 2);
 
 const WatchlistScreen = () => {
 	const { colors } = useTheme<Theme>();
+	const user = useUser();
 	const scrollX = useRef(new Animated.Value(0)).current;
 
 	const query = useInfiniteQuery({
 		queryKey: ["watchlist"],
 		queryFn: ({ pageParam = 0 }) => getWatchlist(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: !!user,
 	});
+
+	if (!user)
+		return (
+			<VStack flex={1} justifyContent="center" px={64} space={32}>
+				<Title textAlign="center">
+					You need to be signed in to create your watchlist.
+				</Title>
+
+				<Button onPress={() => router.push("/")}>Sign in</Button>
+			</VStack>
+		);
 
 	if (query.isLoading) return <WatchlistSkeleton />;
 	if (query.isError) return <ErrorState retry={query.refetch} />;

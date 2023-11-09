@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext } from "react";
 import { useSessionLoader } from "./hooks/useSessionLoader";
-import { useProtectedRoute } from "./hooks/useProtectedRoute";
+import { useAutomatedRoute } from "./hooks/useAutomatedRoute";
 import { Session } from "@supabase/supabase-js";
 
 interface SessionContext {
@@ -12,7 +12,7 @@ const SessionContext = createContext<SessionContext>(null);
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
 	const { isSessionLoaded, session } = useSessionLoader();
-	useProtectedRoute(isSessionLoaded, session);
+	useAutomatedRoute(isSessionLoaded, session);
 
 	return (
 		<SessionContext.Provider value={{ isSessionLoaded, session }}>

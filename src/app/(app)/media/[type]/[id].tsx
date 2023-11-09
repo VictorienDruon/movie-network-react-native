@@ -38,6 +38,8 @@ import PersonCard from "@/features/person-card";
 import RegionCard from "@/features/region-card";
 import Region from "@/features/region-card/types/Region";
 import ProviderIcon from "@/features/provider-icon";
+import useUser from "@/hooks/useUser";
+import { createSignInAlert } from "@/features/sign-in/SignInAlert";
 
 const MediaScreen = () => {
 	const { type, id } = useLocalSearchParams<{
@@ -45,6 +47,8 @@ const MediaScreen = () => {
 		id: string;
 	}>();
 	const queryClient = useQueryClient();
+	const user = useUser();
+
 	const providersRef = useRef(null);
 	const regionsRef = useRef(null);
 	const [selectedRegion, setSelectedRegion] = useState<Region>(null);
@@ -60,6 +64,7 @@ const MediaScreen = () => {
 	const isInWatchlistQuery = useQuery({
 		queryKey: ["isInWatchlist", type, id],
 		queryFn: () => isMediaInWatchlist(type, id),
+		enabled: !!user,
 	});
 
 	const watchlistMutation = useMutation(updateWatchlist, {
@@ -85,7 +90,7 @@ const MediaScreen = () => {
 		}
 	}, [mediaQuery.data]);
 
-	if (mediaQuery.isLoading || isInWatchlistQuery.isLoading)
+	if (mediaQuery.isLoading || (user && isInWatchlistQuery.isLoading))
 		return <MediaSkeleton />;
 
 	if (mediaQuery.isError) return <ErrorState retry={mediaQuery.refetch} />;
@@ -130,8 +135,6 @@ const MediaScreen = () => {
 		rating: voteAverage,
 		overview,
 	};
-
-	const isInWatchlist = isInWatchlistQuery.data;
 
 	return (
 		<>
@@ -184,7 +187,7 @@ const MediaScreen = () => {
 						>
 							Play
 						</Button>
-						{isInWatchlist ? (
+						{user && isInWatchlistQuery.data ? (
 							<HStack justifyContent="space-between" space={8}>
 								<Box flex={1}>
 									<Button
@@ -212,7 +215,11 @@ const MediaScreen = () => {
 								variant="outline"
 								leftIcon="Plus"
 								disabled={watchlistMutation.isLoading}
-								onPress={() => handleUpdateWatchlistPress(media, "active")}
+								onPress={
+									user
+										? () => handleUpdateWatchlistPress(media, "active")
+										: createSignInAlert
+								}
 							>
 								Add to Watchlist
 							</Button>

@@ -2,25 +2,23 @@ import { useEffect } from "react";
 import { Platform } from "react-native";
 import { ErrorBoundary } from "react-error-boundary";
 import { router } from "expo-router";
-import { ErrorFallback, ErrorState } from "@/components/commons";
-import { Heading, SubHeading, VStack } from "@/components/ui";
+import { ErrorFallback } from "@/components/commons";
+import {
+	Heading,
+	Link,
+	Separator,
+	SubHeading,
+	Title,
+	VStack,
+} from "@/components/ui";
 import { useOnboarding } from "@/providers/onboarding";
-import { useQuery } from "@tanstack/react-query";
-import { getTrends } from "@/libs/tmdb/api/trending";
-import Poster from "@/features/poster-card/types/Poster";
-import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayout";
-import PosterCardsLayoutSkeleton from "@/features/poster-card/components/PosterCardsLayoutSkeleton";
 import AppleAuthButton from "@/features/sign-in/AppleAuthButton";
 import GoogleAuthButton from "@/features/sign-in/GoogleAuthButton";
 import LegalDisclaimer from "@/features/sign-in/LegalDisclaimer";
+import PosterPreview from "@/features/poster-card/components/PosterPreview";
 
 const SignInScreen = () => {
 	const { isOnboarded } = useOnboarding();
-
-	const query = useQuery({
-		queryKey: ["posters"],
-		queryFn: () => getTrends("all", "day"),
-	});
 
 	useEffect(() => {
 		if (!isOnboarded) {
@@ -32,15 +30,14 @@ const SignInScreen = () => {
 		}
 	}, [isOnboarded]);
 
-	if (query.isError) return <ErrorState retry={query.refetch} />;
-
 	return (
 		<ErrorBoundary fallback={<ErrorFallback />}>
 			<VStack
 				flex={1}
 				justifyContent="space-between"
 				px={32}
-				py={96}
+				pt={96}
+				pb={64}
 				space={16}
 			>
 				<VStack space={16}>
@@ -50,23 +47,26 @@ const SignInScreen = () => {
 						textAlign="center"
 						lineHeight={40}
 					>
-						Welcome to Movie Network!
+						Get started
 					</Heading>
 
-					<SubHeading textAlign="center">Sign in to get started.</SubHeading>
+					<SubHeading textAlign="center">
+						Sign in to access all Movie Network features
+					</SubHeading>
 				</VStack>
 
-				{query.isLoading ? (
-					<PosterCardsLayoutSkeleton length={2} />
-				) : (
-					<PosterCardsLayout
-						posters={query.data.results.slice(0, 2) as Poster[]}
-						action="none"
-					/>
-				)}
+				<PosterPreview />
 
-				<VStack alignItems="center" space={16}>
-					{Platform.OS === "ios" ? <AppleAuthButton /> : <GoogleAuthButton />}
+				<VStack space={24}>
+					<VStack alignItems="center" space={12}>
+						{Platform.OS === "ios" ? <AppleAuthButton /> : <GoogleAuthButton />}
+
+						<Separator />
+
+						<Link href="/explore">
+							<Title textAlign="center">Or sign in later</Title>
+						</Link>
+					</VStack>
 
 					<LegalDisclaimer />
 				</VStack>

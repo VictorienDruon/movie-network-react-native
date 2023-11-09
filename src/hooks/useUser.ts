@@ -6,11 +6,15 @@ const getUser = async () => {
 		data: { user: dbUser },
 	} = await supabase.auth.getUser();
 
+	if (!dbUser) return null;
+
 	const { data: user, error } = await supabase
 		.from("profiles")
 		.select("*")
 		.eq("id", dbUser.id)
 		.single();
+
+	if (error) throw error;
 
 	return {
 		id: user.id,

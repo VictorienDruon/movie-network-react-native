@@ -2,7 +2,7 @@ import { TouchableOpacity } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { Tabs, useNavigation } from "expo-router";
 import useUser from "@/hooks/useUser";
-import { Avatar, Box, Icon, Skeleton, Link } from "@/components/ui";
+import { Avatar, Box, Icon, Link } from "@/components/ui";
 
 const TabsLayout = () => {
 	const navigation = useNavigation();
@@ -20,7 +20,7 @@ const TabsLayout = () => {
 							{user ? (
 								<Avatar src={user.avatarUrl} name={user.name} size={32} />
 							) : (
-								<Skeleton width={32} height={32} borderRadius="full" />
+								<Icon name="User2" size={28} color="neutral-9" />
 							)}
 						</Box>
 					</TouchableOpacity>

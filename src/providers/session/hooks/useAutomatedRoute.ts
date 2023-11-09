@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { router, useSegments } from "expo-router";
 import { Session } from "@supabase/supabase-js";
 
-export const useProtectedRoute = (
+export const useAutomatedRoute = (
 	isSessionLoaded: boolean,
 	session: Session | null
 ) => {
@@ -15,5 +15,5 @@ export const useProtectedRoute = (
 
 		if (!session && !inAuthGroup) router.replace("/");
 		else if (session && inAuthGroup) router.replace("/watchlist");
-	}, [isSessionLoaded, session, segments]);
+	}, [isSessionLoaded, session]);
 };

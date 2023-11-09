@@ -1,17 +1,40 @@
 import { FlatList } from "react-native";
+import { router } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import useUser from "@/hooks/useUser";
 import { getPosts } from "@/libs/supabase/api/posts";
 import { ErrorState, RefreshControl } from "@/components/commons";
-import { Box, RoundButton, Separator } from "@/components/ui";
+import {
+	Box,
+	Button,
+	RoundButton,
+	Separator,
+	Title,
+	VStack,
+} from "@/components/ui";
 import PostCard from "@/features/post-card";
 import PostCardSkeleton from "@/features/post-card/components/PostCardSkeleton";
 
 const FeedScreen = () => {
+	const user = useUser();
+
 	const query = useInfiniteQuery({
 		queryKey: ["feed"],
 		queryFn: ({ pageParam = 0 }) => getPosts(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		enabled: !!user,
 	});
+
+	if (!user)
+		return (
+			<VStack flex={1} justifyContent="center" px={64} space={32}>
+				<Title textAlign="center">
+					You need to be signed in to create your watchlist.
+				</Title>
+
+				<Button onPress={() => router.push("/")}>Sign in</Button>
+			</VStack>
+		);
 
 	if (query.isLoading)
 		return (
