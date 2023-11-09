@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
-import { Link, Stack } from "expo-router";
-import { Title } from "@/components/ui";
+import { Stack } from "expo-router";
+import { Link, Title } from "@/components/ui";
 
 const AppLayout = () => (
 	<Stack>
@@ -25,7 +25,10 @@ const AppLayout = () => (
 				presentation: Platform.OS === "ios" ? "fullScreenModal" : "card",
 				headerLeft: () =>
 					Platform.OS === "ios" ? (
-						<Link href="..">
+						<Link
+							href=".."
+							hitSlop={{ top: 6, left: 6, right: 12, bottom: 12 }}
+						>
 							<Title color="primary-9" fontWeight="normal">
 								Cancel
 							</Title>

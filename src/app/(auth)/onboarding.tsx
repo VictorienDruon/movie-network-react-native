@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { router } from "expo-router";
 import { icons } from "lucide-react";
 import { useOnboarding } from "@/providers/onboarding";
@@ -47,7 +48,14 @@ const OnboardingScreen = () => {
 	};
 
 	return (
-		<VStack flex={1} space={64} px={24} py={48} justifyContent="space-between">
+		<VStack
+			flex={1}
+			space={64}
+			px={24}
+			pt={Platform.OS === "ios" ? 64 : 96}
+			pb={64}
+			justifyContent="space-between"
+		>
 			<Heading
 				fontSize={32}
 				fontWeight="800"
