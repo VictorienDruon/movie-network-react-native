@@ -23,7 +23,7 @@ export const OnboardingProvider = ({
 	useEffect(() => {
 		const checkOnboardingStatus = async () => {
 			const value = await AsyncStorage.getItem(ONBOARDING_KEY);
-			setIsOnboarded(false);
+			setIsOnboarded(value === "true");
 		};
 
 		checkOnboardingStatus();
