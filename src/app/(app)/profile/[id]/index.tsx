@@ -89,18 +89,11 @@ const ProfileScreen = () => {
 						</VStack>
 
 						<VStack
+							reverse={true}
 							justifyContent="space-between"
 							alignItems="flex-end"
 							space={16}
 						>
-							{user.id !== id && (
-								<BlockUserButton
-									blockedUserId={id}
-									isUserBlocked={query.data.isUserBlocked}
-									isUserFollowing={query.data.isUserFollowing}
-								/>
-							)}
-
 							{!query.data.isUserBlocked &&
 								(user.id === id ? (
 									<Button
@@ -116,6 +109,14 @@ const ProfileScreen = () => {
 										isUserFollowing={query.data.isUserFollowing}
 									/>
 								))}
+
+							{user.id !== id && (
+								<BlockUserButton
+									blockedUserId={id}
+									isUserBlocked={query.data.isUserBlocked}
+									isUserFollowing={query.data.isUserFollowing}
+								/>
+							)}
 						</VStack>
 					</HStack>
 				)}
