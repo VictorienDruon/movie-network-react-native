@@ -29,7 +29,7 @@ const FeedScreen = () => {
 		return (
 			<VStack flex={1} justifyContent="center" px={64} space={32}>
 				<Title textAlign="center">
-					You need to be signed in to create your watchlist.
+					You need to be signed in to see your feed.
 				</Title>
 
 				<Button onPress={() => router.push("/")}>Sign in</Button>

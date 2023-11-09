@@ -31,12 +31,16 @@ const AppleAuthButton = () => {
 
 				if (authError) throw authError;
 
-				const { error: profileError } = await supabase.from("profiles").upsert({
-					id: user.id,
-					name: credential.fullName.givenName,
-				});
+				const { givenName, familyName } = credential.fullName;
+				const name = `${givenName ?? ""} ${familyName ?? ""}`.trim();
 
-				if (profileError) throw profileError;
+				if (name) {
+					const { error: profileError } = await supabase
+						.from("profiles")
+						.upsert({ id: user.id, name });
+
+					if (profileError) throw profileError;
+				}
 			} else {
 				throw new Error("No identity token.");
 			}
