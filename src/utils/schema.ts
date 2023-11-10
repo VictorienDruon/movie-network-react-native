@@ -11,6 +11,6 @@ export const CommentSchema = z.object({
 export type CommentSchema = z.infer<typeof CommentSchema>;
 
 export const NameSchema = z.object({
-	name: z.string().trim().min(1).max(24),
+	name: z.string().trim().min(1).max(32),
 });
 export type NameSchema = z.infer<typeof NameSchema>;

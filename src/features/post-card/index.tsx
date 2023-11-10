@@ -13,29 +13,29 @@ import PosterCardsLayout from "@/features/poster-card/components/PosterCardsLayo
 import Post from "./types/Post";
 import CommentBar from "./components/CommentBar";
 import LikeButton from "./components/LikeButton";
-import ReportButton from "./components/ReportButton";
+import ActionsMenu from "./components/ActionsMenu";
 
 const PostCard = ({ post }: { post: Post }) => {
 	const { id, content, createdAt, author, posters, userHasLikedPost } = post;
 
 	return (
 		<VStack space={20} p={16}>
-			<HStack justifyContent="space-between" space={8}>
+			<HStack justifyContent="space-between" space={24}>
 				<Link href={author.link}>
-					<HStack space={8} alignItems="center" maxWidth="80%">
+					<HStack alignItems="center" maxWidth="85%" space={12}>
 						<Avatar size={40} src={author.avatarUrl} name={author.name} />
 
-						<Title>{author.name}</Title>
+						<VStack space={4}>
+							<Title numberOfLines={1} ellipsizeMode="tail">
+								{author.name}
+							</Title>
+
+							<Metadata>{getRelativeDate(createdAt)}</Metadata>
+						</VStack>
 					</HStack>
 				</Link>
 
-				<HStack alignItems="center" space={4}>
-					<Metadata>{getRelativeDate(createdAt)}</Metadata>
-
-					<Metadata>•</Metadata>
-
-					<ReportButton postId={id} />
-				</HStack>
+				<ActionsMenu postId={id} />
 			</HStack>
 
 			<Body>{content}</Body>
