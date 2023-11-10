@@ -31,7 +31,7 @@ const ActionsMenu = ({ commentId }: { commentId: string }) => {
 					style: "cancel",
 				},
 				{
-					text: "Confirm",
+					text: "Report",
 					onPress: handleReportComment,
 					style: "destructive",
 				},

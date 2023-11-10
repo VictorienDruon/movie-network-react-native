@@ -13,7 +13,7 @@ export async function getCommentsByPost(postId: string, page: number) {
 
 	const { data: comments, error } = await supabase
 		.from("comments")
-		.select("*, author: profiles(*)")
+		.select("*, author: profiles!comments_user_id_fkey(*)")
 		.eq("post_id", postId)
 		.order("created_at", { ascending: false })
 		.range(from, to);
@@ -30,7 +30,7 @@ export async function getCommentsByUser(userId: string, page: number) {
 
 	const { data: comments, error } = await supabase
 		.from("comments")
-		.select("*, author: profiles(*)")
+		.select("*, author: profiles!comments_user_id_fkey(*)")
 		.eq("user_id", userId)
 		.order("created_at", { ascending: false })
 		.range(from, to);
