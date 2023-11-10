@@ -50,7 +50,7 @@ const ProfileScreen = () => {
 					</VStack>
 				) : (
 					<HStack justifyContent="space-between" p={16} space={8}>
-						<VStack space={8}>
+						<VStack maxWidth="75%" space={8}>
 							<Avatar
 								size={64}
 								src={query.data.avatarUrl}
