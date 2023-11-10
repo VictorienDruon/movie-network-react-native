@@ -19,10 +19,10 @@ const ActionsMenu = ({ postId, authorId }: ActionsMenuProps) => {
 
 	if (user?.id === authorId) {
 		const mutation = useMutation(deletePost, {
-			onSuccess: (userId) => handleDeletePostSuccess(userId, queryClient),
+			onSuccess: ({ user_id }) => handleDeletePostSuccess(user_id, queryClient),
 		});
 
-		const createReportingAlert = () =>
+		const createDeletingAlert = () =>
 			Alert.alert(
 				"Are you sure you want to delete this post?",
 				"Once deleted, the post will be gone forever.",
@@ -53,7 +53,7 @@ const ActionsMenu = ({ postId, authorId }: ActionsMenuProps) => {
 				async (selectedIndex?: number) => {
 					switch (selectedIndex) {
 						case destructiveButtonIndex: {
-							createReportingAlert();
+							createDeletingAlert();
 							break;
 						}
 						case cancelButtonIndex:

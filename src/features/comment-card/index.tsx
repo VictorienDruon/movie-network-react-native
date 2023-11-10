@@ -57,7 +57,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 						<Metadata>{getRelativeDate(createdAt)}</Metadata>
 					</HStack>
 
-					<ActionsMenu commentId={id} />
+					<ActionsMenu commentId={id} authorId={author.id} />
 				</HStack>
 
 				<TouchableOpacity

@@ -133,7 +133,7 @@ export async function deletePost(id: string) {
 
 	if (error) throw error;
 
-	return data.user_id;
+	return data;
 }
 
 export function handleCreatePostSuccess(post: Post, queryClient: QueryClient) {

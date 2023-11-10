@@ -54,6 +54,19 @@ export async function createComment(newComment: NewComment): Promise<Comment> {
 	return convertKeysToCamelCase<Comment>(comment);
 }
 
+export async function deleteComment(id: string) {
+	const { data, error } = await supabase
+		.from("comments")
+		.delete()
+		.eq("id", id)
+		.select()
+		.single();
+
+	if (error) throw error;
+
+	return data;
+}
+
 export function handleCommentSuccess(
 	comment: Comment,
 	queryClient: QueryClient
