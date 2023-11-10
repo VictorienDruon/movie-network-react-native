@@ -2,10 +2,19 @@ import { TouchableOpacity } from "react-native";
 import { router, useSegments } from "expo-router";
 import { getRelativeDate } from "@/utils/dates";
 import Comment from "./types/Comment";
-import { VStack, HStack, Title, Body, Avatar, Metadata } from "@/components/ui";
+import {
+	VStack,
+	HStack,
+	Title,
+	Body,
+	Avatar,
+	Metadata,
+	Icon,
+} from "@/components/ui";
+import ActionsMenu from "./components/ActionsMenu";
 
 const CommentCard = ({ comment }: { comment: Comment }) => {
-	const { createdAt, content, author } = comment;
+	const { id, createdAt, content, author } = comment;
 	const segments = useSegments();
 
 	const handleAvatarPress = () => {
@@ -33,11 +42,23 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 				disabled={segments[1] !== "post"}
 				onPress={handleAvatarPress}
 			>
-				<Avatar src={author.avatarUrl} size={28} name={author.name} />
+				<Avatar src={author.avatarUrl} size={40} name={author.name} />
 			</TouchableOpacity>
 
-			<VStack space={8} flex={1}>
-				<Title>{author.name}</Title>
+			<VStack space={4} flex={1}>
+				<HStack justifyContent="space-between" alignItems="center" space={4}>
+					<HStack alignItems="flex-end" maxWidth="70%" space={4}>
+						<Title numberOfLines={1} ellipsizeMode="tail">
+							{author.name}
+						</Title>
+
+						<Metadata>•</Metadata>
+
+						<Metadata>{getRelativeDate(createdAt)}</Metadata>
+					</HStack>
+
+					<ActionsMenu commentId={id} />
+				</HStack>
 
 				<TouchableOpacity
 					disabled={segments[1] !== "profile"}
@@ -46,7 +67,6 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 					<Body>{content}</Body>
 				</TouchableOpacity>
 			</VStack>
-			<Metadata>{getRelativeDate(createdAt)}</Metadata>
 		</HStack>
 	);
 };

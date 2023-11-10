@@ -277,7 +277,43 @@ export interface Database {
           }
         ]
       }
-      reports: {
+      reported_comments: {
+        Row: {
+          created_at: string
+          reported_comment_id: string
+          reporter_user_id: string
+          reviewed: boolean
+        }
+        Insert: {
+          created_at?: string
+          reported_comment_id: string
+          reporter_user_id: string
+          reviewed?: boolean
+        }
+        Update: {
+          created_at?: string
+          reported_comment_id?: string
+          reporter_user_id?: string
+          reviewed?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reported_comments_reported_comment_id_fkey"
+            columns: ["reported_comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reported_comments_reporter_user_id_fkey"
+            columns: ["reporter_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reported_posts: {
         Row: {
           created_at: string
           reported_post_id: string
@@ -298,14 +334,14 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "reports_reported_post_id_fkey"
+            foreignKeyName: "reported_posts_reported_post_id_fkey"
             columns: ["reported_post_id"]
             isOneToOne: false
             referencedRelation: "posts"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "reports_reporter_user_id_fkey"
+            foreignKeyName: "reported_posts_reporter_user_id_fkey"
             columns: ["reporter_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
