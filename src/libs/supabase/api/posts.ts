@@ -123,7 +123,20 @@ export async function createPost(newPost: NewPost): Promise<Post> {
 	};
 }
 
-export function handlePostSuccess(post: Post, queryClient: QueryClient) {
+export async function deletePost(id: string) {
+	const { data, error } = await supabase
+		.from("posts")
+		.delete()
+		.eq("id", id)
+		.select()
+		.single();
+
+	if (error) throw error;
+
+	return data.user_id;
+}
+
+export function handleCreatePostSuccess(post: Post, queryClient: QueryClient) {
 	const { author } = post;
 
 	queryClient.invalidateQueries({
@@ -133,4 +146,16 @@ export function handlePostSuccess(post: Post, queryClient: QueryClient) {
 		queryKey: ["posts", author.id],
 	});
 	router.push("..");
+}
+
+export function handleDeletePostSuccess(
+	userId: string,
+	queryClient: QueryClient
+) {
+	queryClient.invalidateQueries({
+		queryKey: ["feed"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["posts", userId],
+	});
 }

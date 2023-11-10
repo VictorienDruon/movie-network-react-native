@@ -35,7 +35,7 @@ const PostCard = ({ post }: { post: Post }) => {
 					</HStack>
 				</Link>
 
-				<ActionsMenu postId={id} />
+				<ActionsMenu postId={id} authorId={author.id} />
 			</HStack>
 
 			<Body>{content}</Body>

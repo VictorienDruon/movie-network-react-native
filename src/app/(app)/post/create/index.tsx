@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostSchema } from "@/utils/schema";
 import { convertKeysToSnakeCase } from "@/utils/objects";
 import { supabase } from "@/libs/supabase";
-import { createPost, handlePostSuccess } from "@/libs/supabase/api/posts";
+import { createPost, handleCreatePostSuccess } from "@/libs/supabase/api/posts";
 import DbPoster from "@/libs/supabase/types/NewMedia";
 import useUser from "@/hooks/useUser";
 import { usePosters } from "@/providers/posters";
@@ -33,7 +33,7 @@ const CreateScreen = () => {
 	});
 
 	const mutation = useMutation(createPost, {
-		onSuccess: (post) => handlePostSuccess(post, queryClient),
+		onSuccess: (post) => handleCreatePostSuccess(post, queryClient),
 	});
 
 	const handlePostSubmit = handleSubmit(async ({ content }: PostSchema) => {
