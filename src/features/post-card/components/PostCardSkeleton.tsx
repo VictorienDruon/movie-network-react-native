@@ -1,14 +1,16 @@
-import { VStack, HStack, Skeleton, Box } from "@/components/ui";
+import { VStack, HStack, Skeleton } from "@/components/ui";
 import PosterCardsLayoutSkeleton from "@/features/poster-card/components/PosterCardsLayoutSkeleton";
 
 const PostCardSkeleton = () => (
 	<VStack space={20} p={16}>
-		<HStack justifyContent="space-between" space={8}>
-			<HStack space={8} alignItems="center">
-				<Skeleton width={40} height={40} borderRadius="full" />
-				<Skeleton width={128} height={20} borderRadius="md" />
-			</HStack>
-			<Skeleton width={64} height={12} borderRadius="md" />
+		<HStack alignItems="center" maxWidth="85%" space={12}>
+			<Skeleton width={40} height={40} borderRadius="full" />
+
+			<VStack space={4}>
+				<Skeleton width={200} height={20} borderRadius="md" />
+
+				<Skeleton width={80} height={12} borderRadius="md" />
+			</VStack>
 		</HStack>
 
 		<VStack space={4}>
