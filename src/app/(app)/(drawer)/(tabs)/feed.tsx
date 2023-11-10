@@ -36,7 +36,7 @@ const FeedScreen = () => {
 			</VStack>
 		);
 
-	if (true)
+	if (query.isLoading)
 		return (
 			<FlatList
 				data={Array.from({ length: 2 }, (_, i) => i)}

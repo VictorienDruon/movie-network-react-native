@@ -12,7 +12,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 		if (segments[1] === "post") {
 			router.push("..");
 			router.push({
-				pathname: "/(app)/profile/[id]/(tabs)",
+				pathname: "/profile/[id]",
 				params: { id: author.id },
 			});
 		}
@@ -21,7 +21,7 @@ const CommentCard = ({ comment }: { comment: Comment }) => {
 	const handleCommentPress = () => {
 		if (segments[1] === "profile") {
 			router.push({
-				pathname: "/(app)/post/[id]",
+				pathname: "/post/[id]",
 				params: { id: comment.postId },
 			});
 		}
